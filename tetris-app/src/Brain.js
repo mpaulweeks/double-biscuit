@@ -164,6 +164,7 @@ class Brain {
     this.tm = new TetrominoManager(this.grid);
     this.autoDropper = 0;
     this.arrowCode = null;
+    this.animationCountdown = 0;
 
     this.tick();
   }
@@ -181,27 +182,40 @@ class Brain {
   tick(){
     const { tm } = this;
 
-    this.autoDropper += 1;
-    if (this.autoDropper > 60){
-      tm.shiftDown();
-      this.autoDropper = 0;
-    }
+    if (animationCountdown > 0){
+      animationCountdown -= 1;
+      // animate
+    } else {
+      let pieceWasSet = false;
 
-    if (this.arrowCode){
-      switch (this.arrowCode){
-        case 'ArrowLeft':
-          tm.shiftLeft();
-          break;
-        case 'ArrowRight':
-          tm.shiftRight();
-          break;
-        case 'ArrowDown':
-          tm.drop();
-          break;
-        default:
-          break;
+      if (this.arrowCode){
+        switch (this.arrowCode){
+          case 'ArrowLeft':
+            tm.shiftLeft();
+            break;
+          case 'ArrowRight':
+            tm.shiftRight();
+            break;
+          case 'ArrowDown':
+            tm.drop();
+            this.autoDropper = 0;
+            pieceWasSet = true;
+            break;
+          default:
+            break;
+        }
+        this.arrowCode = null;
       }
-      this.arrowCode = null;
+
+      this.autoDropper += 1;
+      if (this.autoDropper > 60){
+        pieceWasSet |= tm.shiftDown();
+        this.autoDropper = 0;
+      }
+
+      if (pieceWasSet){
+        animationCountdown = 20;
+      }
     }
   }
 }
