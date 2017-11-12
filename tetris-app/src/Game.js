@@ -11,6 +11,9 @@ const init = function($canvas){
   started = true;
   const brain = new Brain();
   const display = new Display(brain, $canvas);
+
+  window.debug_brain = brain;
+
   display.startDrawLoop();
   // display.draw();
 }

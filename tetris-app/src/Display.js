@@ -39,43 +39,56 @@ class Display{
     }
   }
 
+  drawBlock(b){
+    if (b){
+      const { canvas, ctx, brain } = this;
+      const cellWidth = Math.floor(canvas.width / brain.grid.width());
+      const cellHeight = Math.floor(canvas.height / brain.grid.height());
+      const floor = canvas.height;
+      const buffer = 5;
+
+      const xStart = cellWidth * b.col;
+      const yStart = floor - (cellHeight * (b.row + 1));
+
+      ctx.strokeRect(
+        xStart,
+        yStart,
+        cellWidth,
+        cellHeight
+      );
+
+      ctx.fillStyle = b.color;
+      ctx.fillRect(
+        buffer + xStart,
+        buffer + yStart,
+        cellWidth - buffer*2,
+        cellHeight - buffer*2
+      );
+    }
+  }
+
   draw(){
-    const { canvas, ctx } = this;
-    const grid = this.brain.grid;
-    const cellWidth = Math.floor(canvas.width / grid.width());
-    const cellHeight = Math.floor(canvas.height / grid.height());
-    const floor = canvas.height;
-    const buffer = 5;
+    const { canvas, ctx, brain } = this;
 
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    ctx.strokeStyle = "grey";
+    for (let gridBlock of brain.grid){
+      this.drawBlock(gridBlock);
+    }
+
     ctx.strokeStyle = "white";
-    for (var b of grid){
-      if (b){
-        const xStart = cellWidth * b.col;
-        const yStart = floor - (cellHeight * (b.row + 1));
-
-        ctx.strokeRect(
-          xStart,
-          yStart,
-          cellWidth,
-          cellHeight
-        );
-
-        ctx.fillStyle = b.color;
-        ctx.fillRect(
-          buffer + xStart,
-          buffer + yStart,
-          cellWidth - buffer*2,
-          cellHeight - buffer*2
-        );
-      }
+    for (let fallingBlock of this.brain.current()){
+      this.drawBlock(fallingBlock);
     }
   }
   startDrawLoop(){
     this.drawState.continue = true;
-    loopFunction(this.drawState, () => this.draw());
+    loopFunction(this.drawState, () => {
+      this.brain.tick();
+      this.draw();
+    });
   }
   stopDrawLoop(){
     this.drawState.continue = false;
