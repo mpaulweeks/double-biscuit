@@ -27,20 +27,21 @@ class Tetromino {
       b.shift(coords.x, coords.y);
     });
   }
-  shiftDown(dy){
-    this.shift({x: 0, y: dy || -1});
-  }
-  shiftLeft(dx){
-    this.shift({x: dx || -1, y: 0});
-  }
-  shiftRight(dx){
-    this.shift({x: dx || 1, y: 0});
+
+  clone(){
+    const points = this.blocks.map(b => {
+      return {x: b.col, y: b.row};
+    });
+    return new Tetromino(this.color, points);
   }
 
   *[Symbol.iterator](){
     yield* this.blocks;
   }
 }
+
+const OVERLAP = 'overlap';
+const OUT_OF_BOUNDS = 'out of bounds';
 
 class TetrominoManager {
   constructor(grid){
@@ -59,6 +60,51 @@ class TetrominoManager {
     ]);
     t.shift({x: grid.width()/2 - 1, y: grid.height() - 1});
     return t;
+  }
+
+  shift(coords){
+    const shifted = this.current().clone();
+    shifted.shift(coords);
+    let outOfBounds = false;
+    let overlap = false;
+    shifted.blocks.forEach(b => {
+      const gridValue = this.grid.get(b.row, b.col);
+      outOfBounds = outOfBounds || gridValue === OUT_OF_BOUNDS;
+      overlap = overlap || gridValue;
+    });
+    if (overlap){
+      return OVERLAP;
+    } else if (outOfBounds){
+      return OUT_OF_BOUNDS;
+    } else {
+      this._current = shifted;
+      return null;
+    }
+  }
+  shiftDown(dy){
+    const result = this.shift({x: 0, y: dy || -1});
+    if (result === OVERLAP){
+      this.setInGrid();
+    }
+    return result;
+  }
+  drop(){
+    while(this.shiftDown() === null){
+      // continue looping
+    }
+  }
+  shiftLeft(dx){
+    this.shift({x: dx || -1, y: 0});
+  }
+  shiftRight(dx){
+    this.shift({x: dx || 1, y: 0});
+  }
+
+  setInGrid(){
+    this.current().blocks.forEach(b => {
+      this.grid.setBlock(b);
+    });
+    this._current = null;
   }
 
   current(){
@@ -85,6 +131,18 @@ class Grid{
     }
   }
 
+  get(row, col){
+    if (row < 0 || row >= this._height){
+      return OUT_OF_BOUNDS;
+    }
+    if (col < 0 || col >= this._width){
+      return OUT_OF_BOUNDS;
+    }
+    return this._matrix[row][col];
+  }
+  setBlock(b){
+    this._matrix[b.row][b.col] = b;
+  }
   width(){
     return this._width;
   }
@@ -122,24 +180,23 @@ class Brain {
 
   tick(){
     const { tm } = this;
-    const current = tm.current();
 
     this.autoDropper += 1;
     if (this.autoDropper > 60){
-      current.shiftDown();
+      tm.shiftDown();
       this.autoDropper = 0;
     }
 
     if (this.arrowCode){
       switch (this.arrowCode){
         case 'ArrowLeft':
-          current.shiftLeft();
+          tm.shiftLeft();
           break;
         case 'ArrowRight':
-          current.shiftRight();
+          tm.shiftRight();
           break;
         case 'ArrowDown':
-          // drop
+          tm.drop();
           break;
         default:
           break;

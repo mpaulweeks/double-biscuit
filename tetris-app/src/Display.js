@@ -45,7 +45,7 @@ class Display{
       const cellWidth = Math.floor(canvas.width / brain.grid.width());
       const cellHeight = Math.floor(canvas.height / brain.grid.height());
       const floor = canvas.height;
-      const buffer = 5;
+      const buffer = 3;
 
       const xStart = cellWidth * b.col;
       const yStart = floor - (cellHeight * (b.row + 1));
