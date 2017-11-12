@@ -30,6 +30,12 @@ class Tetromino {
   shiftDown(dy){
     this.shift({x: 0, y: dy || -1});
   }
+  shiftLeft(dx){
+    this.shift({x: dx || -1, y: 0});
+  }
+  shiftRight(dx){
+    this.shift({x: dx || 1, y: 0});
+  }
 
   *[Symbol.iterator](){
     yield* this.blocks;
@@ -99,12 +105,19 @@ class Brain {
     this.grid = new Grid();
     this.tm = new TetrominoManager(this.grid);
     this.autoDropper = 0;
+    this.arrowCode = null;
 
     this.tick();
   }
 
   current(){
     return this.tm.current();
+  }
+
+  onInput(eventType, event){
+    if(eventType === 'KeyDown'){
+      this.arrowCode = event.code;
+    }
   }
 
   tick(){
@@ -115,6 +128,23 @@ class Brain {
     if (this.autoDropper > 60){
       current.shiftDown();
       this.autoDropper = 0;
+    }
+
+    if (this.arrowCode){
+      switch (this.arrowCode){
+        case 'ArrowLeft':
+          current.shiftLeft();
+          break;
+        case 'ArrowRight':
+          current.shiftRight();
+          break;
+        case 'ArrowDown':
+          // drop
+          break;
+        default:
+          break;
+      }
+      this.arrowCode = null;
     }
   }
 }
