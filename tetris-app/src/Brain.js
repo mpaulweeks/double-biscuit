@@ -1,119 +1,8 @@
-
-class Block{
-  constructor(row, col, color){
-    this.row = row;
-    this.col = col;
-    this.color = color;
-  }
-}
-
-class FallingBlock extends Block{
-  shift(x, y){
-    this.col += x;
-    this.row += y;
-  }
-}
-
-class Tetromino {
-  constructor(color, points){
-    this.color = color;
-    this.blocks = points.map(p => {
-      return new FallingBlock(p.y, p.x, this.color);
-    });
-  }
-
-  shift(coords){
-    this.blocks.forEach(b => {
-      b.shift(coords.x, coords.y);
-    });
-  }
-
-  clone(){
-    const points = this.blocks.map(b => {
-      return {x: b.col, y: b.row};
-    });
-    return new Tetromino(this.color, points);
-  }
-
-  *[Symbol.iterator](){
-    yield* this.blocks;
-  }
-}
-
-const OVERLAP = 'overlap';
-const OUT_OF_BOUNDS = 'out of bounds';
-
-class TetrominoManager {
-  constructor(grid){
-    this.grid = grid;
-    this._current = null;
-  }
-
-  newLongPiece(){
-    const { grid } = this;
-
-    const t = new Tetromino('pink', [
-      {x: -1, y: 0},
-      {x: 0, y: 0},
-      {x: 1, y: 0},
-      {x: 2, y: 0},
-    ]);
-    t.shift({x: grid.width()/2 - 1, y: grid.height() - 1});
-    return t;
-  }
-
-  shift(coords){
-    const shifted = this.current().clone();
-    shifted.shift(coords);
-    let outOfBounds = false;
-    let overlap = false;
-    shifted.blocks.forEach(b => {
-      const gridValue = this.grid.get(b.row, b.col);
-      outOfBounds = outOfBounds || gridValue === OUT_OF_BOUNDS;
-      overlap = overlap || gridValue;
-    });
-    if (overlap){
-      return OVERLAP;
-    } else if (outOfBounds){
-      return OUT_OF_BOUNDS;
-    } else {
-      this._current = shifted;
-      return null;
-    }
-  }
-  shiftDown(dy){
-    const result = this.shift({x: 0, y: dy || -1});
-    if (result === OVERLAP){
-      this.setInGrid();
-    }
-    return result;
-  }
-  drop(){
-    while(this.shiftDown() === null){
-      // continue looping
-    }
-  }
-  shiftLeft(dx){
-    this.shift({x: dx || -1, y: 0});
-  }
-  shiftRight(dx){
-    this.shift({x: dx || 1, y: 0});
-  }
-
-  setInGrid(){
-    this.current().blocks.forEach(b => {
-      this.grid.setBlock(b);
-    });
-    this._current = null;
-  }
-
-  current(){
-    if (!this._current){
-      this._current = this.newLongPiece();
-    }
-    return this._current;
-  }
-}
+import {
+  OUT_OF_BOUNDS,
+  Block,
+  TetrominoManager,
+} from './Tetromino';
 
 class Grid{
   constructor(){
@@ -143,6 +32,32 @@ class Grid{
   setBlock(b){
     this._matrix[b.row][b.col] = b;
   }
+
+  checkRows(){
+    var rowsFilled = [];
+    for (var row = 0; row < this._height; row++){
+      var colsFilled = 0;
+      for (var col = 0; col < this._width; col++){
+        if (this._matrix[row][col]){
+          colsFilled += 1;
+        }
+      }
+      if (colsFilled === this._width){
+        rowsFilled.push(row);
+      }
+    }
+    return rowsFilled;
+  }
+
+  removeRows(){
+    const rows = this.checkRows();
+    const descendingRows = rows.slice().reverse();
+    descendingRows.forEach(row => {
+      this._matrix.splice(row, 1);
+    });
+    // todo refill rows on top
+  }
+
   width(){
     return this._width;
   }
@@ -180,11 +95,18 @@ class Brain {
   }
 
   tick(){
-    const { tm } = this;
+    const { tm, grid } = this;
 
-    if (animationCountdown > 0){
-      animationCountdown -= 1;
+    if (this.animationCountdown > 0){
+      // todo move this to display, just stop ticking
+
+      this.animationCountdown -= 1;
       // animate
+
+      if (this.animationCountdown === 0) {
+        grid.removeRows();
+        tm.refresh();
+      }
     } else {
       let pieceWasSet = false;
 
@@ -214,7 +136,7 @@ class Brain {
       }
 
       if (pieceWasSet){
-        animationCountdown = 20;
+        this.animationCountdown = 20;
       }
     }
   }

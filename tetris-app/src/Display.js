@@ -82,6 +82,21 @@ class Display{
     for (let fallingBlock of this.brain.current()){
       this.drawBlock(fallingBlock);
     }
+
+    const rowsFilled = brain.grid.checkRows();
+    for (let row of rowsFilled){
+      const floor = canvas.height;
+      const cellHeight = Math.floor(canvas.height / brain.grid.height());
+      const xStart = 0;
+      const yStart = floor - (cellHeight * (row + 1));
+      ctx.fillStyle = 'rgba(200, 200, 200, 50)';
+      ctx.fillRect(
+        xStart,
+        yStart,
+        canvas.width,
+        cellHeight
+      );
+    }
   }
   startDrawLoop(){
     this.drawState.continue = true;
