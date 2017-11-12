@@ -51,11 +51,24 @@ class Grid{
 
   removeRows(){
     const rows = this.checkRows();
+
     const descendingRows = rows.slice().reverse();
-    descendingRows.forEach(row => {
-      this._matrix.splice(row, 1);
+    descendingRows.forEach(clearRow => {
+      for (var row = clearRow + 1; row < this._height; row++){
+        for (var col = 0; col < this._width; col++){
+          const b = this._matrix[row][col];
+          if (b){
+            b.row -= 1;
+          }
+        }
+      }
+      this._matrix.splice(clearRow, 1);
+      const topRow = this._height - 1;
+      this._matrix[topRow] = [];
+      for (var col = 0; col < this._width; col++){
+        this._matrix[topRow][col] = null;
+      }
     });
-    // todo refill rows on top
   }
 
   width(){
