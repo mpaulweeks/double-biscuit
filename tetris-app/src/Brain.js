@@ -7,7 +7,7 @@ import {
 class Grid{
   constructor(){
     this._width = 10;
-    this._height = 22;
+    this._height = 25;
     this._matrix = [];
     for (var row = 0; row < this._height; row++){
       this._matrix[row] = [];
@@ -77,7 +77,8 @@ class Grid{
     return this._width;
   }
   height(){
-    return this._height;
+    // grid goes higher than display/tetroManager thinks
+    return this._height - 3;
   }
   *[Symbol.iterator](){
     for (var row = 0; row < this._height; row++){
@@ -90,6 +91,10 @@ class Grid{
 
 class Brain {
   constructor(){
+    this.restart();
+  }
+
+  restart(){
     this.grid = new Grid();
     this.tm = new TetrominoManager(this.grid);
     this.autoDropper = 0;
@@ -120,13 +125,19 @@ class Brain {
 
       if (this.animationCountdown === 0) {
         grid.removeRows();
-        tm.refresh();
+        const ok = tm.refresh();
+        if (!ok){
+          this.restart();
+        }
       }
     } else {
       let pieceWasSet = false;
 
       if (this.arrowCode){
         switch (this.arrowCode){
+          case 'ArrowUp':
+            tm.current().rotate();
+            break;
           case 'ArrowLeft':
             tm.shiftLeft();
             break;
@@ -134,6 +145,9 @@ class Brain {
             tm.shiftRight();
             break;
           case 'ArrowDown':
+            tm.shiftDown();
+            break;
+          case 'Space':
             tm.drop();
             this.autoDropper = 0;
             pieceWasSet = true;
@@ -146,12 +160,12 @@ class Brain {
 
       this.autoDropper += 1;
       if (this.autoDropper > 60){
-        pieceWasSet |= tm.shiftDown();
+        pieceWasSet = pieceWasSet || tm.shiftDown();
         this.autoDropper = 0;
       }
 
       if (pieceWasSet){
-        this.animationCountdown = 20;
+        this.animationCountdown = 10;
       }
     }
   }

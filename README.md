@@ -14,3 +14,10 @@ Online Attack Tetris w/ Websockets
 - Possibly Golang?
 - Webserver to deliver static files
 - Workers for running websockets among players
+
+## todo
+
+- Move display logic out of Brain
+- Find way to collision check without clone
+- Add collision check to rotate
+- Add collision check to new block spawn
