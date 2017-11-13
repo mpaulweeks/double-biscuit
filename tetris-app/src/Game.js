@@ -10,14 +10,18 @@ const init = function($canvas){
     return;
   }
   started = true;
+
   const brain = new Brain();
   const display = new Display(brain, $canvas);
   InputListener.register((et, e) => brain.onInput(et, e));
 
-  window.debug_brain = brain;
-
   display.startDrawLoop();
-  // display.draw();
+
+  // debugging
+  window.admin = {
+    brain,
+    display,
+  };
 }
 
 class Game extends Component {

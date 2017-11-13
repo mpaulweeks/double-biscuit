@@ -11,7 +11,6 @@ class _InputListener{
 const InputListener = new _InputListener();
 
 document.addEventListener('keydown', event => {
-  // console.log(event);
   InputListener.callbacks.forEach(sub => {
     sub('KeyDown', event);
   });

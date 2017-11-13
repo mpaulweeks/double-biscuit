@@ -42,7 +42,6 @@ class Tetromino {
         this.origin = b;
       }
     }
-    console.log(this.origin);
   }
 
   shift(coords){
