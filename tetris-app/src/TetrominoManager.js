@@ -24,7 +24,7 @@ class TetrominoManager {
     const rand = Math.floor(Math.random()*ctors.length);
 
     const tet = ctors[rand]();
-    tet.shift({x: grid.width()/2 - 1, y: grid.height() - 1});
+    tet.shift({dx: grid.width()/2 - 1, dy: grid.height() - 1});
     return tet;
   }
 

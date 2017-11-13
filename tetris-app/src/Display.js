@@ -6,7 +6,14 @@ const loopFunction = function(state, func){
       loopFunction(state, func);
     }
     state.raf = window.requestAnimationFrame(nextLoop);
-    func();
+    try {
+      func();
+    }
+    catch (e) {
+      // debugging
+      state.continue = false;
+      throw e;
+    }
   }
 }
 
