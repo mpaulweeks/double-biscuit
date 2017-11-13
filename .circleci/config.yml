@@ -14,10 +14,11 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-    working_directory: ~/double-biscuit/tetris-app
+    working_directory: ~/double-biscuit
 
     steps:
       - checkout
+      - run: cd tetris-app
       - run: pwd
       - run: ls
       - run: yarn install
