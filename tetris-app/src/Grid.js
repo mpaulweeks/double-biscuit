@@ -29,14 +29,21 @@ class Grid{
 
   attack(numRows){
     let newGrid = [];
+    const missingCol = Math.floor(Math.random() * this._width);
     for (var row = 0; row < this._height; row++){
       newGrid[row] = [];
       for (var col = 0; col < this._width; col++){
+        let newVal = null;
         if (row < numRows){
-          newGrid[row][col] = new AttackBlock({x:col, y:row});
+          if (col === missingCol){
+            newVal = null;
+          } else {
+            newVal = new AttackBlock({x:col, y:row});
+          }
         } else {
-          newGrid[row][col] = this._matrix[row+numRows][col];
+          newVal = this._matrix[row-numRows][col];
         }
+        newGrid[row][col] = newVal;
       }
     }
     this._matrix = newGrid;
