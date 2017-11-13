@@ -6,50 +6,49 @@ import {
   KnightOne,
 } from './Tetromino';
 
-it('Block', () => {
-  const b1 = new Block({x:2, y:1}, 'a');
+const blockToPoints = function(block){
+  return `${block.col},${block.row}`;
+}
+
+const tetroToPoints = function(tetro){
+  return tetro.blocks.map(b => {
+    return `${b.col},${b.row}`;
+  }).join(' ');
+}
+
+it('Block clones', () => {
+  const b1 = new Block({x:2, y:1}, 'color2');
   const b2 = b1.clone();
-  b1.color = 'b';
-  expect(b1.color).toEqual('b');
-  expect(b2.color).toEqual('a');
+  b1.color = 'color1';
+
+  expect(b1.color).toEqual('color1');
+  expect(b2.color).toEqual('color2');
 });
 
-it('FallingBlock', () => {
-  const fb1 = new FallingBlock({x:2, y:1}, 'a');
+it('FallingBlock clones', () => {
+  const fb1 = new FallingBlock({x:2, y:1}, 'color2');
   const fb2 = fb1.clone();
-  fb1.color = 'b';
-  expect(fb1.color).toEqual('b');
-  expect(fb2.color).toEqual('a');
+  fb1.color = 'color1';
 
-  const fbo = new Block({x:0, y:0}, 'o');
-  fb2.rotateAround(fbo);
-  expect(fb1.col).toEqual(2);
-  expect(fb1.row).toEqual(1);
-  expect(fb2.col).toEqual(1);
-  expect(fb2.row).toEqual(-2);
+  expect(fb1.color).toEqual('color1');
+  expect(fb2.color).toEqual('color2');
 });
 
-it('Tetromino', () => {
+it('FallingBlock rotates', () => {
+  const fb1 = new FallingBlock({x:2, y:1}, 'color2');
+  const fb2 = fb1.clone();
+  const origin = new Block({x:0, y:0}, 'o');
+  fb2.rotateAround(origin);
+
+  expect(blockToPoints(fb1)).toEqual("2,1");
+  expect(blockToPoints(fb2)).toEqual("1,-2");
+});
+
+it('Tetromino rotates', () => {
   const k1 = new KnightOne();
   const k2 = k1.clone();
-
   k2.rotate();
 
-  expect(k1.blocks[0].col).toEqual(-1);
-  expect(k1.blocks[0].row).toEqual(-1);
-  expect(k1.blocks[1].col).toEqual(-1);
-  expect(k1.blocks[1].row).toEqual(0);
-  expect(k1.blocks[2].col).toEqual(0);
-  expect(k1.blocks[2].row).toEqual(0);
-  expect(k1.blocks[3].col).toEqual(1);
-  expect(k1.blocks[3].row).toEqual(0);
-
-  expect(k2.blocks[0].col).toEqual(-1);
-  expect(k2.blocks[0].row).toEqual(1);
-  expect(k2.blocks[1].col).toEqual(0);
-  expect(k2.blocks[1].row).toEqual(1);
-  expect(k2.blocks[2].col).toEqual(0);
-  expect(k2.blocks[2].row).toEqual(0);
-  expect(k2.blocks[3].col).toEqual(0);
-  expect(k2.blocks[3].row).toEqual(-1);
+  expect(tetroToPoints(k1)).toEqual("-1,-1 -1,0 0,0 1,0");
+  expect(tetroToPoints(k2)).toEqual("-1,1 0,1 0,0 0,-1");
 });
