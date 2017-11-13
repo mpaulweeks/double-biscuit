@@ -1,8 +1,6 @@
 import { Block } from './Block';
-import {
-  OUT_OF_BOUNDS,
-  TetrominoManager,
-} from './TetrominoManager';
+import TetrominoManager from './TetrominoManager';
+import Errors from './Errors';
 
 class Grid{
   constructor(){
@@ -22,10 +20,10 @@ class Grid{
 
   get(row, col){
     if (row < 0 || row >= this._height){
-      return OUT_OF_BOUNDS;
+      return Errors.OutOfBounds;
     }
     if (col < 0 || col >= this._width){
-      return OUT_OF_BOUNDS;
+      return Errors.OutOfBounds;
     }
     return this._matrix[row][col];
   }
@@ -136,7 +134,7 @@ class Brain {
       if (this.arrowCode){
         switch (this.arrowCode){
           case 'ArrowUp':
-            tm.current().rotate();
+            tm.rotate();
             break;
           case 'ArrowLeft':
             tm.shiftLeft();

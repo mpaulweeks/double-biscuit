@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { TetroShapes } from './Tetromino';
+import TetroShapes from './Tetromino';
 import { blockToPoints } from './Block.test';
 
 const tetroToPoints = function(tetro){

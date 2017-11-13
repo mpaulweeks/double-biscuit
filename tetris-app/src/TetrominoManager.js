@@ -1,7 +1,6 @@
-import { TetroShapes } from './Tetromino';
+import TetroShapes from './Tetromino';
+import Errors from './Errors';
 
-const OVERLAP = 'overlap';
-const OUT_OF_BOUNDS = 'out of bounds';
 const ctors = [
   () => new TetroShapes.Line(),
   () => new TetroShapes.Square(),
@@ -21,7 +20,9 @@ class TetrominoManager {
   newRandomTetro(){
     const { grid } = this;
 
+    // todo add weight to self-correct
     const rand = Math.floor(Math.random()*ctors.length);
+
     const tet = ctors[rand]();
     tet.shift({x: grid.width()/2 - 1, y: grid.height() - 1});
     return tet;
@@ -32,23 +33,34 @@ class TetrominoManager {
     let overlap = false;
     tetro.blocks.forEach(b => {
       const gridValue = this.grid.get(b.row, b.col);
-      outOfBounds = outOfBounds || gridValue === OUT_OF_BOUNDS;
+      outOfBounds = outOfBounds || gridValue === Errors.OutOfBounds;
       overlap = overlap || gridValue;
     });
     if (overlap){
-      return OVERLAP;
+      return Errors.Overlap;
     } else if (outOfBounds){
-      return OUT_OF_BOUNDS;
+      return Errors.OutOfBounds;
     } else {
       return null;
     }
   }
-  tryShift(coords){
-    const shifted = this.current().clone();
-    shifted.shift(coords);
-    const error = this.checkCollisionError(shifted);
+  rotate(){
+    const next = this.current().clone();
+    next.rotate();
+    const error = this.checkCollisionError(next);
     if (error === null){
-      this._current = shifted;
+      this._current = next;
+    } else {
+      // todo shift up/left/right until it works
+    }
+    return error;
+  }
+  tryShift(delta){
+    const next = this.current().clone();
+    next.shift(delta);
+    const error = this.checkCollisionError(next);
+    if (error === null){
+      this._current = next;
     }
     return error;
   }
@@ -60,7 +72,7 @@ class TetrominoManager {
   }
   shiftDown(dy){
     const result = this.tryShift({dx: 0, dy: dy || -1});
-    if (result === OVERLAP){
+    if (result === Errors.Overlap){
       this.setInGrid();
     }
     return result;
@@ -90,11 +102,4 @@ class TetrominoManager {
   }
 }
 
-const SUT = {}
-
-export {
-  SUT,
-  OVERLAP,
-  OUT_OF_BOUNDS,
-  TetrominoManager,
-}
+export default TetrominoManager;

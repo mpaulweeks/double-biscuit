@@ -18,9 +18,9 @@ class Tetromino {
     }
   }
 
-  shift(coords){
+  shift(delta){
     this.blocks.forEach(b => {
-      b.shift(coords.dx, coords.dy);
+      b.shift(delta.dx, delta.dy);
     });
   }
 
@@ -135,6 +135,4 @@ const TetroShapes = {
   ZedTwo,
 };
 
-export {
-  TetroShapes,
-}
+export default TetroShapes;
