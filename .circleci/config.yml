@@ -18,6 +18,8 @@ jobs:
 
     steps:
       - checkout
+      - run: pwd
+      - run: ls
       - run: yarn install
       - run: yarn test
 
