@@ -1,8 +1,8 @@
+import { Block } from './Block';
 import {
   OUT_OF_BOUNDS,
-  Block,
   TetrominoManager,
-} from './Tetromino';
+} from './TetrominoManager';
 
 class Grid{
   constructor(){

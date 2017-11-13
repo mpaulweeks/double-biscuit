@@ -1,30 +1,4 @@
-class Block{
-  constructor(coord, color){
-    this.col = coord.x;
-    this.row = coord.y;
-    this.color = color;
-  }
-
-  clone(){
-    // https://stackoverflow.com/a/44782052/6461842
-    const newBlock = Object.create(Object.getPrototypeOf(this));
-    return Object.assign(newBlock, this);
-  }
-}
-
-class FallingBlock extends Block{
-  shift(x, y){
-    this.col += x;
-    this.row += y;
-  }
-
-  rotateAround(origin){
-    const dx = origin.col - this.col;
-    const dy = origin.row - this.row;
-    this.col += dx - dy;
-    this.row += dy + dx;
-  }
-}
+import { FallingBlock } from './Block';
 
 class Tetromino {
   constructor(color, points, originCoord){
@@ -46,7 +20,7 @@ class Tetromino {
 
   shift(coords){
     this.blocks.forEach(b => {
-      b.shift(coords.x, coords.y);
+      b.shift(coords.dx, coords.dy);
     });
   }
 
@@ -151,102 +125,16 @@ class ZedTwo extends Tetromino {
   }
 }
 
-const OVERLAP = 'overlap';
-const OUT_OF_BOUNDS = 'out of bounds';
-const ctors = [
-  () => new Line(),
-  () => new Square(),
-  () => new Cross(),
-  () => new KnightOne(),
-  () => new KnightTwo(),
-  () => new ZedOne(),
-  () => new ZedTwo(),
-]
-
-
-class TetrominoManager {
-  constructor(grid){
-    this.grid = grid;
-    this._current = null;
-  }
-
-  newRandomTetro(){
-    const { grid } = this;
-
-    const rand = Math.floor(Math.random()*ctors.length);
-    const tet = ctors[rand]();
-    tet.shift({x: grid.width()/2 - 1, y: grid.height() - 1});
-    return tet;
-  }
-
-  checkCollisionError(tetro){
-    let outOfBounds = false;
-    let overlap = false;
-    tetro.blocks.forEach(b => {
-      const gridValue = this.grid.get(b.row, b.col);
-      outOfBounds = outOfBounds || gridValue === OUT_OF_BOUNDS;
-      overlap = overlap || gridValue;
-    });
-    if (overlap){
-      return OVERLAP;
-    } else if (outOfBounds){
-      return OUT_OF_BOUNDS;
-    } else {
-      return null;
-    }
-  }
-  tryShift(coords){
-    const shifted = this.current().clone();
-    shifted.shift(coords);
-    const error = this.checkCollisionError(shifted);
-    if (error === null){
-      this._current = shifted;
-    }
-    return error;
-  }
-  shiftLeft(dx){
-    this.tryShift({x: dx || -1, y: 0});
-  }
-  shiftRight(dx){
-    this.tryShift({x: dx || 1, y: 0});
-  }
-  shiftDown(dy){
-    const result = this.tryShift({x: 0, y: dy || -1});
-    if (result === OVERLAP){
-      this.setInGrid();
-    }
-    return result;
-  }
-  drop(){
-    while(this.shiftDown() === null){
-      // continue looping
-    }
-  }
-
-  setInGrid(){
-    this.current().blocks.forEach(b => {
-      this.grid.setBlock(b);
-    });
-  }
-
-  refresh(){
-    this._current = null;
-    return true; // check if overlapping
-  }
-
-  current(){
-    if (!this._current){
-      this._current = this.newRandomTetro();
-    }
-    return this._current;
-  }
-}
+const TetroShapes = {
+  Line,
+  Square,
+  Cross,
+  KnightOne,
+  KnightTwo,
+  ZedOne,
+  ZedTwo,
+};
 
 export {
-  OVERLAP,
-  OUT_OF_BOUNDS,
-  TetrominoManager,
-  Block,
-  FallingBlock,
-  KnightOne,
+  TetroShapes,
 }
