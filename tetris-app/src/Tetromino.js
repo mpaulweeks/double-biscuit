@@ -4,6 +4,12 @@ class Block{
     this.col = col;
     this.color = color;
   }
+
+  clone(){
+    // https://stackoverflow.com/a/44782052/6461842
+    const newBlock = Object.create(Object.getPrototypeOf(this));
+    return Object.assign(newBlock, this);
+  }
 }
 
 class FallingBlock extends Block{
@@ -22,6 +28,8 @@ class FallingBlock extends Block{
 
 class Tetromino {
   constructor(color, points, originCoord){
+    // todo take blocks instead
+    // change this to classMethod since it's only done once
     this.color = color;
     this.blocks = points.map(p => {
       return new FallingBlock(p.y, p.x, this.color);
@@ -43,19 +51,19 @@ class Tetromino {
     });
   }
 
+  rotate(){
+    const { origin } = this;
+    this.blocks.forEach(b => {
+      b.rotateAround(origin);
+    });
+  }
+
   clone(){
     const points = this.blocks.map(b => {
       return {x: b.col, y: b.row};
     });
     const originCoord = {x: this.origin.col, y: this.origin.row};
     return new Tetromino(this.color, points, originCoord);
-  }
-
-  rotate(){
-    const { origin } = this;
-    this.blocks.forEach(b => {
-      b.rotateAround(origin);
-    });
   }
 
   *[Symbol.iterator](){
@@ -158,7 +166,6 @@ const ctors = [
 
 
 class TetrominoManager {
-
   constructor(grid){
     this.grid = grid;
     this._current = null;
@@ -173,12 +180,10 @@ class TetrominoManager {
     return tet;
   }
 
-  shift(coords){
-    const shifted = this.current().clone();
-    shifted.shift(coords);
+  checkCollisionError(tetro){
     let outOfBounds = false;
     let overlap = false;
-    shifted.blocks.forEach(b => {
+    tetro.blocks.forEach(b => {
       const gridValue = this.grid.get(b.row, b.col);
       outOfBounds = outOfBounds || gridValue === OUT_OF_BOUNDS;
       overlap = overlap || gridValue;
@@ -188,12 +193,26 @@ class TetrominoManager {
     } else if (outOfBounds){
       return OUT_OF_BOUNDS;
     } else {
-      this._current = shifted;
       return null;
     }
   }
+  tryShift(coords){
+    const shifted = this.current().clone();
+    shifted.shift(coords);
+    error = this.checkCollisionError(shifted);
+    if (error === null){
+      this._current = shifted;
+    }
+    return error;
+  }
+  shiftLeft(dx){
+    this.tryShift({x: dx || -1, y: 0});
+  }
+  shiftRight(dx){
+    this.tryShift({x: dx || 1, y: 0});
+  }
   shiftDown(dy){
-    const result = this.shift({x: 0, y: dy || -1});
+    const result = this.tryShift({x: 0, y: dy || -1});
     if (result === OVERLAP){
       this.setInGrid();
     }
@@ -203,12 +222,6 @@ class TetrominoManager {
     while(this.shiftDown() === null){
       // continue looping
     }
-  }
-  shiftLeft(dx){
-    this.shift({x: dx || -1, y: 0});
-  }
-  shiftRight(dx){
-    this.shift({x: dx || 1, y: 0});
   }
 
   setInGrid(){
@@ -235,4 +248,5 @@ export {
   OUT_OF_BOUNDS,
   TetrominoManager,
   Block,
+  FallingBlock,
 }

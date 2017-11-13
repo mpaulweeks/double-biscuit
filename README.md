@@ -18,6 +18,6 @@ Online Attack Tetris w/ Websockets
 ## todo
 
 - Move display logic out of Brain
-- Find way to collision check without clone
+- Improve Tetro.clone to carry child type (see FallingBlock POC)
 - Add collision check to rotate
 - Add collision check to new block spawn
