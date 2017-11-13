@@ -22,14 +22,14 @@ const init = function($canvas){
 
 class Game extends Component {
   componentDidMount() {
-    var $canvas = document.getElementById('primary')
+    var $canvas = this.refs.canvas;
     init($canvas);
   }
 
   render() {
     return (
       <div>
-        <canvas id='primary' className="Grid"></canvas>
+        <canvas ref='canvas' id='primary' className="Grid"></canvas>
       </div>
     );
   }

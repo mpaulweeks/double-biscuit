@@ -14,7 +14,7 @@ class Grid{
       for (var col = 0; col < this._width; col++){
         this._matrix[row][col] = null;
         if ((row + col) % 2 === 0 && row < 5){
-          this._matrix[row][col] = new Block(row, col, 'lightblue');
+          this._matrix[row][col] = new Block({x:col, y:row}, 'lightblue');
         }
       }
     }

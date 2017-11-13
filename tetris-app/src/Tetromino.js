@@ -199,7 +199,7 @@ class TetrominoManager {
   tryShift(coords){
     const shifted = this.current().clone();
     shifted.shift(coords);
-    error = this.checkCollisionError(shifted);
+    const error = this.checkCollisionError(shifted);
     if (error === null){
       this._current = shifted;
     }
