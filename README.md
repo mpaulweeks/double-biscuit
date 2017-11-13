@@ -1,4 +1,7 @@
 # double-biscuit
+
+[![CircleCI](https://circleci.com/gh/mpaulweeks/double-biscuit/tree/master.svg?style=svg)](https://circleci.com/gh/mpaulweeks/double-biscuit/tree/master)
+
 Online Attack Tetris w/ Websockets
 
 ## Plan
@@ -16,7 +19,6 @@ Online Attack Tetris w/ Websockets
 - Workers for running websockets among players
 
 ## todo
-
 - Move display logic out of Brain
 - Improve Tetro.clone to carry child type (see FallingBlock POC)
 - Add collision check to rotate
