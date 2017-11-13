@@ -18,10 +18,10 @@ jobs:
 
     steps:
       - checkout
-      - run: cd tetris-app
-      - run: pwd
-      - run: ls
-      - run: yarn install
-      - run: yarn test
+      - run:
+        - working_directory: tetris-app
+        - command: |
+          yarn install
+          yarn test
 
 
