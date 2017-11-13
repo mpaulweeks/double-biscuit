@@ -12,6 +12,12 @@ class Block{
   }
 }
 
+class AttackBlock extends Block{
+  constructor(coord){
+    super(coord, 'grey');
+  }
+}
+
 class FallingBlock extends Block{
   shift(dx, dy){
     this.col += dx;
@@ -28,5 +34,6 @@ class FallingBlock extends Block{
 
 export {
   Block,
+  AttackBlock,
   FallingBlock,
 }

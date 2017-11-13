@@ -2,7 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Block, FallingBlock } from './Block';
 
-const blockToPoints = function(block){
+const blockToStr = function(block){
+  if (block === null){
+    return 'null';
+  }
   return `${block.col},${block.row}`;
 }
 
@@ -30,10 +33,10 @@ it('FallingBlock rotates', () => {
   const origin = new Block({x:0, y:0}, 'o');
   fb2.rotateAround(origin);
 
-  expect(blockToPoints(fb1)).toEqual("2,1");
-  expect(blockToPoints(fb2)).toEqual("1,-2");
+  expect(blockToStr(fb1)).toEqual("2,1");
+  expect(blockToStr(fb2)).toEqual("1,-2");
 });
 
 export {
-  blockToPoints,
+  blockToStr,
 }

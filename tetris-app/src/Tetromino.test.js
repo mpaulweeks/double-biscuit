@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TetroShapes from './Tetromino';
-import { blockToPoints } from './Block.test';
+import { blockToStr } from './Block.test';
 
-const tetroToPoints = function(tetro){
-  return tetro.blocks.map(blockToPoints).join(' ');
+const tetroToStr = function(tetro){
+  return tetro.blocks.map(blockToStr).join(' ');
 }
 
 it('Tetromino shifts', () => {
@@ -12,8 +12,8 @@ it('Tetromino shifts', () => {
   const k2 = k1.clone();
   k2.shift({dx:1, dy:2});
 
-  expect(tetroToPoints(k1)).toEqual("-1,0 0,0 1,0 2,0");
-  expect(tetroToPoints(k2)).toEqual("0,2 1,2 2,2 3,2");
+  expect(tetroToStr(k1)).toEqual("-1,0 0,0 1,0 2,0");
+  expect(tetroToStr(k2)).toEqual("0,2 1,2 2,2 3,2");
 });
 
 it('Tetromino rotates', () => {
@@ -21,8 +21,8 @@ it('Tetromino rotates', () => {
   const k2 = k1.clone();
   k2.rotate();
 
-  expect(tetroToPoints(k1)).toEqual("-1,-1 -1,0 0,0 1,0");
-  expect(tetroToPoints(k2)).toEqual("-1,1 0,1 0,0 0,-1");
+  expect(tetroToStr(k1)).toEqual("-1,-1 -1,0 0,0 1,0");
+  expect(tetroToStr(k2)).toEqual("-1,1 0,1 0,0 0,-1");
 });
 
 it('Tetromino iterates', () => {
@@ -31,7 +31,7 @@ it('Tetromino iterates', () => {
   for (let b of tetro){
     iteratedBlocks.push(b);
   }
-  const iteratedPoints = iteratedBlocks.map(blockToPoints).join(' ');
+  const iteratedPoints = iteratedBlocks.map(blockToStr).join(' ');
 
-  expect(tetroToPoints(tetro)).toEqual(iteratedPoints);
+  expect(tetroToStr(tetro)).toEqual(iteratedPoints);
 });
