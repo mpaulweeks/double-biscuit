@@ -24,3 +24,14 @@ it('Tetromino rotates', () => {
   expect(tetroToPoints(k1)).toEqual("-1,-1 -1,0 0,0 1,0");
   expect(tetroToPoints(k2)).toEqual("-1,1 0,1 0,0 0,-1");
 });
+
+it('Tetromino iterates', () => {
+  const tetro = new TetroShapes.Cross();
+  let iteratedBlocks = [];
+  for (let b of tetro){
+    iteratedBlocks.push(b);
+  }
+  const iteratedPoints = iteratedBlocks.map(blockToPoints).join(' ');
+
+  expect(tetroToPoints(tetro)).toEqual(iteratedPoints);
+});
