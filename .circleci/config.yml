@@ -19,9 +19,9 @@ jobs:
     steps:
       - checkout
       - run:
-        - working_directory: tetris-app
-        - command: |
-          yarn install
-          yarn test
+          working_directory: tetris-app
+          command: |
+            yarn install
+            yarn test
 
 
