@@ -1,7 +1,7 @@
 class Block{
-  constructor(row, col, color){
-    this.row = row;
-    this.col = col;
+  constructor(coord, color){
+    this.col = coord.x;
+    this.row = coord.y;
     this.color = color;
   }
 
@@ -32,7 +32,7 @@ class Tetromino {
     // change this to classMethod since it's only done once
     this.color = color;
     this.blocks = points.map(p => {
-      return new FallingBlock(p.y, p.x, this.color);
+      return new FallingBlock(p, this.color);
     });
     if (originCoord === undefined){
       originCoord = {x: 0, y: 0};
@@ -249,4 +249,5 @@ export {
   TetrominoManager,
   Block,
   FallingBlock,
+  KnightOne,
 }
