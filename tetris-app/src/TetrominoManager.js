@@ -95,6 +95,18 @@ class TetrominoManager {
     return this.shiftDown();
   }
 
+  ghost(){
+    const ghost = this.current().clone();
+    const delta = {dx: 0, dy: -1};
+    let error = null;
+    while(!error){
+      ghost.shift(delta);
+      error = this.checkCollisionError(ghost);
+    }
+    ghost.shift({dx:0, dy: 1});
+    return ghost;
+  }
+
   current(){
     if (!this._current){
       this._current = this.newRandomTetro();

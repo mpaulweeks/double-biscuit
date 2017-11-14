@@ -1,5 +1,5 @@
 
-class _InputListener{
+class _InputListener {
   constructor(){
     this.callbacks = [];
   }
