@@ -1,6 +1,6 @@
 class _Rainbow {
   // lifted recklessly from https://github.com/mpaulweeks/gravity
-  applyGradient(gradient, step){
+  applyGradient(gradient, step, brightnessRatio){
     const gradientDelta = 8;
     const defaults = {
       numSlices: 1,
@@ -21,9 +21,9 @@ class _Rainbow {
       return '#' + byte2Hex(r) + byte2Hex(g) + byte2Hex(b);
     }
     function getColor(step, settings){
-      var red = (Math.sin((settings.colorFreq * step) + (0 * settings.phaseDelta)) * settings.colorRange) + settings.colorFloor;
-      var grn = (Math.sin((settings.colorFreq * step) + (1 * settings.phaseDelta)) * settings.colorRange) + settings.colorFloor;
-      var blu = (Math.sin((settings.colorFreq * step) + (2 * settings.phaseDelta)) * settings.colorRange) + settings.colorFloor;
+      var red = (Math.sin((settings.colorFreq * step) + (0 * settings.phaseDelta)) * settings.colorRange) + (settings.colorFloor * brightnessRatio);
+      var grn = (Math.sin((settings.colorFreq * step) + (1 * settings.phaseDelta)) * settings.colorRange) + (settings.colorFloor * brightnessRatio);
+      var blu = (Math.sin((settings.colorFreq * step) + (2 * settings.phaseDelta)) * settings.colorRange) + (settings.colorFloor * brightnessRatio);
       return RGB2Color(red,grn,blu);
     }
     function getGradientColors(settings){

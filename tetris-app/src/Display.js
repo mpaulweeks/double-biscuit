@@ -28,6 +28,7 @@ class Display{
       continue: false,
     }
     this.animationTimer = 0;
+    this.animationTimerClearMax = 30;
   }
 
   getCanvasSettings(){
@@ -85,7 +86,7 @@ class Display{
       if (pieceWasSet){
         this.animationTimer = 10;
         if (brain.grid.checkRows().length > 0){
-          this.animationTimer = 30;
+          this.animationTimer = this.animationTimerClearMax;
         }
       }
     }
@@ -108,7 +109,8 @@ class Display{
 
     const rowsFilled = brain.grid.checkRows();
     const clearGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-    Rainbow.applyGradient(clearGradient, this.animationTimer);
+    const gradientBrightness = Math.abs(this.animationTimerClearMax - this.animationTimer)/(this.animationTimerClearMax * 2);
+    Rainbow.applyGradient(clearGradient, this.animationTimer, gradientBrightness);
     ctx.fillStyle = clearGradient;
     for (let row of rowsFilled){
       const floor = canvas.height;
