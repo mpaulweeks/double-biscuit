@@ -15,6 +15,7 @@ class TetrominoManager {
   constructor(grid){
     this.grid = grid;
     this._current = null;
+    this.shiftDown();
   }
 
   newRandomTetro(){
@@ -24,7 +25,7 @@ class TetrominoManager {
     const rand = Math.floor(Math.random()*ctors.length);
 
     const tet = ctors[rand]();
-    tet.shift({dx: grid.width()/2 - 1, dy: grid.height() - 1});
+    tet.shift({dx: grid.width()/2 - 1, dy: grid.height()});
     return tet;
   }
 
@@ -91,7 +92,7 @@ class TetrominoManager {
 
   refresh(){
     this._current = null;
-    return true; // check if overlapping
+    return this.shiftDown();
   }
 
   current(){

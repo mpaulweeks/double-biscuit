@@ -27,6 +27,7 @@ class Display{
     this.drawState = {
       continue: false,
     }
+    this.animationTimer = 0;
   }
 
   getCanvasSettings(){
@@ -77,6 +78,15 @@ class Display{
   draw(){
     const { canvas, ctx, brain } = this;
 
+    if (this.animationTimer > 0){
+      this.animationTimer -= 1;
+    } else {
+      const { pieceWasSet } = brain.tick();
+      if (pieceWasSet){
+        this.animationTimer = 15;
+      }
+    }
+
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -108,7 +118,6 @@ class Display{
   startDrawLoop(){
     this.drawState.continue = true;
     loopFunction(this.drawState, () => {
-      this.brain.tick();
       this.draw();
     });
   }
