@@ -26,6 +26,11 @@ class Brain {
       this.arrowCode = event.code;
     }
   }
+  onEvent(event){
+    if (event.type === 'Attack'){
+      this.grid.attack(event.value);
+    }
+  }
 
   tick(){
     const { tm, grid } = this;

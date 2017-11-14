@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Brain from './Brain';
 import Display from './Display';
+import EventListener from './EventListener';
 import InputListener from './InputListener';
 import './Game.css';
 
@@ -13,6 +14,8 @@ const init = function($canvas){
 
   const brain = new Brain();
   const display = new Display(brain, $canvas);
+
+  EventListener.register(e => brain.onEvent(e));
   InputListener.register((et, e) => brain.onInput(et, e));
 
   display.startDrawLoop();
