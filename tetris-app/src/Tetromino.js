@@ -69,7 +69,6 @@ class Square extends Tetromino {
   }
   rotate(){
     // do nothing
-    // todo broken by cloning
   }
 }
 

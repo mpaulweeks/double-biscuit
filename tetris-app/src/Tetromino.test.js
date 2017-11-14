@@ -8,32 +8,46 @@ const tetroToStr = function(tetro){
 }
 
 it('Line clones', () => {
-  const k1 = new TetroShapes.Line();
-  const k2 = k1.clone();
+  const t1 = new TetroShapes.Line();
+  const t2 = t1.clone();
 
-  expect(k1.__proto__.constructor.name).toEqual('Line');
-  expect(k2.__proto__.constructor.name).toEqual('Line');
+  expect(t1.__proto__.constructor.name).toEqual('Line');
+  expect(t2.__proto__.constructor.name).toEqual('Line');
 });
 
-it('Tetromino shifts', () => {
-  const k1 = new TetroShapes.Line();
-  const k2 = k1.clone();
-  k2.shift({dx:1, dy:2});
+it('Tetromino.shift', () => {
+  const t1 = new TetroShapes.Line();
+  const t2 = t1.clone();
 
-  expect(tetroToStr(k1)).toEqual("-1,0 0,0 1,0 2,0");
-  expect(tetroToStr(k2)).toEqual("0,2 1,2 2,2 3,2");
+  t2.shift({dx:1, dy:2});
+  expect(tetroToStr(t1)).toEqual("-1,0 0,0 1,0 2,0");
+  expect(tetroToStr(t2)).toEqual("0,2 1,2 2,2 3,2");
 });
 
-it('Tetromino rotates', () => {
-  const k1 = new TetroShapes.KnightOne();
-  const k2 = k1.clone();
-  k2.rotate();
+it('Tetromino.rotate', () => {
+  const t1 = new TetroShapes.KnightOne();
+  const t2 = t1.clone();
 
-  expect(tetroToStr(k1)).toEqual("-1,-1 -1,0 0,0 1,0");
-  expect(tetroToStr(k2)).toEqual("-1,1 0,1 0,0 0,-1");
+  t2.rotate();
+  expect(tetroToStr(t1)).toEqual("-1,-1 -1,0 0,0 1,0");
+  expect(tetroToStr(t2)).toEqual("-1,1 0,1 0,0 0,-1");
 });
 
-it('Tetromino iterates', () => {
+it('Tetromino.rotate comes full circle', () => {
+  const t1 = new TetroShapes.KnightOne();
+  const t2 = t1.clone();
+
+  t2.rotate();
+  expect(tetroToStr(t1)).not.toEqual(tetroToStr(t2));
+  t2.rotate();
+  expect(tetroToStr(t1)).not.toEqual(tetroToStr(t2));
+  t2.rotate();
+  expect(tetroToStr(t1)).not.toEqual(tetroToStr(t2));
+  t2.rotate();
+  expect(tetroToStr(t1)).toEqual(tetroToStr(t2));
+});
+
+it('Tetromino.iterator', () => {
   const tetro = new TetroShapes.Cross();
   let iteratedBlocks = [];
   for (let b of tetro){
@@ -42,4 +56,12 @@ it('Tetromino iterates', () => {
   const iteratedPoints = iteratedBlocks.map(blockToStr).join(' ');
 
   expect(tetroToStr(tetro)).toEqual(iteratedPoints);
+});
+
+it('Square.rotate does nothing', () => {
+  const t1 = new TetroShapes.Square();
+  const t2 = t1.clone();
+
+  t2.rotate();
+  expect(tetroToStr(t1)).toEqual(tetroToStr(t2));
 });
