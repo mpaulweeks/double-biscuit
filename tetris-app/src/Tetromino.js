@@ -1,21 +1,25 @@
 import { FallingBlock } from './Block';
 
+const blocksFromPoints = function(color, points){
+  return points.map(p => {
+    const isOrigin = p.x === 0 && p.y === 0;
+    return new FallingBlock(p, color, isOrigin);
+  });
+}
+
 class Tetromino {
-  constructor(color, points, originCoord){
-    // todo take blocks instead
-    // change this to classMethod since it's only done once
-    this.color = color;
-    this.blocks = points.map(p => {
-      return new FallingBlock(p, this.color);
-    });
-    if (originCoord === undefined){
-      originCoord = {x: 0, y: 0};
-    }
-    for (const b of this.blocks){
-      if (b.col === originCoord.x && b.row === originCoord.y){
-        this.origin = b;
+  constructor(blocks){
+    this.blocks = blocks;
+  }
+
+  origin(){
+    let origin = this.blocks[0];
+    for (let b of this.blocks){
+      if (b.isOrigin){
+        origin = b;
       }
     }
+    return origin;
   }
 
   shift(delta){
@@ -25,18 +29,17 @@ class Tetromino {
   }
 
   rotate(){
-    const { origin } = this;
+    const origin = this.origin();
     this.blocks.forEach(b => {
       b.rotateAround(origin);
     });
   }
 
   clone(){
-    const points = this.blocks.map(b => {
-      return {x: b.col, y: b.row};
-    });
-    const originCoord = {x: this.origin.col, y: this.origin.row};
-    return new Tetromino(this.color, points, originCoord);
+    let newTetro = Object.create(Object.getPrototypeOf(this));
+    newTetro = Object.assign(newTetro, this);
+    newTetro.blocks = this.blocks.map(b => b.clone());
+    return newTetro;
   }
 
   *[Symbol.iterator](){
@@ -46,23 +49,23 @@ class Tetromino {
 
 class Line extends Tetromino {
   constructor(){
-    super('pink', [
+    super(blocksFromPoints('pink', [
       {x: -1, y: 0},
       {x: 0, y: 0},
       {x: 1, y: 0},
       {x: 2, y: 0},
-    ]);
+    ]));
   }
 }
 
 class Square extends Tetromino {
   constructor(){
-    super('yellow', [
+    super(blocksFromPoints('yellow', [
       {x: -1, y: -1},
       {x: -1, y: 0},
       {x: 0, y: -1},
       {x: 0, y: 0},
-    ]);
+    ]));
   }
   rotate(){
     // do nothing
@@ -72,56 +75,56 @@ class Square extends Tetromino {
 
 class Cross extends Tetromino {
   constructor(){
-    super('red', [
+    super(blocksFromPoints('red', [
       {x: -1, y: 0},
       {x: 0, y: 0},
       {x: 1, y: 0},
       {x: 0, y: -1},
-    ]);
+    ]));
   }
 }
 
 class KnightOne extends Tetromino {
   constructor(){
-    super('purple', [
+    super(blocksFromPoints('purple', [
       {x: -1, y: -1},
       {x: -1, y: 0},
       {x: 0, y: 0},
       {x: 1, y: 0},
-    ]);
+    ]));
   }
 }
 
 class KnightTwo extends Tetromino {
   constructor(){
-    super('orange', [
+    super(blocksFromPoints('orange', [
       {x: -1, y: 0},
       {x: 0, y: 0},
       {x: 1, y: 0},
       {x: 1, y: -1},
-    ]);
+    ]));
   }
 }
 
 class ZedOne extends Tetromino {
   constructor(){
-    super('green', [
+    super(blocksFromPoints('green', [
       {x: -1, y: -1},
       {x: 0, y: -1},
       {x: 0, y: 0},
       {x: 1, y: 0},
-    ]);
+    ]));
   }
 }
 
 class ZedTwo extends Tetromino {
   constructor(){
-    super('blue', [
+    super(blocksFromPoints('blue', [
       {x: 1, y: -1},
       {x: 0, y: -1},
       {x: 0, y: 0},
       {x: -1, y: 0},
-    ]);
+    ]));
   }
 }
 

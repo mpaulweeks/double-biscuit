@@ -7,6 +7,14 @@ const tetroToStr = function(tetro){
   return tetro.blocks.map(blockToStr).join(' ');
 }
 
+it('Line clones', () => {
+  const k1 = new TetroShapes.Line();
+  const k2 = k1.clone();
+
+  expect(k1.__proto__.constructor.name).toEqual('Line');
+  expect(k2.__proto__.constructor.name).toEqual('Line');
+});
+
 it('Tetromino shifts', () => {
   const k1 = new TetroShapes.Line();
   const k2 = k1.clone();

@@ -19,6 +19,11 @@ class AttackBlock extends Block{
 }
 
 class FallingBlock extends Block{
+  constructor(coord, color, isOrigin=false){
+    super(coord, color);
+    this.isOrigin = isOrigin;
+  }
+
   shift(dx, dy){
     this.col += dx;
     this.row += dy;
