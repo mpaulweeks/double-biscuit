@@ -13,6 +13,7 @@ class Brain {
     this.autoDropper = 0;
     this.arrowCode = null;
     this.pieceWasSet = false;
+    this.pendingAttacks = [];
 
     this.tick();
   }
@@ -28,7 +29,13 @@ class Brain {
   }
   onEvent(event){
     if (event.type === 'Attack'){
-      this.grid.attack(event.value);
+      this.pendingAttacks.push(event.value);
+    }
+  }
+  processAttacks(){
+    const attacks = this.pendingAttacks.splice(0, this.pendingAttacks.length);
+    for (var att of attacks){
+      this.grid.attack(att);
     }
   }
 
@@ -38,6 +45,7 @@ class Brain {
     // check at beginning of tick
     if (this.pieceWasSet){
       grid.removeRows();
+      this.processAttacks();
       const error = tm.refresh();
       if (error){
         this.restart();
