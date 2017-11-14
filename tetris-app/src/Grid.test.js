@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Grid from './Grid';
+import { Block } from './Block';
 import { blockToStr } from './Block.test';
 
-const gridToPoints = function(grid){
+const gridToStr = function(grid){
   let blocks = [];
   for (let b of grid){
     blocks.push(b);
@@ -11,11 +12,18 @@ const gridToPoints = function(grid){
   return blocks.map(blockToStr).join(' ');
 }
 
+const fillRow = function(grid, row){
+  for (let col = 0; col < grid.width(); col++){
+    const block = new Block({x: col, y: row}, 'testColor');
+    grid.setBlock(block);
+  }
+}
+
 it('Grid attack with numRows: 0 does nothing', () => {
   const g = new Grid();
-  const expected = gridToPoints(g);
+  const expected = gridToStr(g);
   g.attack(0);
-  const actual = gridToPoints(g);
+  const actual = gridToStr(g);
 
   expect(expected).toEqual(actual);
 });
@@ -44,4 +52,32 @@ it('Grid.checkRows', () => {
 
   g.attack(1);
   expect(g.checkRows()).toEqual([]);
+
+  fillRow(g, 5);
+  expect(g.checkRows()).toEqual([5]);
+
+  fillRow(g, 7);
+  fillRow(g, 8);
+  expect(g.checkRows()).toEqual([5,7,8]);
+});
+
+it('Grid.removeRows', () => {
+  const g = new Grid();
+  let before = gridToStr(g);
+  g.removeRows();
+  expect(before).toEqual(gridToStr(g));
+
+  g.attack(1);
+  before = gridToStr(g);
+  g.removeRows();
+  expect(before).toEqual(gridToStr(g));
+
+  fillRow(g, 5);
+  g.removeRows();
+  expect(before).toEqual(gridToStr(g));
+
+  fillRow(g, 7);
+  fillRow(g, 8);
+  g.removeRows();
+  expect(before).toEqual(gridToStr(g));
 });
