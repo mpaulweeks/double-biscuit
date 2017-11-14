@@ -15,5 +15,5 @@ cp README_BUILD.md ../docs/README.md
 
 cd ..
 git add .
-git commit -m '[deploy]'
+git commit -m '[deploy][skip ci]'
 git push
