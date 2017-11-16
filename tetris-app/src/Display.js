@@ -149,7 +149,7 @@ class GridDisplay extends BaseDisplay {
 
     ctx.strokeStyle = "black";
     for (let gridBlock of brain.grid){
-      this.tryDrawBlock(blocksWide, gridBlock, gridBlock.meta().color, 2);
+      this.drawBlock(blocksWide, gridBlock, gridBlock.meta().color, 2);
     }
 
     if (rowsFilled.length === 0){
@@ -159,10 +159,10 @@ class GridDisplay extends BaseDisplay {
       ctx.strokeStyle = "black";
     }
     for (let fallingBlock of brain.tm.ghost()){
-      this.tryDrawBlock(blocksWide, fallingBlock, 'rgba(0, 0, 0, 0)', 0);
+      this.drawBlock(blocksWide, fallingBlock, 'rgba(0, 0, 0, 0)', 0);
     }
     for (let fallingBlock of this.brain.current()){
-      this.tryDrawBlock(blocksWide, fallingBlock, fallingBlock.meta().color, 4);
+      this.drawBlock(blocksWide, fallingBlock, fallingBlock.meta().color, 4);
     }
 
     // drawing clear
