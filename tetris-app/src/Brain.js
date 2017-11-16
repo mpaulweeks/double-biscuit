@@ -13,6 +13,7 @@ class Brain {
 
     this.autoDropper = 0;
     this.arrowCode = null;
+    this.inputBuffer = {};
     this.pieceWasSet = false;
     this.pendingAttacks = [];
 
@@ -24,8 +25,18 @@ class Brain {
   }
 
   onInput(eventType, event){
-    if(eventType === 'KeyDown'){
-      this.arrowCode = event.code;
+    const code = event.code;
+    switch (eventType){
+      case 'KeyDown':
+        this.arrowCode = event.code;
+        // todo use input buffer, not arrowCode
+        this.inputBuffer[code] = true;
+        break;
+      case 'KeyUp':
+        this.inputBuffer[code] = false;
+        break;
+      default:
+        break;
     }
   }
   onEvent(event){
