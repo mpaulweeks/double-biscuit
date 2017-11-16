@@ -1,4 +1,4 @@
-import { AttackBlock } from './Block';
+import { Block, AttackBlock } from './Block';
 import Errors from './Errors';
 
 class Grid{
@@ -100,9 +100,24 @@ class Grid{
   *[Symbol.iterator](){
     for (var row = 0; row < this._height; row++){
       for (var col = 0; col < this._width; col++){
-        yield this._matrix[row][col];
+        const block = this._matrix[row][col];
+        if (block){
+          yield block;
+        }
       }
     }
+  }
+
+  serialize(){
+    return Array.from(this).map(b => b.serialize()).join(' ');
+  }
+  static deserialize(serialized){
+    const g = new Grid();
+    serialized.split(' ').forEach(bs => {
+      const block = Block.deserialize(bs);
+      g.setBlock(block);
+    });
+    return g;
   }
 }
 

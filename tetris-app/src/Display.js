@@ -124,12 +124,6 @@ class UpcomingDisplay extends BaseDisplay {
 
 class GridDisplay extends BaseDisplay {
 
-  tryDrawBlock(blocksWide, block, color, buffer){
-    if (block){
-      this.drawBlock(blocksWide, block, color || block.meta().color, buffer);
-    }
-  }
-
   draw(){
     const { canvas, ctx, brain } = this;
     const blocksWide = brain.grid.width();
@@ -155,7 +149,7 @@ class GridDisplay extends BaseDisplay {
 
     ctx.strokeStyle = "black";
     for (let gridBlock of brain.grid){
-      this.tryDrawBlock(blocksWide, gridBlock, null, 2);
+      this.tryDrawBlock(blocksWide, gridBlock, gridBlock.meta().color, 2);
     }
 
     if (rowsFilled.length === 0){
@@ -168,7 +162,7 @@ class GridDisplay extends BaseDisplay {
       this.tryDrawBlock(blocksWide, fallingBlock, 'rgba(0, 0, 0, 0)', 0);
     }
     for (let fallingBlock of this.brain.current()){
-      this.tryDrawBlock(blocksWide, fallingBlock, null, 4);
+      this.tryDrawBlock(blocksWide, fallingBlock, fallingBlock.meta().color, 4);
     }
 
     // drawing clear

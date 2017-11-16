@@ -4,14 +4,6 @@ import Grid from './Grid';
 import { Block } from './Block';
 import { blockToStr } from './Block.test';
 
-const gridToStr = function(grid){
-  let blocks = [];
-  for (let b of grid){
-    blocks.push(b);
-  }
-  return blocks.map(blockToStr).join(' ');
-}
-
 const fillRow = function(grid, row){
   for (let col = 0; col < grid.width(); col++){
     const block = new Block({x: col, y: row}, 'testColor');
@@ -21,9 +13,9 @@ const fillRow = function(grid, row){
 
 it('Grid.attack with numRows: 0 does nothing', () => {
   const g = new Grid();
-  const expected = gridToStr(g);
+  const expected = g.serialize();
   g.attack(0);
-  const actual = gridToStr(g);
+  const actual = g.serialize();
 
   expect(expected).toEqual(actual);
 });
@@ -50,21 +42,21 @@ it('Grid.attack shifts existing blocks', () => {
   const g = new Grid();
   fillRow(g, 0);
   fillRow(g, 2);
-  var before = gridToStr(g);
+  var before = g.serialize();
 
   g.attack(1);
   g.removeRows([0]);
-  expect(before).toEqual(gridToStr(g));
+  expect(before).toEqual(g.serialize());
 
   g.attack(2);
   g.removeRows([0, 1]);
-  expect(before).toEqual(gridToStr(g));
+  expect(before).toEqual(g.serialize());
 
   g.attack(1);
   g.attack(2);
   g.attack(3);
   g.removeRows([0, 1, 2, 3, 4, 5]);
-  expect(before).toEqual(gridToStr(g));
+  expect(before).toEqual(g.serialize());
 });
 
 it('Grid.checkRows', () => {
@@ -84,28 +76,53 @@ it('Grid.checkRows', () => {
 
 it('Grid.removeRows', () => {
   const g = new Grid();
-  let empty = gridToStr(g);
+  let empty = g.serialize();
   g.removeRows([]);
-  expect(empty).toEqual(gridToStr(g));
+  expect(empty).toEqual(g.serialize());
 
   g.removeRows([0, 1, 2]);
-  expect(empty).toEqual(gridToStr(g));
+  expect(empty).toEqual(g.serialize());
 
   fillRow(g, 1);
-  let oneRow = gridToStr(g);
+  let oneRow = g.serialize();
 
   g.removeRows([]);
-  expect(oneRow).toEqual(gridToStr(g));
+  expect(oneRow).toEqual(g.serialize());
 
   g.removeRows([2, 3, 4]);
-  expect(oneRow).toEqual(gridToStr(g));
+  expect(oneRow).toEqual(g.serialize());
 
   fillRow(g, 2);
   g.removeRows([2]);
-  expect(oneRow).toEqual(gridToStr(g));
+  expect(oneRow).toEqual(g.serialize());
 
   fillRow(g, 6);
   fillRow(g, 8);
   g.removeRows([6, 8]);
-  expect(oneRow).toEqual(gridToStr(g));
+  expect(oneRow).toEqual(g.serialize());
+});
+
+it('Grid.serialize', () => {
+  const g0 = new Grid();
+  expect(g0.serialize()).toEqual('');
+
+  const g1 = new Grid();
+  fillRow(g1, 1);
+  const g2 = new Grid();
+  fillRow(g2, 2);
+  const g3 = new Grid();
+  fillRow(g3, 1);
+
+  expect(g1.serialize()).not.toEqual(g0.serialize());
+  expect(g1.serialize()).not.toEqual(g2.serialize());
+  expect(g1.serialize()).toEqual(g3.serialize());
+});
+
+it('Grid.deserialize', () => {
+  const g = new Grid();
+  g.attack(3);
+  const gs = g.serialize();
+  const gsds = Grid.deserialize(gs).serialize();
+
+  expect(gs).toEqual(gsds);
 });
