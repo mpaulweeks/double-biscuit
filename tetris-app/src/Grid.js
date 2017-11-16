@@ -42,6 +42,9 @@ class Grid{
           }
         } else {
           newVal = this._matrix[row-numRows][col];
+          if (newVal){
+            newVal.row += numRows;
+          }
         }
         newGrid[row][col] = newVal;
       }

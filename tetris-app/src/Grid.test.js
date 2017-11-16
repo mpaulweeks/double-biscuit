@@ -19,7 +19,7 @@ const fillRow = function(grid, row){
   }
 }
 
-it('Grid attack with numRows: 0 does nothing', () => {
+it('Grid.attack with numRows: 0 does nothing', () => {
   const g = new Grid();
   const expected = gridToStr(g);
   g.attack(0);
@@ -28,7 +28,7 @@ it('Grid attack with numRows: 0 does nothing', () => {
   expect(expected).toEqual(actual);
 });
 
-it('Grid attack puts blanks in the same column', () => {
+it('Grid.attack puts blanks in the same column', () => {
   const g = new Grid();
   g.attack(3);
 
@@ -44,6 +44,27 @@ it('Grid attack puts blanks in the same column', () => {
   for (let mc of missingCols){
     expect(mc).toEqual(missingCols[0]);
   }
+});
+
+it('Grid.attack shifts existing blocks', () => {
+  const g = new Grid();
+  fillRow(g, 0);
+  fillRow(g, 2);
+  var before = gridToStr(g);
+
+  g.attack(1);
+  g.removeRows([0]);
+  expect(before).toEqual(gridToStr(g));
+
+  g.attack(2);
+  g.removeRows([0, 1]);
+  expect(before).toEqual(gridToStr(g));
+
+  g.attack(1);
+  g.attack(2);
+  g.attack(3);
+  g.removeRows([0, 1, 2, 3, 4, 5]);
+  expect(before).toEqual(gridToStr(g));
 });
 
 it('Grid.checkRows', () => {

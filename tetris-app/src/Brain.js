@@ -1,5 +1,6 @@
 import TetrominoManager from './TetrominoManager';
 import Grid from './Grid';
+import { Block } from './Block';
 
 class Brain {
   constructor(){
@@ -39,12 +40,22 @@ class Brain {
     }
   }
 
+  debug_fillRow(row){
+    this.tm.drop();
+    this.autoDropper = 0;
+    this.pieceWasSet = true;
+    for (let col = 0; col < this.grid.width(); col++){
+      const block = new Block({x: col, y: row}, 'testColor');
+      this.grid.setBlock(block);
+    }
+  }
+
   tick(){
     const { tm, grid } = this;
 
     // check at beginning of tick
     if (this.pieceWasSet){
-      grid.removeRows(this.checkRows());
+      grid.removeRows(grid.checkRows());
       this.processAttacks();
       const error = tm.refresh();
       if (error){
@@ -72,6 +83,34 @@ class Brain {
           tm.drop();
           this.autoDropper = 0;
           this.pieceWasSet = true;
+          break;
+        // debug
+        case 'Digit1':
+          this.debug_fillRow(0);
+          break;
+        case 'Digit2':
+          this.debug_fillRow(0);
+          this.debug_fillRow(1);
+          break;
+        case 'Digit3':
+          this.debug_fillRow(0);
+          this.debug_fillRow(1);
+          this.debug_fillRow(2);
+          break;
+        case 'Digit4':
+          this.debug_fillRow(0);
+          this.debug_fillRow(1);
+          this.debug_fillRow(2);
+          this.debug_fillRow(3);
+          break;
+        case 'KeyQ':
+          this.onEvent({type: 'Attack', value: 1});
+          break;
+        case 'KeyW':
+          this.onEvent({type: 'Attack', value: 2});
+          break;
+        case 'KeyE':
+          this.onEvent({type: 'Attack', value: 3});
           break;
         default:
           break;
