@@ -19,4 +19,9 @@ Online Attack Tetris w/ Websockets
 - Workers for running websockets among players
 
 ## todo
-- Add collision check to new block spawn
+- Improve key repeating
+- Add iOS controls
+- Add SCSS and base everything off block size (currently 30 grid, 15 upcoming)
+- Move to middle on edge rotate
+- Add swap piece
+- Add music
