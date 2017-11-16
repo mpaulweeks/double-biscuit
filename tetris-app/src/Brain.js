@@ -40,10 +40,16 @@ class Brain {
     }
   }
   onEvent(event){
+    console.log('onEvent', event);
     if (event.type === 'Attack'){
       this.pendingAttacks.push(event.value);
     }
   }
+  registerEventListener(eventListener){
+    this.eventListener = eventListener;
+    this.eventListener.register(this, e => this.onEvent(e));
+  }
+
   sendAttack(rowsCleared){
     const attackSize = rowsCleared - 1;
     if (attackSize > 0){
@@ -59,11 +65,9 @@ class Brain {
   getTotalPendingAttacks(){
     return this.pendingAttacks.reduce((sum, att) => sum + att, 0);
   }
-  sendUpdate(rowsCleared){
-    if (rowsCleared > 0){
-      const data = this.grid.serialize();
-      // todo send update
-    }
+  sendUpdate(){
+    const data = this.grid.serialize();
+    this.eventListener.broadcast(this, {type: 'Grid', value: data});
   }
 
   debug_fillRow(row){
@@ -83,8 +87,8 @@ class Brain {
     if (this.pieceWasSet){
       const rowsCleared = grid.removeRows(grid.checkRows());
       this.sendAttack(rowsCleared);
-      this.sendUpdate(rowsCleared);
       this.processAttacks();
+      this.sendUpdate();
 
       tm.popCurrent();
       const error = tm.shiftDown();

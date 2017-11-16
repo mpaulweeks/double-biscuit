@@ -122,6 +122,21 @@ class UpcomingDisplay extends BaseDisplay {
   }
 }
 
+class EnemyDisplay extends BaseDisplay {
+  draw(){
+    const { canvas, ctx, brain } = this;
+    const blocksWide = brain.grid.width();
+
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.strokeStyle = "black";
+    for (let gridBlock of brain.grid){
+      this.drawBlock(blocksWide, gridBlock, gridBlock.meta().color, 2);
+    }
+  }
+}
+
 class GridDisplay extends BaseDisplay {
 
   draw(){
@@ -185,5 +200,6 @@ class GridDisplay extends BaseDisplay {
 
 export {
   GridDisplay,
+  EnemyDisplay,
   UpcomingDisplay,
 };

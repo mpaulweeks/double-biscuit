@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Brain from './Brain';
-import { GridDisplay, UpcomingDisplay } from './Display';
+import EnemyBrain from './EnemyBrain';
+import { GridDisplay, UpcomingDisplay, EnemyDisplay } from './Display';
 import EventListener from './EventListener';
 import InputListener from './InputListener';
 import './Game.css';
@@ -9,44 +10,67 @@ class Game extends Component {
   constructor(props) {
     super(props);
     this.upcomingRefs = [];
+    this.enemyRefs = [];
+    this.started = false;
+  }
+
+  setup() {
+    if (this.started){ return; }
+    this.started = true;
+
+    const primaryBrain = new Brain();
+    this.brains = [
+      primaryBrain,
+    ]
+    this.displays = [
+      new GridDisplay(this.refs.gridCanvas, primaryBrain),
+    ];
+
+    this.upcomingRefs.forEach((ref, index) => {
+      this.displays.push(new UpcomingDisplay(ref, primaryBrain, index));
+    });
+    this.enemyRefs.forEach((ref) => {
+      const eb = new EnemyBrain();
+      this.brains.push(eb);
+      this.displays.push(new EnemyDisplay(ref, eb));
+    });
+
+    this.brains.forEach(b => {
+      b.registerEventListener(EventListener);
+      InputListener.register((et, e) => b.onInput(et, e));
+    });
   }
 
   componentDidMount() {
-    console.log('component mounted');
+    this.setup();
 
-    const brain = new Brain();
-    const displays = [
-      new GridDisplay(this.refs.gridCanvas, brain),
-    ];
-    this.upcomingRefs.forEach((ref, index) => {
-      displays.push(new UpcomingDisplay(ref, brain, index));
-    });
-
-    EventListener.register(e => brain.onEvent(e));
-    InputListener.register((et, e) => brain.onInput(et, e));
-
-    displays.forEach(d => d.startDrawLoop());
+    this.displays.forEach(d => d.startDrawLoop());
 
     // debugging
-    window.admin = {
-      brain,
-      displays,
-    };
+    window.admin = this;
   }
 
   render() {
     // variable refs https://github.com/facebook/react/issues/1899#issuecomment-234485054
 
     var upcoming = [0,1,2,3];
+    var enemies = [0,1,2,3];
     return (
-      <div className="PrimaryGame">
-        <div className="UpcomingContainer">
-          {upcoming.map((value, i) => (
-            <canvas key={i} ref={c => {this.upcomingRefs[value] = c;}} className="UpcomingCanvas"></canvas>
-          ))}
+      <div>
+        <div className="PrimaryGame">
+          <div className="UpcomingContainer">
+            {upcoming.map((value, i) => (
+              <canvas key={`upcoming-${i}`} ref={c => {this.upcomingRefs[value] = c;}} className="UpcomingCanvas"></canvas>
+            ))}
+          </div>
+          <div>
+            <canvas ref='gridCanvas' className="GridCanvas"></canvas>
+          </div>
         </div>
-        <div>
-          <canvas ref='gridCanvas' className="GridCanvas"></canvas>
+        <div className="EnemyGames">
+          {enemies.map((value, i) => (
+            <canvas key={`enemy-${i}`} ref={c => {this.enemyRefs[value] = c;}} className="EnemyCanvas"></canvas>
+          ))}
         </div>
       </div>
     );
