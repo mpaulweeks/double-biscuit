@@ -59,6 +59,12 @@ class Brain {
   getTotalPendingAttacks(){
     return this.pendingAttacks.reduce((sum, att) => sum + att, 0);
   }
+  sendUpdate(rowsCleared){
+    if (rowsCleared > 0){
+      const data = this.grid.serialize();
+      // todo send update
+    }
+  }
 
   debug_fillRow(row){
     this.tm.drop();
@@ -77,6 +83,7 @@ class Brain {
     if (this.pieceWasSet){
       const rowsCleared = grid.removeRows(grid.checkRows());
       this.sendAttack(rowsCleared);
+      this.sendUpdate(rowsCleared);
       this.processAttacks();
 
       tm.popCurrent();
