@@ -103,10 +103,11 @@ class UpcomingDisplay extends BaseDisplay {
 
     const upcomingTetro = brain.tm.upcoming()[this.upcomingIndex];
     const adjustedBlocks = upcomingTetro.spawn.map(b => {
+      // assuming display is 5x3
       const adjustedBlock = b.clone();
-      adjustedBlock.shift(2, 2);
+      adjustedBlock.shift(2, 1.5);
       if (upcomingTetro.type() === 'Line'){
-        adjustedBlock.shift(-0.5, 0);
+        adjustedBlock.shift(-0.5, -0.5);
       }
       if (upcomingTetro.type() === 'Square'){
         adjustedBlock.shift(0.5, 0);

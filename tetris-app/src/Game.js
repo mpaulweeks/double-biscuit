@@ -37,13 +37,15 @@ class Game extends Component {
   render() {
     var upcoming = [0,1,2,3];
     return (
-      <div>
+      <div className="PrimaryGame">
         <div className="UpcomingContainer">
           {upcoming.map((value, i) => (
             <canvas key={i} ref={c => {this.upcomingRefs[value] = c;}} className="UpcomingCanvas"></canvas>
           ))}
         </div>
-        <canvas ref='gridCanvas' id='primary' className="GridCanvas"></canvas>
+        <div>
+          <canvas ref='gridCanvas' className="GridCanvas"></canvas>
+        </div>
       </div>
     );
   }
