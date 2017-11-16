@@ -130,15 +130,14 @@ class EnemyDisplay extends BaseDisplay {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = "white";
     for (let gridBlock of brain.grid){
-      this.drawBlock(blocksWide, gridBlock, gridBlock.meta().color, 2);
+      this.drawBlock(blocksWide, gridBlock, gridBlock.meta().color, 2, true);
     }
   }
 }
 
 class GridDisplay extends BaseDisplay {
-
   draw(){
     const { canvas, ctx, brain } = this;
     const blocksWide = brain.grid.width();

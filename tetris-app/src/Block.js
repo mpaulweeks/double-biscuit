@@ -31,7 +31,7 @@ class Block{
   }
 
   static deserialize(serialized){
-    const vals = serialized.split(',');
+    const vals = serialized.split(',').map(v => parseInt(v, 10));
     return new Block({x: vals[0], y: vals[1]}, vals[2]);
   }
 }

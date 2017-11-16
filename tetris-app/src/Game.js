@@ -56,7 +56,7 @@ class Game extends Component {
     var upcoming = [0,1,2,3];
     var enemies = [0,1,2,3];
     return (
-      <div>
+      <div className="AllGames">
         <div className="PrimaryGame">
           <div className="UpcomingContainer">
             {upcoming.map((value, i) => (

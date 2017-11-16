@@ -40,7 +40,6 @@ class Brain {
     }
   }
   onEvent(event){
-    console.log('onEvent', event);
     if (event.type === 'Attack'){
       this.pendingAttacks.push(event.value);
     }
@@ -94,6 +93,7 @@ class Brain {
       const error = tm.shiftDown();
       if (error){
         this.restart();
+        this.sendUpdate();
       }
     }
 

@@ -17,10 +17,9 @@ class _EventListener {
   broadcast(caller, event){
     this.subscribers.forEach(sub => {
       if (sub.caller !== caller){
-        console.log('broadcast', event);
         sub.callback(event);
       } else {
-        console.log('caller is registered');
+        // registered caller
       }
     });
   }

@@ -6,6 +6,11 @@ div {
   margin: 0px 0px;
 }
 
+.AllGames {
+  display: flex;
+  justify-content: space-around;
+}
+
 .PrimaryGame {
   text-align: center;
   margin: 10px;
@@ -32,4 +37,5 @@ div {
 .EnemyCanvas {
   width: 150px;
   height: 330px;
+  margin: 10px;
 }

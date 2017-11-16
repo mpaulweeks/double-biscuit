@@ -113,10 +113,12 @@ class Grid{
   }
   static deserialize(serialized){
     const g = new Grid();
-    serialized.split(' ').forEach(bs => {
-      const block = Block.deserialize(bs);
-      g.setBlock(block);
-    });
+    if (serialized.length > 0){
+      serialized.split(' ').forEach(bs => {
+        const block = Block.deserialize(bs);
+        g.setBlock(block);
+      });
+    }
     return g;
   }
 }

@@ -6,7 +6,7 @@ class EnemyBrain {
   }
 
   onEvent(event){
-    if (event.type === 'EnemyGrid'){
+    if (event.type === 'Grid'){
       const gs = event.value;
       this.grid = Grid.deserialize(gs);
     }
