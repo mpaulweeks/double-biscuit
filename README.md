@@ -30,9 +30,8 @@ Online Attack Tetris w/ Websockets
 - Brain.Onboardchange -> run callbacks to message opponents
 - Second GameAI class that sets up many AI board, sets up callbacks to attack each other
 - Primary GameBoard sets up callbacks to use sockets
-- RemoveRows returns num, tick can use it to send attack events
-- Brain.getTotalPendingAttacks
-- For oppogrid, export list of non-null blocks
+- Draw Brain.getTotalPendingAttacks()
+- For oppogrid, purely manage with serialize/deserialize
 - Implement reverse by rotating 3 times before checking collision
 - Custom keys with inputs that equal your keypress, add lookup layer to map key code to action
 - Put actions in constants.js

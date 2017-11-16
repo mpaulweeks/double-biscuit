@@ -1,8 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import Grid from './Grid';
 import { Block } from './Block';
-import { blockToStr } from './Block.test';
 
 const fillRow = function(grid, row){
   for (let col = 0; col < grid.width(); col++){

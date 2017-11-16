@@ -44,11 +44,20 @@ class Brain {
       this.pendingAttacks.push(event.value);
     }
   }
+  sendAttack(rowsCleared){
+    const attackSize = rowsCleared - 1;
+    if (attackSize > 0){
+      // todo send attack
+    }
+  }
   processAttacks(){
     const attacks = this.pendingAttacks.splice(0, this.pendingAttacks.length);
     for (var att of attacks){
       this.grid.attack(att);
     }
+  }
+  getTotalPendingAttacks(){
+    return this.pendingAttacks.reduce((sum, att) => sum + att, 0);
   }
 
   debug_fillRow(row){
@@ -66,7 +75,8 @@ class Brain {
 
     // check at beginning of tick
     if (this.pieceWasSet){
-      grid.removeRows(grid.checkRows());
+      const rowsCleared = grid.removeRows(grid.checkRows());
+      this.sendAttack(rowsCleared);
       this.processAttacks();
 
       tm.popCurrent();

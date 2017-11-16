@@ -1,10 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import TetroShapes from './Tetromino';
-import { blockToStr } from './Block.test';
 
 const tetroToStr = function(tetro){
-  return tetro.blocks.map(blockToStr).join(' ');
+  return tetro.blocks.map(b => b.serialize()).join(' ');
 }
 
 it('Line clones', () => {
@@ -53,7 +50,7 @@ it('Tetromino.iterator', () => {
   for (let b of tetro){
     iteratedBlocks.push(b);
   }
-  const iteratedPoints = iteratedBlocks.map(blockToStr).join(' ');
+  const iteratedPoints = iteratedBlocks.map(b => b.serialize()).join(' ');
 
   expect(tetroToStr(tetro)).toEqual(iteratedPoints);
 });

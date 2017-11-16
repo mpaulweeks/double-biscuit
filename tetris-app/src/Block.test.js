@@ -1,13 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import { Block, FallingBlock } from './Block';
-
-const blockToStr = function(block){
-  if (block === null){
-    return 'null';
-  }
-  return block.serialize();
-}
 
 it('Block clones', () => {
   const b1 = new Block({x:2, y:1}, 2);
@@ -56,10 +47,6 @@ it('FallingBlock rotates', () => {
   const origin = new Block({x:0, y:0}, 0);
   fb2.rotateAround(origin);
 
-  expect(blockToStr(fb1)).toEqual("2,1,2");
-  expect(blockToStr(fb2)).toEqual("1,-2,2");
+  expect(fb1.serialize()).toEqual("2,1,2");
+  expect(fb2.serialize()).toEqual("1,-2,2");
 });
-
-export {
-  blockToStr,
-}
