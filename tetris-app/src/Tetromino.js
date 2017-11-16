@@ -1,14 +1,17 @@
 import { FallingBlock } from './Block';
+import { TetroByType } from './Constants';
 
-const blocksFromPoints = function(color, points){
+const blocksFromPoints = function(tetro, points){
+  const tetroId = TetroByType(tetro.type()).id;
   return points.map(p => {
     const isOrigin = p.x === 0 && p.y === 0;
-    return new FallingBlock(p, color, isOrigin);
+    return new FallingBlock(p, tetroId, isOrigin);
   });
 }
 
 class Tetromino {
-  constructor(blocks){
+  setInstance(blocks){
+    // can't be constructor due to time of this
     this.blocks = blocks;
     this.spawn = blocks.map(b => b.clone());
   }
@@ -54,7 +57,8 @@ class Tetromino {
 
 class Line extends Tetromino {
   constructor(){
-    super(blocksFromPoints('pink', [
+    super()
+    this.setInstance(blocksFromPoints(this, [
       {x: -1, y: 0},
       {x: 0, y: 0},
       {x: 1, y: 0},
@@ -65,7 +69,8 @@ class Line extends Tetromino {
 
 class Square extends Tetromino {
   constructor(){
-    super(blocksFromPoints('yellow', [
+    super()
+    this.setInstance(blocksFromPoints(this, [
       {x: -1, y: -1},
       {x: -1, y: 0},
       {x: 0, y: -1},
@@ -79,7 +84,8 @@ class Square extends Tetromino {
 
 class Cross extends Tetromino {
   constructor(){
-    super(blocksFromPoints('red', [
+    super()
+    this.setInstance(blocksFromPoints(this, [
       {x: -1, y: 0},
       {x: 0, y: 0},
       {x: 1, y: 0},
@@ -90,7 +96,8 @@ class Cross extends Tetromino {
 
 class KnightOne extends Tetromino {
   constructor(){
-    super(blocksFromPoints('purple', [
+    super()
+    this.setInstance(blocksFromPoints(this, [
       {x: -1, y: -1},
       {x: -1, y: 0},
       {x: 0, y: 0},
@@ -101,7 +108,8 @@ class KnightOne extends Tetromino {
 
 class KnightTwo extends Tetromino {
   constructor(){
-    super(blocksFromPoints('orange', [
+    super()
+    this.setInstance(blocksFromPoints(this, [
       {x: -1, y: 0},
       {x: 0, y: 0},
       {x: 1, y: 0},
@@ -112,7 +120,8 @@ class KnightTwo extends Tetromino {
 
 class ZedOne extends Tetromino {
   constructor(){
-    super(blocksFromPoints('green', [
+    super()
+    this.setInstance(blocksFromPoints(this, [
       {x: -1, y: -1},
       {x: 0, y: -1},
       {x: 0, y: 0},
@@ -123,7 +132,8 @@ class ZedOne extends Tetromino {
 
 class ZedTwo extends Tetromino {
   constructor(){
-    super(blocksFromPoints('blue', [
+    super()
+    this.setInstance(blocksFromPoints(this, [
       {x: 1, y: -1},
       {x: 0, y: -1},
       {x: 0, y: 0},

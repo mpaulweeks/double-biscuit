@@ -1,6 +1,6 @@
 import TetrominoManager from './TetrominoManager';
 import Grid from './Grid';
-import { Block } from './Block';
+import { AttackBlock } from './Block';
 
 class Brain {
   constructor(){
@@ -56,7 +56,7 @@ class Brain {
     this.autoDropper = 0;
     this.pieceWasSet = true;
     for (let col = 0; col < this.grid.width(); col++){
-      const block = new Block({x: col, y: row}, 'testColor');
+      const block = new AttackBlock({x: col, y: row});
       this.grid.setBlock(block);
     }
   }

@@ -20,8 +20,8 @@ it('Tetromino.shift', () => {
   const t2 = t1.clone();
 
   t2.shift({dx:1, dy:2});
-  expect(tetroToStr(t1)).toEqual("-1,0 0,0 1,0 2,0");
-  expect(tetroToStr(t2)).toEqual("0,2 1,2 2,2 3,2");
+  expect(tetroToStr(t1)).toEqual("-1,0,1 0,0,1 1,0,1 2,0,1");
+  expect(tetroToStr(t2)).toEqual("0,2,1 1,2,1 2,2,1 3,2,1");
 });
 
 it('Tetromino.rotate', () => {
@@ -29,8 +29,8 @@ it('Tetromino.rotate', () => {
   const t2 = t1.clone();
 
   t2.rotate();
-  expect(tetroToStr(t1)).toEqual("-1,-1 -1,0 0,0 1,0");
-  expect(tetroToStr(t2)).toEqual("-1,1 0,1 0,0 0,-1");
+  expect(tetroToStr(t1)).toEqual("-1,-1,4 -1,0,4 0,0,4 1,0,4");
+  expect(tetroToStr(t2)).toEqual("-1,1,4 0,1,4 0,0,4 0,-1,4");
 });
 
 it('Tetromino.rotate comes full circle', () => {

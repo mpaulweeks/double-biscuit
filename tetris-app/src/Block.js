@@ -1,8 +1,10 @@
+import { TetroById, TetroByType } from './Constants';
+
 class Block{
-  constructor(coord, color){
+  constructor(coord, tetroId){
     this.col = coord.x;
     this.row = coord.y;
-    this.color = color;
+    this.tetroId = tetroId;
   }
 
   shift(dx, dy){
@@ -19,17 +21,30 @@ class Block{
   type(){
     return this.__proto__.constructor.name;
   }
+
+  meta(){
+    return TetroById(this.tetroId);
+  }
+
+  serialize(){
+    return `${this.col},${this.row},${this.tetroId}`;
+  }
+
+  static deserialize(serialized){
+    const vals = serialized.split(',');
+    return new Block({x: vals[0], y: vals[1]}, vals[2]);
+  }
 }
 
 class AttackBlock extends Block{
   constructor(coord){
-    super(coord, 'grey');
+    super(coord, TetroByType('Attack').id);
   }
 }
 
 class FallingBlock extends Block{
-  constructor(coord, color, isOrigin=false){
-    super(coord, color);
+  constructor(coord, tetroId, isOrigin=false){
+    super(coord, tetroId);
     this.isOrigin = isOrigin;
   }
 

@@ -117,7 +117,7 @@ class UpcomingDisplay extends BaseDisplay {
 
     ctx.strokeStyle = "black";
     for (let fallingBlock of adjustedBlocks){
-      this.drawBlock(5, fallingBlock, fallingBlock.color, 1);
+      this.drawBlock(5, fallingBlock, fallingBlock.meta().color, 1);
     }
   }
 }
@@ -126,7 +126,7 @@ class GridDisplay extends BaseDisplay {
 
   tryDrawBlock(blocksWide, block, color, buffer){
     if (block){
-      this.drawBlock(blocksWide, block, color || block.color, buffer);
+      this.drawBlock(blocksWide, block, color || block.meta().color, buffer);
     }
   }
 
