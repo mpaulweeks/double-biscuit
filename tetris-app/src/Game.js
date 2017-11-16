@@ -35,6 +35,8 @@ class Game extends Component {
   }
 
   render() {
+    // variable refs https://github.com/facebook/react/issues/1899#issuecomment-234485054
+
     var upcoming = [0,1,2,3];
     return (
       <div className="PrimaryGame">
