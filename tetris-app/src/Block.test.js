@@ -17,8 +17,8 @@ it('Block clones', () => {
   expect(b1.color).toEqual('color1');
   expect(b2.color).toEqual('color2');
 
-  expect(b1.__proto__.constructor.name).toEqual('Block');
-  expect(b2.__proto__.constructor.name).toEqual('Block');
+  expect(b1.type()).toEqual('Block');
+  expect(b2.type()).toEqual('Block');
 });
 
 it('FallingBlock clones', () => {
@@ -29,8 +29,8 @@ it('FallingBlock clones', () => {
   expect(fb1.color).toEqual('color1');
   expect(fb2.color).toEqual('color2');
 
-  expect(fb1.__proto__.constructor.name).toEqual('FallingBlock');
-  expect(fb2.__proto__.constructor.name).toEqual('FallingBlock');
+  expect(fb1.type()).toEqual('FallingBlock');
+  expect(fb2.type()).toEqual('FallingBlock');
 });
 
 it('FallingBlock rotates', () => {

@@ -17,20 +17,20 @@ const loopFunction = function(state, func){
   }
 }
 
-class Display{
-  constructor(brain, $canvas){
+class BaseDisplay{
+  constructor($canvas, brain){
     this.canvas = $canvas;
-    this.getCanvasSettings();
+    this.ensureCanvasSettings();
     this.ctx = this.canvas.getContext('2d');
-
     this.brain = brain;
+
     this.drawState = {
       continue: false,
     }
     this.animationTimer = 0;
   }
 
-  getCanvasSettings(){
+  ensureCanvasSettings(){
     const $canvas = this.canvas;
 
     var canvasW = $canvas.offsetWidth;
@@ -41,42 +41,98 @@ class Display{
       $canvas.width = canvasW;
     if (canvasH !== $canvas.height)
       $canvas.height = canvasH;
+  }
+
+  cellDimensions(blocksWide){
+    const cellWidth = Math.floor(this.canvas.width / blocksWide);
     return {
-      canvasW: canvasW,
-      canvasH: canvasH,
+      cellWidth,
+      cellHeight: cellWidth,
     }
   }
 
-  drawBlock(b, color){
-    if (b){
-      const { canvas, ctx, brain } = this;
-      const cellWidth = Math.floor(canvas.width / brain.grid.width());
-      const cellHeight = Math.floor(canvas.height / brain.grid.height());
-      const floor = canvas.height;
-      const buffer = 3;
+  drawBlock(blocksWide, block, color, buffer){
+    const { canvas, ctx } = this;
+    const { cellWidth, cellHeight } = this.cellDimensions(blocksWide);
 
-      const xStart = cellWidth * b.col;
-      const yStart = floor - (cellHeight * (b.row + 1));
+    const floor = canvas.height;
 
-      ctx.fillStyle = color || b.color;
-      ctx.fillRect(
-        buffer + xStart,
-        buffer + yStart,
-        cellWidth - buffer*2,
-        cellHeight - buffer*2
-      );
+    const xStart = cellWidth * block.col;
+    const yStart = floor - (cellHeight * (block.row + 1));
 
-      ctx.strokeRect(
-        xStart,
-        yStart,
-        cellWidth,
-        cellHeight
-      );
+    ctx.fillStyle = color;
+    ctx.fillRect(
+      buffer + xStart,
+      buffer + yStart,
+      cellWidth - buffer*2,
+      cellHeight - buffer*2
+    );
+
+    ctx.strokeRect(
+      xStart,
+      yStart,
+      cellWidth,
+      cellHeight
+    );
+  }
+
+  startDrawLoop(){
+    this.drawState.continue = true;
+    loopFunction(this.drawState, () => {
+      this.ensureCanvasSettings();
+      this.draw();
+    });
+  }
+
+  stopDrawLoop(){
+    this.drawState.continue = false;
+  }
+}
+
+class UpcomingDisplay extends BaseDisplay {
+  constructor($canvas, brain, upcomingIndex){
+    super($canvas, brain);
+    this.upcomingIndex = upcomingIndex;
+  }
+
+  draw(){
+    const { canvas, ctx, brain } = this;
+
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const upcomingTetro = brain.tm.upcoming()[this.upcomingIndex];
+    const adjustedBlocks = upcomingTetro.spawn.map(b => {
+      const adjustedBlock = b.clone();
+      adjustedBlock.shift(2, 2);
+      if (upcomingTetro.type() === 'Line'){
+        adjustedBlock.shift(-0.5, 0);
+      }
+      if (upcomingTetro.type() === 'Square'){
+        adjustedBlock.shift(0.5, 0);
+      }
+      return adjustedBlock;
+    });
+
+    ctx.strokeStyle = "black";
+    for (let fallingBlock of adjustedBlocks){
+      this.drawBlock(5, fallingBlock, fallingBlock.color, 1);
+    }
+  }
+}
+
+class GridDisplay extends BaseDisplay {
+
+  tryDrawBlock(blocksWide, block, color, buffer){
+    if (block){
+      this.drawBlock(blocksWide, block, color || block.color, buffer);
     }
   }
 
   draw(){
     const { canvas, ctx, brain } = this;
+    const blocksWide = brain.grid.width();
+    const { cellHeight } = this.cellDimensions(blocksWide);
 
     if (this.animationTimer > 0){
       this.animationTimer -= 1;
@@ -93,26 +149,33 @@ class Display{
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    // drawing boxes
+    const rowsFilled = brain.grid.checkRows();
+
     ctx.strokeStyle = "black";
     for (let gridBlock of brain.grid){
-      this.drawBlock(gridBlock);
+      this.tryDrawBlock(blocksWide, gridBlock, null, 2);
     }
 
-    ctx.strokeStyle = "white";
+    if (rowsFilled.length === 0){
+      ctx.strokeStyle = "white";
+    } else {
+      // dont draw white outline while animating clear
+      ctx.strokeStyle = "black";
+    }
     for (let fallingBlock of brain.tm.ghost()){
-      this.drawBlock(fallingBlock, 'rgba(0, 0, 0, 0)');
+      this.tryDrawBlock(blocksWide, fallingBlock, 'rgba(0, 0, 0, 0)', 0);
     }
     for (let fallingBlock of this.brain.current()){
-      this.drawBlock(fallingBlock);
+      this.tryDrawBlock(blocksWide, fallingBlock, null, 4);
     }
 
-    const rowsFilled = brain.grid.checkRows();
+    // drawing clear
     const clearGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
     Rainbow.applyGradient(clearGradient, this.animationTimer);
     ctx.fillStyle = clearGradient;
     for (let row of rowsFilled){
       const floor = canvas.height;
-      const cellHeight = Math.floor(canvas.height / brain.grid.height());
       const xStart = 0;
       const yStart = floor - (cellHeight * (row + 1));
       ctx.fillRect(
@@ -123,16 +186,9 @@ class Display{
       );
     }
   }
-  startDrawLoop(){
-    this.drawState.continue = true;
-    loopFunction(this.drawState, () => {
-      this.draw();
-    });
-  }
-  stopDrawLoop(){
-    this.drawState.continue = false;
-  }
-
 }
 
-export default Display;
+export {
+  GridDisplay,
+  UpcomingDisplay,
+};

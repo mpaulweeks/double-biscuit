@@ -11,8 +11,8 @@ it('Line clones', () => {
   const t1 = new TetroShapes.Line();
   const t2 = t1.clone();
 
-  expect(t1.__proto__.constructor.name).toEqual('Line');
-  expect(t2.__proto__.constructor.name).toEqual('Line');
+  expect(t1.type()).toEqual('Line');
+  expect(t2.type()).toEqual('Line');
 });
 
 it('Tetromino.shift', () => {

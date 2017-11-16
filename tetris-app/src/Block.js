@@ -5,10 +5,19 @@ class Block{
     this.color = color;
   }
 
+  shift(dx, dy){
+    this.col += dx;
+    this.row += dy;
+  }
+
   clone(){
     // https://stackoverflow.com/a/44782052/6461842
     const newBlock = Object.create(Object.getPrototypeOf(this));
     return Object.assign(newBlock, this);
+  }
+
+  type(){
+    return this.__proto__.constructor.name;
   }
 }
 
@@ -22,11 +31,6 @@ class FallingBlock extends Block{
   constructor(coord, color, isOrigin=false){
     super(coord, color);
     this.isOrigin = isOrigin;
-  }
-
-  shift(dx, dy){
-    this.col += dx;
-    this.row += dy;
   }
 
   rotateAround(origin){

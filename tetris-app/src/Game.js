@@ -1,42 +1,49 @@
 import React, { Component } from 'react';
 import Brain from './Brain';
-import Display from './Display';
+import { GridDisplay, UpcomingDisplay } from './Display';
 import EventListener from './EventListener';
 import InputListener from './InputListener';
 import './Game.css';
 
-let started = false;
-const init = function($canvas){
-  if (started){
-    return;
-  }
-  started = true;
-
-  const brain = new Brain();
-  const display = new Display(brain, $canvas);
-
-  EventListener.register(e => brain.onEvent(e));
-  InputListener.register((et, e) => brain.onInput(et, e));
-
-  display.startDrawLoop();
-
-  // debugging
-  window.admin = {
-    brain,
-    display,
-  };
-}
-
 class Game extends Component {
+  constructor(props) {
+    super(props);
+    this.upcomingRefs = [];
+  }
+
   componentDidMount() {
-    var $canvas = this.refs.canvas;
-    init($canvas);
+    console.log('component mounted');
+
+    const brain = new Brain();
+    const displays = [
+      new GridDisplay(this.refs.gridCanvas, brain),
+    ];
+    this.upcomingRefs.forEach((ref, index) => {
+      displays.push(new UpcomingDisplay(ref, brain, index));
+    });
+
+    EventListener.register(e => brain.onEvent(e));
+    InputListener.register((et, e) => brain.onInput(et, e));
+
+    displays.forEach(d => d.startDrawLoop());
+
+    // debugging
+    window.admin = {
+      brain,
+      displays,
+    };
   }
 
   render() {
+    var upcoming = [0,1,2,3];
     return (
       <div>
-        <canvas ref='canvas' id='primary' className="Grid"></canvas>
+        <div className="UpcomingContainer">
+          {upcoming.map((value, i) => (
+            <canvas key={i} ref={c => {this.upcomingRefs[value] = c;}} className="UpcomingCanvas"></canvas>
+          ))}
+        </div>
+        <canvas ref='gridCanvas' id='primary' className="GridCanvas"></canvas>
       </div>
     );
   }

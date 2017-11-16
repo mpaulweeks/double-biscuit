@@ -57,7 +57,9 @@ class Brain {
     if (this.pieceWasSet){
       grid.removeRows(grid.checkRows());
       this.processAttacks();
-      const error = tm.refresh();
+
+      tm.popCurrent();
+      const error = tm.shiftDown();
       if (error){
         this.restart();
       }

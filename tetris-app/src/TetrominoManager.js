@@ -14,7 +14,7 @@ const ctors = [
 class TetrominoManager {
   constructor(grid){
     this.grid = grid;
-    this._current = null;
+    this.queue = [];
     this.shiftDown();
   }
 
@@ -50,7 +50,7 @@ class TetrominoManager {
     next.rotate();
     const error = this.checkCollisionError(next);
     if (error === null){
-      this._current = next;
+      this._updateCurrent(next);
     } else {
       // todo shift up/left/right until it works
     }
@@ -61,7 +61,7 @@ class TetrominoManager {
     next.shift(delta);
     const error = this.checkCollisionError(next);
     if (error === null){
-      this._current = next;
+      this._updateCurrent(next);
     }
     return error;
   }
@@ -74,7 +74,7 @@ class TetrominoManager {
   shiftDown(dy){
     const result = this.tryShift({dx: 0, dy: dy || -1});
     if (result === Errors.Overlap){
-      this.setInGrid();
+      this.setInGrid(); // move to pop? implications for draw
     }
     return result;
   }
@@ -90,11 +90,6 @@ class TetrominoManager {
     });
   }
 
-  refresh(){
-    this._current = null;
-    return this.shiftDown();
-  }
-
   ghost(){
     const ghost = this.current().clone();
     const delta = {dx: 0, dy: -1};
@@ -107,11 +102,24 @@ class TetrominoManager {
     return ghost;
   }
 
-  current(){
-    if (!this._current){
-      this._current = this.newRandomTetro();
+  _updateCurrent(newCurrent){
+    this.queue[0] = newCurrent;
+  }
+  _ensureQueue(){
+    while (this.queue.length < 10){
+      this.queue.push(this.newRandomTetro());
     }
-    return this._current;
+  }
+  popCurrent(){
+    return this.queue.splice(0, 1);
+  }
+  current(){
+    this._ensureQueue();
+    return this.queue[0];
+  }
+  upcoming(){
+    this._ensureQueue();
+    return this.queue.slice(1);
   }
 }
 

@@ -10,6 +10,7 @@ const blocksFromPoints = function(color, points){
 class Tetromino {
   constructor(blocks){
     this.blocks = blocks;
+    this.spawn = blocks.map(b => b.clone());
   }
 
   origin(){
@@ -40,6 +41,10 @@ class Tetromino {
     newTetro = Object.assign(newTetro, this);
     newTetro.blocks = this.blocks.map(b => b.clone());
     return newTetro;
+  }
+
+  type(){
+    return this.__proto__.constructor.name;
   }
 
   *[Symbol.iterator](){
