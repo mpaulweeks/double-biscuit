@@ -12,6 +12,8 @@
   },
   "scripts": {
     "todo": "ack todo src/",
+    "deploy": "./bash/deploy.sh",
+
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

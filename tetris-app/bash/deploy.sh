@@ -1,5 +1,3 @@
-cd tetris-app
-
 npm run build
 
 mkdir ../docs

@@ -20,16 +20,14 @@ Online Attack Tetris w/ Websockets
 
 ## todo
 - Improve key repeating
-- Add iOS controls
+- Add mobile controls
 - Add SCSS and base everything off block size (currently 30 grid, 15 upcoming)
 - Move to middle on edge rotate
 - Add swap piece
 - Add music
 
 ## 2017-11-16 phone todo
-- Brain.Onboardchange -> run callbacks to message opponents
 - Second GameAI class that sets up many AI board, sets up callbacks to attack each other
-- Primary GameBoard sets up callbacks to use sockets
 - Draw Brain.getTotalPendingAttacks()
 - For oppogrid, purely manage with serialize/deserialize
 - Implement reverse by rotating 3 times before checking collision
