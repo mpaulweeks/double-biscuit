@@ -25,3 +25,17 @@ Online Attack Tetris w/ Websockets
 - Move to middle on edge rotate
 - Add swap piece
 - Add music
+
+## 2017-11-16 phone todo
+- Brain.Onboardchange -> run callbacks to message opponents
+- Second GameAI class that sets up many AI board, sets up callbacks to attack each other
+- Primary GameBoard sets up callbacks to use sockets
+- RemoveRows returns num, tick can use it to send attack events
+- Brain.getTotalPendingAttacks
+- For oppogrid, export list of non-null blocks
+- Add serialize/deserialize to Block to row, col, id
+- Look up color by BlockId, which is linked to the Tetro.name()
+- Implement reverse by rotating 3 times before checking collision
+- Custom keys with inputs that equal your keypress, add lookup layer to map key code to action
+- Put actions and block name/Id/color in constants.js
+- Test oppDisplay and serialize by mirroring solo screen
