@@ -65,9 +65,7 @@ class Grid{
     return rowsFilled;
   }
 
-  removeRows(){
-    const rows = this.checkRows();
-
+  removeRows(rows){
     const descendingRows = rows.slice().reverse();
     descendingRows.forEach(clearRow => {
       let row;

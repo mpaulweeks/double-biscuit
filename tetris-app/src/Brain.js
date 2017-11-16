@@ -44,7 +44,7 @@ class Brain {
 
     // check at beginning of tick
     if (this.pieceWasSet){
-      grid.removeRows();
+      grid.removeRows(this.checkRows());
       this.processAttacks();
       const error = tm.refresh();
       if (error){

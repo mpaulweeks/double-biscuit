@@ -63,21 +63,28 @@ it('Grid.checkRows', () => {
 
 it('Grid.removeRows', () => {
   const g = new Grid();
-  let before = gridToStr(g);
-  g.removeRows();
-  expect(before).toEqual(gridToStr(g));
+  let empty = gridToStr(g);
+  g.removeRows([]);
+  expect(empty).toEqual(gridToStr(g));
 
-  g.attack(1);
-  before = gridToStr(g);
-  g.removeRows();
-  expect(before).toEqual(gridToStr(g));
+  g.removeRows([0, 1, 2]);
+  expect(empty).toEqual(gridToStr(g));
 
-  fillRow(g, 5);
-  g.removeRows();
-  expect(before).toEqual(gridToStr(g));
+  fillRow(g, 1);
+  let oneRow = gridToStr(g);
 
-  fillRow(g, 7);
+  g.removeRows([]);
+  expect(oneRow).toEqual(gridToStr(g));
+
+  g.removeRows([2, 3, 4]);
+  expect(oneRow).toEqual(gridToStr(g));
+
+  fillRow(g, 2);
+  g.removeRows([2]);
+  expect(oneRow).toEqual(gridToStr(g));
+
+  fillRow(g, 6);
   fillRow(g, 8);
-  g.removeRows();
-  expect(before).toEqual(gridToStr(g));
+  g.removeRows([6, 8]);
+  expect(oneRow).toEqual(gridToStr(g));
 });
