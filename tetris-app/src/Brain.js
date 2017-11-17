@@ -118,6 +118,9 @@ class Brain {
           this.autoDropper = 0;
           this.pieceWasSet = true;
           break;
+        case 'KeyS':
+          tm.doSwap();
+          break;
         // debug
         case 'Digit1':
           this.debug_fillRow(0);

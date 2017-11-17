@@ -19,11 +19,11 @@ Online Attack Tetris w/ Websockets
 - Workers for running websockets among players
 
 ## todo
+- Figure out consistent shifting/beginning offset
 - Improve key repeating
 - Add mobile controls
 - Add SCSS and base everything off block size (currently 30 grid, 15 upcoming)
 - Move to middle on edge rotate
-- Add swap piece
 - Add music
 
 ## 2017-11-16 phone todo
@@ -32,5 +32,4 @@ Online Attack Tetris w/ Websockets
 - For oppogrid, purely manage with serialize/deserialize
 - Implement reverse by rotating 3 times before checking collision
 - Custom keys with inputs that equal your keypress, add lookup layer to map key code to action
-- Put actions in constants.js
-- Test oppDisplay and serialize by mirroring solo screen
+- Put actions in constants.js, cleanup action names, include user ID in event

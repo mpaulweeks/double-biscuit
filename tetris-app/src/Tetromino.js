@@ -14,6 +14,7 @@ class Tetromino {
     // can't be constructor due to time of this
     this.blocks = blocks;
     this.spawn = blocks.map(b => b.clone());
+    this.shifted = null;
   }
 
   origin(){
@@ -30,6 +31,9 @@ class Tetromino {
     this.blocks.forEach(b => {
       b.shift(delta.dx, delta.dy);
     });
+    if (!this.shifted){
+      this.shifted = this.blocks.map(b => b.clone());
+    }
   }
 
   rotate(){
@@ -44,6 +48,10 @@ class Tetromino {
     newTetro = Object.assign(newTetro, this);
     newTetro.blocks = this.blocks.map(b => b.clone());
     return newTetro;
+  }
+
+  reset(){
+    this.blocks = this.shifted.map(b => b.clone());
   }
 
   type(){

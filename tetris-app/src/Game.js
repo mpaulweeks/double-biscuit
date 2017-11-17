@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Brain from './Brain';
 import EnemyBrain from './EnemyBrain';
-import { GridDisplay, UpcomingDisplay, EnemyDisplay } from './Display';
+import { GridDisplay, TetroDisplay, EnemyDisplay } from './Display';
 import EventListener from './EventListener';
 import InputListener from './InputListener';
 import './Game.css';
@@ -26,8 +26,12 @@ class Game extends Component {
       new GridDisplay(this.refs.gridCanvas, primaryBrain),
     ];
 
+    const getSwapFunc = brain => brain.tm.getSwap();
+    this.displays.push(new TetroDisplay(this.refs.swapCanvas, primaryBrain, getSwapFunc));
+
     this.upcomingRefs.forEach((ref, index) => {
-      this.displays.push(new UpcomingDisplay(ref, primaryBrain, index));
+      const getTetroFunc = brain => brain.tm.upcoming()[index];
+      this.displays.push(new TetroDisplay(ref, primaryBrain, getTetroFunc));
     });
     this.enemyRefs.forEach((ref) => {
       const eb = new EnemyBrain();
@@ -57,6 +61,9 @@ class Game extends Component {
     var enemies = [0,1,2,3];
     return (
       <div className="AllGames">
+        <div>
+          <canvas ref='swapCanvas' className="UpcomingCanvas"></canvas>
+        </div>
         <div className="PrimaryGame">
           <div className="UpcomingContainer">
             {upcoming.map((value, i) => (

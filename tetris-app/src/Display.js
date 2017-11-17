@@ -89,10 +89,10 @@ class BaseDisplay{
   }
 }
 
-class UpcomingDisplay extends BaseDisplay {
-  constructor($canvas, brain, upcomingIndex){
+class TetroDisplay extends BaseDisplay {
+  constructor($canvas, brain, getTetroFunc){
     super($canvas, brain);
-    this.upcomingIndex = upcomingIndex;
+    this.getTetroFunc = getTetroFunc;
   }
 
   draw(){
@@ -101,23 +101,25 @@ class UpcomingDisplay extends BaseDisplay {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    const upcomingTetro = brain.tm.upcoming()[this.upcomingIndex];
-    const adjustedBlocks = upcomingTetro.spawn.map(b => {
-      // assuming display is 5x3
-      const adjustedBlock = b.clone();
-      adjustedBlock.shift(2, 1.5);
-      if (upcomingTetro.type() === 'Line'){
-        adjustedBlock.shift(-0.5, -0.5);
-      }
-      if (upcomingTetro.type() === 'Square'){
-        adjustedBlock.shift(0.5, 0);
-      }
-      return adjustedBlock;
-    });
+    const upcomingTetro = this.getTetroFunc(brain);
+    if (upcomingTetro){
+      const adjustedBlocks = upcomingTetro.spawn.map(b => {
+        // assuming display is 5x3
+        const adjustedBlock = b.clone();
+        adjustedBlock.shift(2, 1.5);
+        if (upcomingTetro.type() === 'Line'){
+          adjustedBlock.shift(-0.5, -0.5);
+        }
+        if (upcomingTetro.type() === 'Square'){
+          adjustedBlock.shift(0.5, 0);
+        }
+        return adjustedBlock;
+      });
 
-    ctx.strokeStyle = "black";
-    for (let fallingBlock of adjustedBlocks){
-      this.drawBlock(5, fallingBlock, fallingBlock.meta().color, 1);
+      ctx.strokeStyle = "black";
+      for (let fallingBlock of adjustedBlocks){
+        this.drawBlock(5, fallingBlock, fallingBlock.meta().color, 1);
+      }
     }
   }
 }
@@ -200,5 +202,5 @@ class GridDisplay extends BaseDisplay {
 export {
   GridDisplay,
   EnemyDisplay,
-  UpcomingDisplay,
+  TetroDisplay,
 };

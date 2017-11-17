@@ -16,17 +16,41 @@ class TetrominoManager {
     this.grid = grid;
     this.queue = [];
     this.shiftDown();
+    this.swapTetro = null;
+    this.justSwapped = false;
   }
 
   newRandomTetro(){
     const { grid } = this;
 
-    // todo add weight to self-correct
+    // todo add weight to self-correct?
     const rand = Math.floor(Math.random()*ctors.length);
 
     const tet = ctors[rand]();
+
+    // as first shift, this is imprinted on block.shifted
     tet.shift({dx: grid.width()/2 - 1, dy: grid.height()});
     return tet;
+  }
+
+  doSwap(){
+    if (this.justSwapped){
+      // do nothing
+      return;
+    }
+
+    if (this.swapTetro){
+      const newSwap = this.current();
+      this.queue[0] = this.swapTetro;
+      this.swapTetro = newSwap;
+      this.justSwapped = true;
+    } else {
+      this.swapTetro = this.popCurrent();
+    }
+    this.swapTetro.reset();
+  }
+  getSwap(){
+    return this.swapTetro;
   }
 
   checkCollisionError(tetro){
@@ -75,6 +99,7 @@ class TetrominoManager {
     const result = this.tryShift({dx: 0, dy: dy || -1});
     if (result === Errors.Overlap){
       this.setInGrid(); // move to pop? implications for draw
+      this.justSwapped = false;
     }
     return result;
   }
@@ -111,7 +136,7 @@ class TetrominoManager {
     }
   }
   popCurrent(){
-    return this.queue.splice(0, 1);
+    return this.queue.splice(0, 1)[0];
   }
   current(){
     this._ensureQueue();
