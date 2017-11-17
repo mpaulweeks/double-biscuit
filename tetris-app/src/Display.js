@@ -97,6 +97,8 @@ class TetroDisplay extends BaseDisplay {
 
   draw(){
     const { canvas, ctx, brain } = this;
+    const blocksWide = 5;
+    const { cellWidth } = this.cellDimensions(blocksWide);
 
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -117,8 +119,9 @@ class TetroDisplay extends BaseDisplay {
       });
 
       ctx.strokeStyle = "black";
+      const buffer = Math.floor(cellWidth / 15);
       for (let fallingBlock of adjustedBlocks){
-        this.drawBlock(5, fallingBlock, fallingBlock.meta().color, 1);
+        this.drawBlock(blocksWide, fallingBlock, fallingBlock.meta().color, buffer);
       }
     }
   }
@@ -140,8 +143,13 @@ class EnemyDisplay extends BaseDisplay {
 }
 
 class GridDisplay extends BaseDisplay {
+  constructor($canvas, brain, $incomingAttack){
+    super($canvas, brain);
+    this.incomingAttack = $incomingAttack;
+  }
+
   draw(){
-    const { canvas, ctx, brain } = this;
+    const { canvas, ctx, brain, incomingAttack } = this;
     const blocksWide = brain.grid.width();
     const { cellHeight } = this.cellDimensions(blocksWide);
 
@@ -163,11 +171,13 @@ class GridDisplay extends BaseDisplay {
     // drawing boxes
     const rowsFilled = brain.grid.checkRows();
 
+    // draw grid
     ctx.strokeStyle = "black";
     for (let gridBlock of brain.grid){
       this.drawBlock(blocksWide, gridBlock, gridBlock.meta().color, 2);
     }
 
+    // draw falling
     if (rowsFilled.length === 0){
       ctx.strokeStyle = "white";
     } else {
@@ -195,6 +205,13 @@ class GridDisplay extends BaseDisplay {
         canvas.width,
         cellHeight
       );
+    }
+
+    // updating attack message
+    if (brain.getTotalPendingAttacks() > 0){
+      incomingAttack.classList.remove('hidden');
+    } else {
+      incomingAttack.classList.add('hidden');
     }
   }
 }

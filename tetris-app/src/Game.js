@@ -23,11 +23,11 @@ class Game extends Component {
       primaryBrain,
     ]
     this.displays = [
-      new GridDisplay(this.refs.gridCanvas, primaryBrain),
+      new GridDisplay(this.refs.GridCanvas, primaryBrain, this.refs.IncomingAttack),
     ];
 
     const getSwapFunc = brain => brain.tm.getSwap();
-    this.displays.push(new TetroDisplay(this.refs.swapCanvas, primaryBrain, getSwapFunc));
+    this.displays.push(new TetroDisplay(this.refs.SwapCanvas, primaryBrain, getSwapFunc));
 
     this.upcomingRefs.forEach((ref, index) => {
       const getTetroFunc = brain => brain.tm.upcoming()[index];
@@ -61,23 +61,44 @@ class Game extends Component {
     var enemies = [0,1,2,3];
     return (
       <div className="AllGames">
-        <div>
-          <canvas ref='swapCanvas' className="UpcomingCanvas"></canvas>
-        </div>
-        <div className="PrimaryGame">
-          <div className="UpcomingContainer">
+        <div className="PrimaryInfo">
+          <div className="FlexTop">
+            <div className="UpcomingTitle">
+              Next
+            </div>
             {upcoming.map((value, i) => (
-              <canvas key={`upcoming-${i}`} ref={c => {this.upcomingRefs[value] = c;}} className="UpcomingCanvas"></canvas>
+              <div key={`upcoming-${i}`} >
+                <canvas ref={c => {this.upcomingRefs[value] = c;}} className={`TetroCanvas TetroCanvas-${i}`}></canvas>
+              </div>
             ))}
           </div>
-          <div>
-            <canvas ref='gridCanvas' className="GridCanvas"></canvas>
+          <div className="FlexBottom">
+            <div ref="IncomingAttack" className="IncomingAttackTitle">
+              Incoming<br/>attacks!
+            </div>
+            <br/>
+            <div className="SwapTitle">
+              Swap
+            </div>
+            <div>
+              <canvas ref='SwapCanvas' className="TetroCanvas TetroCanvas-0"></canvas>
+            </div>
           </div>
         </div>
-        <div className="EnemyGames">
-          {enemies.map((value, i) => (
-            <canvas key={`enemy-${i}`} ref={c => {this.enemyRefs[value] = c;}} className="EnemyCanvas"></canvas>
-          ))}
+        <div className="PrimaryCanvasContainer">
+          <canvas ref='GridCanvas' className="GridCanvas"></canvas>
+        </div>
+        <div className="EnemyContainer">
+          <div className="EnemyTitle">
+            Enemies
+          </div>
+          <div className="EnemyGames">
+            {enemies.map((value, i) => (
+              <div key={`enemy-${i}`} className="EnemyCanvasWrapper">
+                <canvas ref={c => {this.enemyRefs[value] = c;}} className="EnemyCanvas"></canvas>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );

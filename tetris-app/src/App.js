@@ -4,7 +4,7 @@ import Game from './Game';
 class App extends Component {
   render() {
     return (
-      <div>
+      <div className="Container">
         <Game />
       </div>
     );
