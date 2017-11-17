@@ -33,3 +33,7 @@ Online Attack Tetris w/ Websockets
 - Implement reverse by rotating 3 times before checking collision
 - Custom keys with inputs that equal your keypress, add lookup layer to map key code to action
 - Put actions in constants.js, cleanup action names, include user ID in event
+- Alternate animation
+  - Draw over with white rectangle with increasing alpha
+  - then draw gradient to wipe off screen
+  - hold on black for a few frames to make it look like dropping
