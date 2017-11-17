@@ -28,7 +28,6 @@ Online Attack Tetris w/ Websockets
 
 ## 2017-11-16 phone todo
 - Second GameAI class that sets up many AI board, sets up callbacks to attack each other
-- Draw Brain.getTotalPendingAttacks()
 - For oppogrid, purely manage with serialize/deserialize
 - Implement reverse by rotating 3 times before checking collision
 - Custom keys with inputs that equal your keypress, add lookup layer to map key code to action
