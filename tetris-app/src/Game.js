@@ -5,6 +5,7 @@ import { GridDisplay, TetroDisplay, EnemyDisplay } from './Display';
 import EventListener from './EventListener';
 import InputListener from './InputListener';
 import Jukebox from './Jukebox';
+import { BGM } from './Constants';
 import './Game.css';
 
 class Game extends Component {
@@ -19,7 +20,7 @@ class Game extends Component {
     if (this.started){ return; }
     this.started = true;
 
-    Jukebox.playBGM('typeA');
+    Jukebox.playBGM(BGM.TypeA);
 
     const primaryBrain = new Brain();
     this.brains = [

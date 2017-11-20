@@ -1,25 +1,31 @@
 import { AudioBackground, AudioClip } from './Audio';
+import { BGM, SFX } from './Constants';
 
 class _Jukebox {
   constructor() {
-    this.bgm = {
-      typeA: new AudioBackground('type_a.mp3'),
+    this._bgm = {};
+    for (var bgmKey in BGM){
+      const url = BGM[bgmKey];
+      this._bgm[url] = new AudioBackground(url);
     }
-    this.sfx = {
-      pieceSet: new AudioClip('tenderness.wav'),
-      clear1: new AudioClip('double_mischief.wav'),
+
+    this._sfx = {};
+    for (var sfxKey in SFX){
+      const url = SFX[sfxKey];
+      this._sfx[url] = new AudioClip(url);
     }
   }
 
-  playBGM(soundCode){
-    const audio = this.bgm[soundCode];
+  playBGM(bgmCode){
+    console.log(bgmCode);
+    const audio = this._bgm[bgmCode];
     if (audio){
       audio.play();
     }
   }
 
-  playSFX(soundCode){
-    const audio = this.sfx[soundCode];
+  playSFX(sfxCode){
+    const audio = this._sfx[sfxCode];
     if (audio){
       audio.play();
     }

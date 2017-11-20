@@ -28,7 +28,18 @@ const TetroByType = function(type){
   return _TetrosByType[type];
 }
 
+const BGM = {
+  TypeA: 'type_a.mp3',
+}
+
+const SFX = {
+  PieceSet: 'tenderness.wav',
+  Clear1: 'double_mischief.wav',
+}
+
 export {
   TetroById,
   TetroByType,
+  BGM,
+  SFX,
 }

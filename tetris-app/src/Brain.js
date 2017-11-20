@@ -2,6 +2,7 @@ import TetrominoManager from './TetrominoManager';
 import Grid from './Grid';
 import { AttackBlock } from './Block';
 import Jukebox from './Jukebox';
+import { SFX } from './Constants';
 
 class Brain {
   constructor(){
@@ -93,9 +94,9 @@ class Brain {
       if (numRowsCleared === 0){
         // todo these should be constants
         // these should go out earlier, might need to re-do tick strategy entirely
-        this.sendSound('pieceSet');
+        this.sendSound(SFX.PieceSet);
       } else {
-        this.sendSound('clear1');
+        this.sendSound(SFX.Clear1);
       }
       this.sendAttack(numRowsCleared);
       this.processAttacks();
