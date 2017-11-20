@@ -1,5 +1,5 @@
 
-class AudioSong(){
+class AudioFile {
   constructor(src){
     this.loaded = false;
     this.audio = new Audio();
@@ -20,11 +20,18 @@ class AudioSong(){
   }
 }
 
-class AudioClip(){
-  constructor(src, bandwidth){
+class AudioBackground extends AudioFile {
+  constructor(src) {
+    super(src)
+    // todo loop
+  }
+}
+
+class AudioClip {
+  constructor(src, bandwidth=1){
     this.clips = [];
     for (var i = 0; i < bandwidth; i++){
-      this.clips.push(new AudioSong(src));
+      this.clips.push(new AudioFile(src));
     }
   }
 
@@ -38,6 +45,6 @@ class AudioClip(){
 }
 
 export {
-  AudioSong,
+  AudioBackground,
   AudioClip,
 }
