@@ -88,6 +88,7 @@ class Grid{
         this._matrix[row][col] = null;
       }
     });
+    return descendingRows.length;
   }
 
   width(){

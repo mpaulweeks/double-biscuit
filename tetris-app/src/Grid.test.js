@@ -74,28 +74,34 @@ it('Grid.checkRows', () => {
 it('Grid.removeRows', () => {
   const g = new Grid();
   let empty = g.serialize();
-  g.removeRows([]);
+  let count = g.removeRows([]);
+  expect(count).toEqual(0);
   expect(empty).toEqual(g.serialize());
 
-  g.removeRows([0, 1, 2]);
+  count = g.removeRows([0, 1, 2]);
+  expect(count).toEqual(3);
   expect(empty).toEqual(g.serialize());
 
   fillRow(g, 1);
   let oneRow = g.serialize();
 
-  g.removeRows([]);
+  count = g.removeRows([]);
+  expect(count).toEqual(0);
   expect(oneRow).toEqual(g.serialize());
 
-  g.removeRows([2, 3, 4]);
+  count = g.removeRows([2, 3, 4]);
+  expect(count).toEqual(3);
   expect(oneRow).toEqual(g.serialize());
 
   fillRow(g, 2);
-  g.removeRows([2]);
+  count = g.removeRows([2]);
+  expect(count).toEqual(1);
   expect(oneRow).toEqual(g.serialize());
 
   fillRow(g, 6);
   fillRow(g, 8);
-  g.removeRows([6, 8]);
+  count = g.removeRows([6, 8]);
+  expect(count).toEqual(2);
   expect(oneRow).toEqual(g.serialize());
 });
 

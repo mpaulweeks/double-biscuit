@@ -1,34 +1,41 @@
 
 class AudioFile {
   constructor(src){
-    this.loaded = false;
+    this.ready = false;
     this.audio = new Audio();
-    this.audio.src = src;
+    this.audio.src = '/' + src;
 
     const self = this;
     this.audio.addEventListener('canplaythrough', function(){
-       self.loaded = true;
+      self.ready = true;
+    });
+    this.audio.addEventListener('ended', function(){
+      self.audio.currentTime = 0;
+      self.ready = true;
     });
   }
 
   play(){
-    this.audio.play();
+    if (this.ready){
+      this.audio.play();
+      this.ready = false;
+    }
   }
 
-  ready(){
-    return loaded;
+  isReady(){
+    return this.ready;
   }
 }
 
 class AudioBackground extends AudioFile {
   constructor(src) {
     super(src)
-    // todo loop
+    this.audio.loop = true;
   }
 }
 
 class AudioClip {
-  constructor(src, bandwidth=1){
+  constructor(src, bandwidth=5){
     this.clips = [];
     for (var i = 0; i < bandwidth; i++){
       this.clips.push(new AudioFile(src));
@@ -37,7 +44,7 @@ class AudioClip {
 
   play(){
     for (let c of this.clips){
-      if (c.ready()){
+      if (c.isReady()){
         return c.play();
       }
     }

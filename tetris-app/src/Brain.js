@@ -1,6 +1,7 @@
 import TetrominoManager from './TetrominoManager';
 import Grid from './Grid';
 import { AttackBlock } from './Block';
+import Jukebox from './Jukebox';
 
 class Brain {
   constructor(){
@@ -68,6 +69,10 @@ class Brain {
     const data = this.grid.serialize();
     this.eventListener.broadcast(this, {type: 'Grid', value: data});
   }
+  sendSound(soundCode){
+    // todo delegate to listener for DI
+    Jukebox.play(soundCode);
+  }
 
   debug_fillRow(row){
     this.tm.drop();
@@ -84,8 +89,15 @@ class Brain {
 
     // check at beginning of tick
     if (this.pieceWasSet){
-      const rowsCleared = grid.removeRows(grid.checkRows());
-      this.sendAttack(rowsCleared);
+      const numRowsCleared = grid.removeRows(grid.checkRows());
+      if (numRowsCleared === 0){
+        // todo these should be constants
+        // these should go out earlier, might need to re-do tick strategy entirely
+        this.sendSound('pieceSet');
+      } else {
+        this.sendSound('clear1');
+      }
+      this.sendAttack(numRowsCleared);
       this.processAttacks();
       this.sendUpdate();
 
