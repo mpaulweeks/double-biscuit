@@ -71,7 +71,7 @@ class Brain {
   }
   sendSound(soundCode){
     // todo delegate to listener for DI
-    Jukebox.play(soundCode);
+    Jukebox.playSFX(soundCode);
   }
 
   debug_fillRow(row){
