@@ -3,3 +3,13 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.SoundBar {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+
+  text-align: center;
+
+  border: 2px solid red;
+}

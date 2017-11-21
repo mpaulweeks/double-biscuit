@@ -52,10 +52,16 @@ const Errors = {
   OutOfBounds: 'out of bounds',
 };
 
+const Cookies = {
+  MuteBGM: 'mute_bgm',
+  MuteSFX: 'mute_sfx',
+};
+
 export {
   TetroById,
   TetroByType,
   BGM,
   SFX,
   Errors,
+  Cookies,
 }

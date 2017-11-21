@@ -23,14 +23,9 @@ class _Jukebox {
       audio.play();
     }
   }
-  muteBGM(){
+  setMuteBGM(isMuted){
     for (let key in this._bgm){
-      this._bgm[key].setMute(true);
-    }
-  }
-  unmuteBGM(){
-    for (let key in this._bgm){
-      this._bgm[key].setMute(false);
+      this._bgm[key].setMute(isMuted);
     }
   }
 
@@ -40,14 +35,9 @@ class _Jukebox {
       audio.play();
     }
   }
-  muteSFX(){
+  setMuteSFX(isMuted){
     for (let key in this.sfx){
-      this.sfx[key].setMute(true);
-    }
-  }
-  unmuteSFX(){
-    for (let key in this.sfx){
-      this.sfx[key].setMute(false);
+      this.sfx[key].setMute(isMuted);
     }
   }
 }
