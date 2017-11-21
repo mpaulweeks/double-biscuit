@@ -3,6 +3,7 @@ import Game from './Game';
 
 class App extends Component {
   render() {
+    // todo put audio controls/info here
     return (
       <div className="Container">
         <Game />

@@ -17,10 +17,19 @@ class _Jukebox {
   }
 
   playBGM(bgmCode){
-    console.log(bgmCode);
     const audio = this._bgm[bgmCode];
     if (audio){
       audio.play();
+    }
+  }
+  muteBGM(){
+    for (let key in this._bgm){
+      this._bgm[key].setMute(true);
+    }
+  }
+  unmuteBGM(){
+    for (let key in this._bgm){
+      this._bgm[key].setMute(false);
     }
   }
 
@@ -28,6 +37,16 @@ class _Jukebox {
     const audio = this._sfx[sfxCode];
     if (audio){
       audio.play();
+    }
+  }
+  muteSFX(){
+    for (let key in this.sfx){
+      this.sfx[key].setMute(true);
+    }
+  }
+  unmuteSFX(){
+    for (let key in this.sfx){
+      this.sfx[key].setMute(false);
     }
   }
 }

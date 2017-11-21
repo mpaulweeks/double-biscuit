@@ -28,6 +28,10 @@ class AudioFile {
     }
   }
 
+  setMute(newValue){
+    this.audio.muted = newValue;
+  }
+
   isReady(){
     return this.ready;
   }
