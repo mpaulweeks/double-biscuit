@@ -4,7 +4,7 @@ class AudioFile {
     this.ready = false;
     this.started = false;
     this.audio = new Audio();
-    this.audio.src = '/' + src;
+    this.audio.src = src;
 
     const self = this;
     this.audio.addEventListener('canplaythrough', () => self.onLoad());
