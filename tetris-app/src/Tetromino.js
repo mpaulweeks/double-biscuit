@@ -1,17 +1,15 @@
 import { FallingBlock } from './Block';
 import { TetroByType } from './Constants';
 
-const blocksFromPoints = function(tetro, points){
-  const tetroId = TetroByType(tetro.type()).id;
-  return points.map(p => {
-    const isOrigin = p.x === 0 && p.y === 0;
-    return new FallingBlock(p, tetroId, isOrigin);
-  });
-}
-
 class Tetromino {
-  setInstance(blocks){
+  setBlocksFromPoints(points){
     // can't be constructor due to time of this
+    const tetroId = TetroByType(this.type()).id;
+    const blocks = points.map(p => {
+      const isOrigin = p.x === 0 && p.y === 0;
+      return new FallingBlock(p, tetroId, isOrigin);
+    });
+
     this.blocks = blocks;
     this.spawn = blocks.map(b => b.clone());
     this.shifted = null;
@@ -55,7 +53,7 @@ class Tetromino {
   }
 
   type(){
-    return this.__proto__.constructor.name;
+    return this.constructor.name;
   }
 
   *[Symbol.iterator](){
@@ -66,24 +64,24 @@ class Tetromino {
 class Line extends Tetromino {
   constructor(){
     super()
-    this.setInstance(blocksFromPoints(this, [
+    this.setBlocksFromPoints([
       {x: -1, y: 0},
       {x: 0, y: 0},
       {x: 1, y: 0},
       {x: 2, y: 0},
-    ]));
+    ]);
   }
 }
 
 class Square extends Tetromino {
   constructor(){
     super()
-    this.setInstance(blocksFromPoints(this, [
+    this.setBlocksFromPoints([
       {x: -1, y: -1},
       {x: -1, y: 0},
       {x: 0, y: -1},
       {x: 0, y: 0},
-    ]));
+    ]);
   }
   rotate(){
     // do nothing
@@ -93,60 +91,60 @@ class Square extends Tetromino {
 class Cross extends Tetromino {
   constructor(){
     super()
-    this.setInstance(blocksFromPoints(this, [
+    this.setBlocksFromPoints([
       {x: -1, y: 0},
       {x: 0, y: 0},
       {x: 1, y: 0},
       {x: 0, y: -1},
-    ]));
+    ]);
   }
 }
 
 class KnightOne extends Tetromino {
   constructor(){
     super()
-    this.setInstance(blocksFromPoints(this, [
+    this.setBlocksFromPoints([
       {x: -1, y: -1},
       {x: -1, y: 0},
       {x: 0, y: 0},
       {x: 1, y: 0},
-    ]));
+    ]);
   }
 }
 
 class KnightTwo extends Tetromino {
   constructor(){
     super()
-    this.setInstance(blocksFromPoints(this, [
+    this.setBlocksFromPoints([
       {x: -1, y: 0},
       {x: 0, y: 0},
       {x: 1, y: 0},
       {x: 1, y: -1},
-    ]));
+    ]);
   }
 }
 
 class ZedOne extends Tetromino {
   constructor(){
     super()
-    this.setInstance(blocksFromPoints(this, [
+    this.setBlocksFromPoints([
       {x: -1, y: -1},
       {x: 0, y: -1},
       {x: 0, y: 0},
       {x: 1, y: 0},
-    ]));
+    ]);
   }
 }
 
 class ZedTwo extends Tetromino {
   constructor(){
     super()
-    this.setInstance(blocksFromPoints(this, [
+    this.setBlocksFromPoints([
       {x: 1, y: -1},
       {x: 0, y: -1},
       {x: 0, y: 0},
       {x: -1, y: 0},
-    ]));
+    ]);
   }
 }
 
