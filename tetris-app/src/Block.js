@@ -18,10 +18,6 @@ class Block{
     return Object.assign(newBlock, this);
   }
 
-  type(){
-    return this.__proto__.constructor.name;
-  }
-
   meta(){
     return TetroById(this.tetroId);
   }

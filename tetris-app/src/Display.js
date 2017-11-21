@@ -109,10 +109,10 @@ class TetroDisplay extends BaseDisplay {
         // assuming display is 5x3
         const adjustedBlock = b.clone();
         adjustedBlock.shift(2, 1.5);
-        if (upcomingTetro.type() === 'Line'){
+        if (upcomingTetro.meta().type === 'Line'){
           adjustedBlock.shift(-0.5, -0.5);
         }
-        if (upcomingTetro.type() === 'Square'){
+        if (upcomingTetro.meta().type === 'Square'){
           adjustedBlock.shift(0.5, 0);
         }
         return adjustedBlock;

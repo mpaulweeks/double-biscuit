@@ -1,13 +1,22 @@
 
+const Attack = {id: 0, type: 'Attack', color: 'grey'};
+const Line = {id: 1, type: 'Line', color: 'pink'};
+const Square = {id: 2, type: 'Square', color: 'yellow'};
+const Cross = {id: 3, type: 'Cross', color: 'red'};
+const KnightOne = {id: 4, type: 'KnightOne', color: 'purple'};
+const KnightTwo = {id: 5, type: 'KnightTwo', color: 'orange'};
+const ZedOne = {id: 6, type: 'ZedOne', color: 'green'};
+const ZedTwo = {id: 7, type: 'ZedTwo', color: 'blue'};
+
 const _Tetros = [
-  {id: 0, type: 'Attack', color: 'grey'},
-  {id: 1, type: 'Line', color: 'pink'},
-  {id: 2, type: 'Square', color: 'yellow'},
-  {id: 3, type: 'Cross', color: 'red'},
-  {id: 4, type: 'KnightOne', color: 'purple'},
-  {id: 5, type: 'KnightTwo', color: 'orange'},
-  {id: 6, type: 'ZedOne', color: 'green'},
-  {id: 7, type: 'ZedTwo', color: 'blue'},
+  Attack,
+  Line,
+  Square,
+  Cross,
+  KnightOne,
+  KnightTwo,
+  ZedOne,
+  ZedTwo,
 ];
 
 const _TetrosById = _Tetros.reduce((map, tetro) => {

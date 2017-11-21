@@ -4,7 +4,7 @@ import { TetroByType } from './Constants';
 class Tetromino {
   setBlocksFromPoints(points){
     // can't be constructor due to time of this
-    const tetroId = TetroByType(this.type()).id;
+    const tetroId = this.meta().id;
     const blocks = points.map(p => {
       const isOrigin = p.x === 0 && p.y === 0;
       return new FallingBlock(p, tetroId, isOrigin);
@@ -52,8 +52,8 @@ class Tetromino {
     this.blocks = this.shifted.map(b => b.clone());
   }
 
-  type(){
-    return this.constructor.name;
+  meta(){
+    return TetroByType(this.type);
   }
 
   *[Symbol.iterator](){
@@ -64,6 +64,7 @@ class Tetromino {
 class Line extends Tetromino {
   constructor(){
     super()
+    this.type = 'Line';
     this.setBlocksFromPoints([
       {x: -1, y: 0},
       {x: 0, y: 0},
@@ -76,6 +77,7 @@ class Line extends Tetromino {
 class Square extends Tetromino {
   constructor(){
     super()
+    this.type = 'Square';
     this.setBlocksFromPoints([
       {x: -1, y: -1},
       {x: -1, y: 0},
@@ -91,6 +93,7 @@ class Square extends Tetromino {
 class Cross extends Tetromino {
   constructor(){
     super()
+    this.type = 'Cross';
     this.setBlocksFromPoints([
       {x: -1, y: 0},
       {x: 0, y: 0},
@@ -103,6 +106,7 @@ class Cross extends Tetromino {
 class KnightOne extends Tetromino {
   constructor(){
     super()
+    this.type = 'KnightOne';
     this.setBlocksFromPoints([
       {x: -1, y: -1},
       {x: -1, y: 0},
@@ -115,6 +119,7 @@ class KnightOne extends Tetromino {
 class KnightTwo extends Tetromino {
   constructor(){
     super()
+    this.type = 'KnightTwo';
     this.setBlocksFromPoints([
       {x: -1, y: 0},
       {x: 0, y: 0},
@@ -127,6 +132,7 @@ class KnightTwo extends Tetromino {
 class ZedOne extends Tetromino {
   constructor(){
     super()
+    this.type = 'ZedOne';
     this.setBlocksFromPoints([
       {x: -1, y: -1},
       {x: 0, y: -1},
@@ -139,6 +145,7 @@ class ZedOne extends Tetromino {
 class ZedTwo extends Tetromino {
   constructor(){
     super()
+    this.type = 'ZedTwo';
     this.setBlocksFromPoints([
       {x: 1, y: -1},
       {x: 0, y: -1},

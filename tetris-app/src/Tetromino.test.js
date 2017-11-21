@@ -4,14 +4,6 @@ const tetroToStr = function(tetro){
   return tetro.blocks.map(b => b.serialize()).join(' ');
 }
 
-it('Line clones', () => {
-  const t1 = new TetroShapes.Line();
-  const t2 = t1.clone();
-
-  expect(t1.type()).toEqual('Line');
-  expect(t2.type()).toEqual('Line');
-});
-
 it('Tetromino.shift', () => {
   const t1 = new TetroShapes.Line();
   const t2 = t1.clone();
