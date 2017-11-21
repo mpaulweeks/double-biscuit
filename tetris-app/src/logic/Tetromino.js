@@ -1,5 +1,6 @@
+import { TetroByType } from '../Constants';
+
 import { FallingBlock } from './Block';
-import { TetroByType } from './Constants';
 
 class Tetromino {
   setBlocksFromPoints(points){

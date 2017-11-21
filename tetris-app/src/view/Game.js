@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import Brain from './Brain';
-import EnemyBrain from './EnemyBrain';
+
+import { BGM } from '../Constants';
+import EventListener from '../rigging/EventListener';
+import InputListener from '../rigging/InputListener';
+import Brain from '../logic/Brain';
+import EnemyBrain from '../logic/EnemyBrain';
+
 import { GridDisplay, TetroDisplay, EnemyDisplay } from './Display';
-import EventListener from './EventListener';
-import InputListener from './InputListener';
 import Jukebox from './Jukebox';
-import { BGM } from './Constants';
 import './Game.css';
 
 class Game extends Component {
@@ -44,6 +46,7 @@ class Game extends Component {
     });
 
     this.brains.forEach(b => {
+      b.registerSoundListener(Jukebox);
       b.registerEventListener(EventListener);
       InputListener.register((et, e) => b.onInput(et, e));
     });

@@ -1,8 +1,8 @@
+import { SFX } from '../Constants';
+
 import TetrominoManager from './TetrominoManager';
 import Grid from './Grid';
 import { AttackBlock } from './Block';
-import Jukebox from './Jukebox';
-import { SFX } from './Constants';
 
 class Brain {
   constructor(){
@@ -41,14 +41,18 @@ class Brain {
         break;
     }
   }
+  registerInputListener(inputListener){
+    inputListener.register(this, (et, e) => this.onInput(et, e));
+  }
+
   onEvent(event){
     if (event.type === 'Attack'){
       this.pendingAttacks.push(event.value);
     }
   }
   registerEventListener(eventListener){
+    eventListener.register(this, e => this.onEvent(e));
     this.eventListener = eventListener;
-    this.eventListener.register(this, e => this.onEvent(e));
   }
 
   sendAttack(rowsCleared){
@@ -67,12 +71,19 @@ class Brain {
     return this.pendingAttacks.reduce((sum, att) => sum + att, 0);
   }
   sendUpdate(){
-    const data = this.grid.serialize();
-    this.eventListener.broadcast(this, {type: 'Grid', value: data});
+    if (this.eventListener){
+      const data = this.grid.serialize();
+      this.eventListener.broadcast(this, {type: 'Grid', value: data});
+    }
   }
+
   sendSound(soundCode){
-    // todo delegate to listener for DI
-    Jukebox.playSFX(soundCode);
+    if (this.soundListener){
+      this.soundListener.playSFX(soundCode);
+    }
+  }
+  registerSoundListener(soundListener){
+    this.soundListener = soundListener;
   }
 
   debug_fillRow(row){

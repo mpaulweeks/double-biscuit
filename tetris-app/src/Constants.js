@@ -1,3 +1,4 @@
+// file must have no dependencies
 
 const Attack = {id: 0, type: 'Attack', color: 'grey'};
 const Line = {id: 1, type: 'Line', color: 'pink'};
@@ -46,9 +47,15 @@ const SFX = {
   Clear1: 'double_mischief.wav',
 }
 
+const Errors = {
+  Overlap: 'overlap',
+  OutOfBounds: 'out of bounds',
+};
+
 export {
   TetroById,
   TetroByType,
   BGM,
   SFX,
+  Errors,
 }

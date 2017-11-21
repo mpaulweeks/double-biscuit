@@ -11,12 +11,15 @@ class EnemyBrain {
       this.grid = Grid.deserialize(gs);
     }
   }
-  onInput(){
-    // do nothing
-  }
   registerEventListener(eventListener){
     this.eventListener = eventListener;
     this.eventListener.register(this, e => this.onEvent(e));
+  }
+  onInput(){
+    // do nothing
+  }
+  registerSoundListener(){
+    // do nothing
   }
 }
 

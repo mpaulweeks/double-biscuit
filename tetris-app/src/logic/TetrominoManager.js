@@ -1,5 +1,6 @@
+import { Errors } from '../Constants';
+
 import TetroShapes from './Tetromino';
-import Errors from './Errors';
 
 const ctors = [
   () => new TetroShapes.Line(),

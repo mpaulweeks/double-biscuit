@@ -1,5 +1,6 @@
+import { BGM, SFX } from '../Constants';
+
 import { AudioBackground, AudioClip } from './Audio';
-import { BGM, SFX } from './Constants';
 
 class _Jukebox {
   constructor() {

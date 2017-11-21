@@ -1,4 +1,4 @@
-import { TetroById, TetroByType } from './Constants';
+import { TetroById, TetroByType } from '../Constants';
 
 class Block{
   constructor(coord, tetroId){

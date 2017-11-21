@@ -1,5 +1,6 @@
+import { Errors } from '../Constants';
+
 import { Block, AttackBlock } from './Block';
-import Errors from './Errors';
 
 class Grid{
   constructor(){
