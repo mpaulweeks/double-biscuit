@@ -1,7 +1,9 @@
+import BaseBrain from './BaseBrain';
 import Grid from './Grid';
 
-class EnemyBrain {
-  constructor(){
+class EnemyBrain extends BaseBrain {
+  constructor(...args){
+    super(...args);
     this.grid = new Grid();
   }
 
@@ -10,16 +12,6 @@ class EnemyBrain {
       const gs = event.value;
       this.grid = Grid.deserialize(gs);
     }
-  }
-  registerEventListener(eventListener){
-    this.eventListener = eventListener;
-    this.eventListener.register(this, e => this.onEvent(e));
-  }
-  onInput(){
-    // do nothing
-  }
-  registerSoundListener(){
-    // do nothing
   }
 }
 

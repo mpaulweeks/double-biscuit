@@ -1,10 +1,13 @@
 
 class _InputListener {
   constructor(){
-    this.callbacks = [];
+    this.subscribers = [];
   }
-  register(callback){
-    this.callbacks.push(callback);
+  register(caller, callback){
+    this.subscribers.push({
+      caller: caller,
+      callback: callback,
+    });
   }
 }
 
@@ -12,13 +15,13 @@ const InputListener = new _InputListener();
 
 document.addEventListener('keydown', event => {
   console.log(event);
-  InputListener.callbacks.forEach(sub => {
-    sub('KeyDown', event);
+  InputListener.subscribers.forEach(sub => {
+    sub.callback('KeyDown', event);
   });
 });
 document.addEventListener('keyup', event => {
-  InputListener.callbacks.forEach(sub => {
-    sub('KeyUp', event);
+  InputListener.subscribers.forEach(sub => {
+    sub.callback('KeyUp', event);
   });
 });
 

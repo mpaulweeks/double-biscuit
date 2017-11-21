@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { BGM } from '../Constants';
 import EventListener from '../rigging/EventListener';
 import InputListener from '../rigging/InputListener';
-import Brain from '../logic/Brain';
+import HeroBrain from '../logic/HeroBrain';
 import EnemyBrain from '../logic/EnemyBrain';
 
 import { GridDisplay, TetroDisplay, EnemyDisplay } from './Display';
@@ -24,7 +24,11 @@ class Game extends Component {
 
     Jukebox.playBGM(BGM.TypeA);
 
-    const primaryBrain = new Brain();
+    const primaryBrain = new HeroBrain(
+      EventListener,
+      InputListener,
+      Jukebox
+    );
     this.brains = [
       primaryBrain,
     ]
@@ -40,15 +44,13 @@ class Game extends Component {
       this.displays.push(new TetroDisplay(ref, primaryBrain, getTetroFunc));
     });
     this.enemyRefs.forEach((ref) => {
-      const eb = new EnemyBrain();
+      const eb = new EnemyBrain(
+        EventListener,
+        InputListener,
+        Jukebox
+      );
       this.brains.push(eb);
       this.displays.push(new EnemyDisplay(ref, eb));
-    });
-
-    this.brains.forEach(b => {
-      b.registerSoundListener(Jukebox);
-      b.registerEventListener(EventListener);
-      InputListener.register((et, e) => b.onInput(et, e));
     });
   }
 

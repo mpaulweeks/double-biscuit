@@ -1,5 +1,5 @@
 
-class Brain {
+class BaseBrain {
   constructor(eventListener, inputListener, soundListener){
     eventListener.register(this, e => this.onEvent(e));
     this.eventListener = eventListener;
@@ -14,3 +14,5 @@ class Brain {
 
   onInput(eventType, event){}
 }
+
+export default BaseBrain;

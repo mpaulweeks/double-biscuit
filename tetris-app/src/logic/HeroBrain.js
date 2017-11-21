@@ -1,11 +1,13 @@
 import { SFX } from '../Constants';
 
+import BaseBrain from './BaseBrain';
 import TetrominoManager from './TetrominoManager';
 import Grid from './Grid';
 import { AttackBlock } from './Block';
 
-class Brain {
-  constructor(){
+class HeroBrain extends BaseBrain {
+  constructor(...args){
+    super(...args);
     this.restart();
   }
 
@@ -41,18 +43,11 @@ class Brain {
         break;
     }
   }
-  registerInputListener(inputListener){
-    inputListener.register(this, (et, e) => this.onInput(et, e));
-  }
 
   onEvent(event){
     if (event.type === 'Attack'){
       this.pendingAttacks.push(event.value);
     }
-  }
-  registerEventListener(eventListener){
-    eventListener.register(this, e => this.onEvent(e));
-    this.eventListener = eventListener;
   }
 
   sendAttack(rowsCleared){
@@ -71,19 +66,12 @@ class Brain {
     return this.pendingAttacks.reduce((sum, att) => sum + att, 0);
   }
   sendUpdate(){
-    if (this.eventListener){
-      const data = this.grid.serialize();
-      this.eventListener.broadcast(this, {type: 'Grid', value: data});
-    }
+    const data = this.grid.serialize();
+    this.eventListener.broadcast(this, {type: 'Grid', value: data});
   }
 
   sendSound(soundCode){
-    if (this.soundListener){
-      this.soundListener.playSFX(soundCode);
-    }
-  }
-  registerSoundListener(soundListener){
-    this.soundListener = soundListener;
+    this.soundListener.playSFX(soundCode);
   }
 
   debug_fillRow(row){
@@ -191,4 +179,4 @@ class Brain {
   }
 }
 
-export default Brain;
+export default HeroBrain;
