@@ -9,8 +9,8 @@ class SoundBar extends Component {
   constructor(props){
     super(props);
     this.state = {
-      bgmMuted: CookieJar.ensure(Cookies.MuteBGM, false),
-      sfxMuted: CookieJar.ensure(Cookies.MuteSFX, false),
+      bgmMuted: CookieJar.ensure(Cookies.MuteBGM, false) === 'true',
+      sfxMuted: CookieJar.ensure(Cookies.MuteSFX, false) === 'true',
     }
   }
   toggleBGM(){

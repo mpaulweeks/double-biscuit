@@ -15,6 +15,7 @@ class _Jukebox {
       const url = SFX[sfxKey];
       this._sfx[url] = new AudioClip(url);
     }
+    this.sfxIsMuted = false;
   }
 
   playBGM(bgmCode){
@@ -31,14 +32,12 @@ class _Jukebox {
 
   playSFX(sfxCode){
     const audio = this._sfx[sfxCode];
-    if (audio){
+    if (audio && !this.sfxIsMuted){
       audio.play();
     }
   }
   setMuteSFX(isMuted){
-    for (let key in this.sfx){
-      this.sfx[key].setMute(isMuted);
-    }
+    this.sfxIsMuted = isMuted;
   }
 }
 

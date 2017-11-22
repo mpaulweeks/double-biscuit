@@ -1,6 +1,7 @@
 class _CookieJar {
 
   set(cname, cvalue, exdays) {
+    exdays = exdays || 3;
     var d = new Date();
     d.setTime(d.getTime()+(exdays*24*60*60*1000));
     var expires = "expires="+d.toGMTString();
@@ -22,8 +23,8 @@ class _CookieJar {
 
   ensure(cname, defaultValue) {
     const value = this.get(cname, defaultValue);
-    this.set(cname, value, 3);
-    return value;
+    this.set(cname, value);
+    return this.get(cname);
   }
 }
 
