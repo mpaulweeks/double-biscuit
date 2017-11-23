@@ -36,6 +36,7 @@ class HeroBrain extends BaseBrain {
     this.tm = new TetrominoManager(this.grid);
 
     this.autoDropper = 0;
+    this.inputTouched = {};
     this.inputPressed = {};
     this.inputBuffer = {};
     this.pieceWasSet = false;
@@ -51,6 +52,9 @@ class HeroBrain extends BaseBrain {
   onInput(eventType, event){
     const code = event.code;
     switch (eventType){
+      case 'Touch':
+        this.inputTouched[code] = true;
+        break;
       case 'KeyDown':
         if (!this.inputPressed[code]){
           this.inputPressed[code] = true;
@@ -105,6 +109,62 @@ class HeroBrain extends BaseBrain {
     }
   }
 
+  processInput(inputCode){
+    const { tm } = this;
+    switch (inputCode){
+      case 'ArrowUp':
+        tm.rotate();
+        break;
+      case 'ArrowLeft':
+        tm.shiftLeft();
+        break;
+      case 'ArrowRight':
+        tm.shiftRight();
+        break;
+      case 'ArrowDown':
+        tm.shiftDown();
+        break;
+      case 'Space':
+        tm.drop();
+        this.autoDropper = 0;
+        this.pieceWasSet = true;
+        break;
+      case 'KeyS':
+        tm.doSwap();
+        break;
+      // debug
+      case 'Digit1':
+        this.debug_fillRow(0);
+        break;
+      case 'Digit2':
+        this.debug_fillRow(0);
+        this.debug_fillRow(1);
+        break;
+      case 'Digit3':
+        this.debug_fillRow(0);
+        this.debug_fillRow(1);
+        this.debug_fillRow(2);
+        break;
+      case 'Digit4':
+        this.debug_fillRow(0);
+        this.debug_fillRow(1);
+        this.debug_fillRow(2);
+        this.debug_fillRow(3);
+        break;
+      case 'KeyQ':
+        this.onEvent({type: 'Attack', value: 1});
+        break;
+      case 'KeyW':
+        this.onEvent({type: 'Attack', value: 2});
+        break;
+      case 'KeyE':
+        this.onEvent({type: 'Attack', value: 3});
+        break;
+      default:
+        break;
+    }
+  }
+
   tick(){
     const { tm, grid } = this;
 
@@ -132,65 +192,22 @@ class HeroBrain extends BaseBrain {
 
     // process input / game changes
     this.pieceWasSet = false;
+    for (let inputCode in this.inputTouched){
+      const isInputTouched = this.inputTouched[inputCode];
+      if (isInputTouched){
+        this.processInput(inputCode);
+        this.inputTouched[inputCode] = false;
+      }
+    }
     for (let inputCode in this.inputPressed){
       const isInputPressed = this.inputPressed[inputCode];
       if (isInputPressed){
         if (this.inputBuffer[inputCode] === 0){
+          this.processInput(inputCode);
           this.inputBuffer[inputCode] = KEY_REPEAT(inputCode);
-          switch (inputCode){
-            case 'ArrowUp':
-              tm.rotate();
-              break;
-            case 'ArrowLeft':
-              tm.shiftLeft();
-              break;
-            case 'ArrowRight':
-              tm.shiftRight();
-              break;
-            case 'ArrowDown':
-              tm.shiftDown();
-              break;
-            case 'Space':
-              tm.drop();
-              this.autoDropper = 0;
-              this.pieceWasSet = true;
-              break;
-            case 'KeyS':
-              tm.doSwap();
-              break;
-            // debug
-            case 'Digit1':
-              this.debug_fillRow(0);
-              break;
-            case 'Digit2':
-              this.debug_fillRow(0);
-              this.debug_fillRow(1);
-              break;
-            case 'Digit3':
-              this.debug_fillRow(0);
-              this.debug_fillRow(1);
-              this.debug_fillRow(2);
-              break;
-            case 'Digit4':
-              this.debug_fillRow(0);
-              this.debug_fillRow(1);
-              this.debug_fillRow(2);
-              this.debug_fillRow(3);
-              break;
-            case 'KeyQ':
-              this.onEvent({type: 'Attack', value: 1});
-              break;
-            case 'KeyW':
-              this.onEvent({type: 'Attack', value: 2});
-              break;
-            case 'KeyE':
-              this.onEvent({type: 'Attack', value: 3});
-              break;
-            default:
-              break;
-          }
+        } else {
+          this.inputBuffer[inputCode] -= 1;
         }
-        this.inputBuffer[inputCode] -= 1;
       }
     }
 

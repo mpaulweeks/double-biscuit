@@ -1,11 +1,12 @@
 
 class BaseBrain {
-  constructor(eventListener, inputListener, soundListener){
+  constructor(eventListener, inputListener, touchListener, soundListener){
     eventListener.register(this, e => this.onEvent(e));
     this.eventListener = eventListener;
 
     inputListener.register(this, (et, e) => this.onInput(et, e));
-    this.inputListener = inputListener;
+
+    touchListener.register(this, (et, e) => this.onInput(et, e));
 
     this.soundListener = soundListener;
   }

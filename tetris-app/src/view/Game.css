@@ -108,3 +108,23 @@ div {
   border-width: 3px;
   border-style: solid;
 }
+
+
+@media (max-width: 1000px) {
+  .SoundBar,
+  .EnemyContainer {
+    display: none;
+  }
+  .TetroCanvas {
+    width: 50px;
+    height: 30px;
+  }
+  .TetroCanvas-0 {
+    width: 75px;
+    height: 45px;
+  }
+  .GridCanvas {
+    width: 180px;
+    height: 396px;
+  }
+}

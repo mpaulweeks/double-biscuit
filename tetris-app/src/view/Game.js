@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { BGM } from '../Constants';
 import EventListener from '../rigging/EventListener';
-import InputListener from '../rigging/InputListener';
+import { InputListener, TouchListener } from '../rigging/InputListener';
 import HeroBrain from '../logic/HeroBrain';
 import EnemyBrain from '../logic/EnemyBrain';
 
@@ -27,6 +27,7 @@ class Game extends Component {
     const primaryBrain = new HeroBrain(
       EventListener,
       InputListener,
+      new TouchListener(this.refs.GridCanvas),
       Jukebox
     );
     this.brains = [
@@ -44,11 +45,7 @@ class Game extends Component {
       this.displays.push(new TetroDisplay(ref, primaryBrain, getTetroFunc));
     });
     this.enemyRefs.forEach((ref) => {
-      const eb = new EnemyBrain(
-        EventListener,
-        InputListener,
-        Jukebox
-      );
+      const eb = new EnemyBrain(EventListener);
       this.brains.push(eb);
       this.displays.push(new EnemyDisplay(ref, eb));
     });
