@@ -5,6 +5,26 @@ import TetrominoManager from './TetrominoManager';
 import Grid from './Grid';
 import { AttackBlock } from './Block';
 
+const KEY_REPEAT = function(inputCode){
+  const arrowRepeat = 10;
+  switch (inputCode){
+    case 'ArrowUp':
+      return arrowRepeat * 2;
+    case 'ArrowLeft':
+      return arrowRepeat;
+    case 'ArrowRight':
+      return arrowRepeat;
+    case 'ArrowDown':
+      return arrowRepeat / 2;
+    case 'Space':
+      return -1;
+    case 'KeyS':
+      return -1;
+    default:
+      return -1;
+  }
+}
+
 class HeroBrain extends BaseBrain {
   constructor(...args){
     super(...args);
@@ -16,7 +36,7 @@ class HeroBrain extends BaseBrain {
     this.tm = new TetrominoManager(this.grid);
 
     this.autoDropper = 0;
-    this.arrowCode = null;
+    this.inputPressed = {};
     this.inputBuffer = {};
     this.pieceWasSet = false;
     this.pendingAttacks = [];
@@ -32,12 +52,13 @@ class HeroBrain extends BaseBrain {
     const code = event.code;
     switch (eventType){
       case 'KeyDown':
-        this.arrowCode = event.code;
-        // todo use input buffer, not arrowCode
-        this.inputBuffer[code] = true;
+        if (!this.inputPressed[code]){
+          this.inputPressed[code] = true;
+          this.inputBuffer[code] = 0;
+        }
         break;
       case 'KeyUp':
-        this.inputBuffer[code] = false;
+        this.inputPressed[code] = false;
         break;
       default:
         break;
@@ -111,60 +132,66 @@ class HeroBrain extends BaseBrain {
 
     // process input / game changes
     this.pieceWasSet = false;
-    if (this.arrowCode){
-      switch (this.arrowCode){
-        case 'ArrowUp':
-          tm.rotate();
-          break;
-        case 'ArrowLeft':
-          tm.shiftLeft();
-          break;
-        case 'ArrowRight':
-          tm.shiftRight();
-          break;
-        case 'ArrowDown':
-          tm.shiftDown();
-          break;
-        case 'Space':
-          tm.drop();
-          this.autoDropper = 0;
-          this.pieceWasSet = true;
-          break;
-        case 'KeyS':
-          tm.doSwap();
-          break;
-        // debug
-        case 'Digit1':
-          this.debug_fillRow(0);
-          break;
-        case 'Digit2':
-          this.debug_fillRow(0);
-          this.debug_fillRow(1);
-          break;
-        case 'Digit3':
-          this.debug_fillRow(0);
-          this.debug_fillRow(1);
-          this.debug_fillRow(2);
-          break;
-        case 'Digit4':
-          this.debug_fillRow(0);
-          this.debug_fillRow(1);
-          this.debug_fillRow(2);
-          this.debug_fillRow(3);
-          break;
-        case 'KeyQ':
-          this.onEvent({type: 'Attack', value: 1});
-          break;
-        case 'KeyW':
-          this.onEvent({type: 'Attack', value: 2});
-          break;
-        case 'KeyE':
-          this.onEvent({type: 'Attack', value: 3});
-          break;
-        default:
-          break;
+    for (let inputCode in this.inputPressed){
+      const isInputPressed = this.inputPressed[inputCode];
+      if (isInputPressed){
+        if (this.inputBuffer[inputCode] === 0){
+          this.inputBuffer[inputCode] = KEY_REPEAT(inputCode);
+          switch (inputCode){
+            case 'ArrowUp':
+              tm.rotate();
+              break;
+            case 'ArrowLeft':
+              tm.shiftLeft();
+              break;
+            case 'ArrowRight':
+              tm.shiftRight();
+              break;
+            case 'ArrowDown':
+              tm.shiftDown();
+              break;
+            case 'Space':
+              tm.drop();
+              this.autoDropper = 0;
+              this.pieceWasSet = true;
+              break;
+            case 'KeyS':
+              tm.doSwap();
+              break;
+            // debug
+            case 'Digit1':
+              this.debug_fillRow(0);
+              break;
+            case 'Digit2':
+              this.debug_fillRow(0);
+              this.debug_fillRow(1);
+              break;
+            case 'Digit3':
+              this.debug_fillRow(0);
+              this.debug_fillRow(1);
+              this.debug_fillRow(2);
+              break;
+            case 'Digit4':
+              this.debug_fillRow(0);
+              this.debug_fillRow(1);
+              this.debug_fillRow(2);
+              this.debug_fillRow(3);
+              break;
+            case 'KeyQ':
+              this.onEvent({type: 'Attack', value: 1});
+              break;
+            case 'KeyW':
+              this.onEvent({type: 'Attack', value: 2});
+              break;
+            case 'KeyE':
+              this.onEvent({type: 'Attack', value: 3});
+              break;
+            default:
+              break;
+          }
+        }
+        this.inputBuffer[inputCode] -= 1;
       }
-      this.arrowCode = null;
     }
 
     this.autoDropper += 1;
