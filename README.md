@@ -34,3 +34,9 @@ Online Attack Tetris w/ Websockets
   - Draw over with white rectangle with increasing alpha
   - then draw gradient to wipe off screen
   - hold on black for a few frames to make it look like dropping
+
+## 2017-11-24 phone todo
+- Add destructor to Game.js
+- Add purge() to InputListener
+- Use CSS to rotate next/swap on mobile
+- Fix bug with extra space on side of grid

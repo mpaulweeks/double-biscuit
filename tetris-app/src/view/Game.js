@@ -22,10 +22,11 @@ class Game extends Component {
     if (this.started){ return; }
     this.started = true;
 
+    const eventListener = new EventListener();
     Jukebox.playBGM(BGM.TypeA);
 
     const primaryBrain = new HeroBrain(
-      EventListener,
+      eventListener,
       InputListener,
       new TouchListener(this.refs.GridCanvas, this.refs.SwapCanvas),
       Jukebox
@@ -45,7 +46,7 @@ class Game extends Component {
       this.displays.push(new TetroDisplay(ref, primaryBrain, getTetroFunc));
     });
     this.enemyRefs.forEach((ref) => {
-      const eb = new EnemyBrain(EventListener);
+      const eb = new EnemyBrain(eventListener);
       this.brains.push(eb);
       this.displays.push(new EnemyDisplay(ref, eb));
     });

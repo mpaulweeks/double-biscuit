@@ -78,7 +78,7 @@ class HeroBrain extends BaseBrain {
   sendAttack(rowsCleared){
     const attackSize = rowsCleared - 1;
     if (attackSize > 0){
-      // todo send attack
+      this.eventListener.sendUpstream(this.id, {pattern: 'broadcast', type: 'Attack', value: attackSize});
     }
   }
   processAttacks(){
@@ -92,7 +92,7 @@ class HeroBrain extends BaseBrain {
   }
   sendUpdate(){
     const data = this.grid.serialize();
-    this.eventListener.broadcast(this, {type: 'Grid', value: data});
+    this.eventListener.sendUpstream(this.id, {pattern: 'broadcast', type: 'Grid', value: data});
   }
 
   sendSound(soundCode){

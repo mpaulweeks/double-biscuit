@@ -1,5 +1,5 @@
 
-class _EventListener {
+class EventListener {
   constructor(){
     this.subscribers = [];
   }
@@ -14,17 +14,17 @@ class _EventListener {
       sub.callback(event);
     });
   }
-  broadcast(caller, event){
+  broadcast(callerId, event){
     this.subscribers.forEach(sub => {
-      if (sub.caller !== caller){
+      if (event.pattern === 'broadcast' && sub.caller.id !== callerId){
         sub.callback(event);
-      } else {
-        // registered caller
       }
     });
   }
+  sendUpstream(callerId, event){
+    // todo websockets
+    this.broadcast(callerId, event);
+  }
 }
-
-const EventListener = new _EventListener();
 
 export default EventListener;
