@@ -20,9 +20,9 @@ Online Attack Tetris w/ Websockets
 
 ## todo
 - Figure out consistent shifting/beginning offset
-- Add mobile controls
 - Add SCSS and base everything off block size (currently 30 grid, 15 upcoming)
 - Move to middle on edge rotate
+- height: 92%, need better method
 
 ## 2017-11-16 phone todo
 - Second GameAI class that sets up many AI board, sets up callbacks to attack each other

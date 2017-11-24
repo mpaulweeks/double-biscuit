@@ -33,7 +33,7 @@ class _InputListener extends _BaseInputListener {
 const InputListener = new _InputListener();
 
 class TouchListener extends _BaseInputListener {
-  constructor($canvas){
+  constructor($canvas, $swap){
     super();
     this.canvas = $canvas;
 
@@ -41,7 +41,10 @@ class TouchListener extends _BaseInputListener {
     this.canvas.addEventListener("touchend", touchEvent => {
       const event = self.convertTouchToButton(touchEvent);
       self.broadcast('Touch', event);
-    }, false);
+    });
+    $swap.addEventListener("touchend", touchEvent => {
+      self.broadcast('Touch', {'code': 'KeyS'});
+    });
   }
   convertTouchToButton(touchEvent){
     touchEvent.preventDefault();

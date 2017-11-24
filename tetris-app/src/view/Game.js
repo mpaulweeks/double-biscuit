@@ -27,7 +27,7 @@ class Game extends Component {
     const primaryBrain = new HeroBrain(
       EventListener,
       InputListener,
-      new TouchListener(this.refs.GridCanvas),
+      new TouchListener(this.refs.GridCanvas, this.refs.SwapCanvas),
       Jukebox
     );
     this.brains = [
