@@ -1,7 +1,10 @@
+import SocketManager from './Socket';
 
 class EventListener {
-  constructor(){
+  constructor(checkForNewUsers){
+    this.checkForNewUsers = checkForNewUsers;
     this.subscribers = [];
+    SocketManager.register(this, m => this.receiveSocket(m));
   }
   register(caller, callback){
     this.subscribers.push({
@@ -14,16 +17,22 @@ class EventListener {
       sub.callback(event);
     });
   }
-  broadcast(callerId, event){
+  broadcast(event){
     this.subscribers.forEach(sub => {
-      if (event.pattern === 'broadcast' && sub.caller.id !== callerId){
+      if (event.pattern === 'broadcast'){
         sub.callback(event);
       }
     });
   }
-  sendUpstream(callerId, event){
-    // todo websockets
-    this.broadcast(callerId, event);
+  sendUpstream(event){
+    SocketManager.send({
+      event: event,
+    })
+  }
+  receiveSocket(message){
+    const data = JSON.parse(message);
+    this.checkForNewUsers(data);
+    this.broadcast(data.event);
   }
 }
 

@@ -70,7 +70,7 @@ class HeroBrain extends BaseBrain {
   }
 
   onEvent(event){
-    if (event.type === 'Attack'){
+    if (event.origin !== this.id && event.type === 'Attack'){
       this.pendingAttacks.push(event.value);
     }
   }
@@ -78,7 +78,12 @@ class HeroBrain extends BaseBrain {
   sendAttack(rowsCleared){
     const attackSize = rowsCleared - 1;
     if (attackSize > 0){
-      this.eventListener.sendUpstream(this.id, {pattern: 'broadcast', type: 'Attack', value: attackSize});
+      this.eventListener.sendUpstream({
+        pattern: 'broadcast',
+        origin: this.id,
+        type: 'Attack',
+        value: attackSize,
+      });
     }
   }
   processAttacks(){
@@ -92,7 +97,12 @@ class HeroBrain extends BaseBrain {
   }
   sendUpdate(){
     const data = this.grid.serialize();
-    this.eventListener.sendUpstream(this.id, {pattern: 'broadcast', type: 'Grid', value: data});
+    this.eventListener.sendUpstream({
+      pattern: 'broadcast',
+      origin: this.id,
+      type: 'Grid',
+      value: data,
+    });
   }
 
   sendSound(soundCode){

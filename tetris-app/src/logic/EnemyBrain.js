@@ -11,10 +11,11 @@ class EnemyBrain extends BaseBrain {
   constructor(eventListener){
     super(eventListener, dummyListener(), dummyListener(), dummyListener());
     this.grid = new Grid();
+    this.id = null;
   }
 
   onEvent(event){
-    if (event.type === 'Grid'){
+    if (event.origin === this.id && event.type === 'Grid'){
       const gs = event.value;
       this.grid = Grid.deserialize(gs);
     }

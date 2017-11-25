@@ -10,6 +10,7 @@ import { GridDisplay, TetroDisplay, EnemyDisplay } from './Display';
 import Jukebox from './Jukebox';
 import './Game.css';
 
+
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -18,11 +19,33 @@ class Game extends Component {
     this.started = false;
   }
 
+  checkForNewUsers(socketData){
+    const { event } = socketData;
+    let found = false;
+    let empty = 0;
+    this.brains.forEach(b => {
+      if (b.id === event.origin){
+        found = true;
+      }
+      if (b.id === null){
+        empty += 1;
+      }
+    });
+    if (!found && empty > 0){
+      console.log('setting enemy brain', event.origin, event);
+      let bi = 0;
+      while(this.brains[bi].id !== null){
+        bi += 1;
+      }
+      this.brains[bi].id = event.origin;
+    }
+  }
+
   setup() {
     if (this.started){ return; }
     this.started = true;
 
-    const eventListener = new EventListener();
+    const eventListener = new EventListener(d => this.checkForNewUsers(d));
     Jukebox.playBGM(BGM.TypeA);
 
     const primaryBrain = new HeroBrain(

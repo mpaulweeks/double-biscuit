@@ -6,3 +6,6 @@ test:
 
 deploy:
 	cd tetris-app && yarn deploy
+
+websocket:
+	cd go/src/double-biscuit/ws && make run
