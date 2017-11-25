@@ -21,9 +21,9 @@ class _SocketManager {
   }
 
   host(){
-    const host = document.location.host;
+    const host = 'double-biscuit-api.mpaulweeks.com';
     if (host.indexOf('localhost') >= 0){
-      return 'localhost:8080';
+      return 'localhost:5080';
     }
     return host;
   }

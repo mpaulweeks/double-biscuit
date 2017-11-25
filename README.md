@@ -4,6 +4,12 @@
 
 Online Attack Tetris w/ Websockets
 
+## Info
+
+```
+netstat -tulpn
+```
+
 ## Plan
 
 ### FE
