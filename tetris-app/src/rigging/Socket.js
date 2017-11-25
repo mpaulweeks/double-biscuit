@@ -21,11 +21,10 @@ class _SocketManager {
   }
 
   host(){
-    const host = 'double-biscuit-api.mpaulweeks.com';
-    if (host.indexOf('localhost') >= 0){
+    if (document.location.host.indexOf('localhost') >= 0){
       return 'localhost:5080';
     }
-    return host;
+    return 'double-biscuit-api.mpaulweeks.com';
   }
 
   new(){
@@ -44,7 +43,6 @@ class _SocketManager {
   }
 
   send(data){
-    console.log('sending ws', data);
     const message = JSON.stringify(data);
     this.conn().send(message);
   }

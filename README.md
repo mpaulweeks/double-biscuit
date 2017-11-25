@@ -6,6 +6,8 @@ Online Attack Tetris w/ Websockets
 
 ## Info
 
+[nginx for websockets](https://www.nginx.com/blog/websocket-nginx/)
+
 ```
 netstat -tulpn
 ```
