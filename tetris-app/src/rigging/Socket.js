@@ -35,9 +35,11 @@ class _SocketManager {
       console.log('conn closed');
     };
     self.conn().onmessage = function (evt) {
-      const message = evt.data;
-      self.eventListeners.forEach(el => {
-        el.callback(message);
+      const messages = evt.data.split('\n');
+      messages.forEach(function (message){
+        self.eventListeners.forEach(el => {
+          el.callback(message);
+        });
       });
     };
   }

@@ -46,7 +46,7 @@ class Game extends Component {
     this.started = true;
 
     const eventListener = new EventListener(d => this.checkForNewUsers(d));
-    Jukebox.playBGM(BGM.TypeA);
+    Jukebox.playBGM(BGM.Unity);
 
     const primaryBrain = new HeroBrain(
       eventListener,

@@ -146,6 +146,9 @@ class GridDisplay extends BaseDisplay {
   constructor($canvas, brain, $incomingAttack){
     super($canvas, brain);
     this.incomingAttack = $incomingAttack;
+
+    this.doubleBiscuit = new Image();
+    this.doubleBiscuit.src = 'double_biscuit_trans.png';
   }
 
   draw(){
@@ -195,8 +198,8 @@ class GridDisplay extends BaseDisplay {
     const clearGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
     Rainbow.applyGradient(clearGradient, this.animationTimer);
     ctx.fillStyle = clearGradient;
+    const floor = canvas.height;
     for (let row of rowsFilled){
-      const floor = canvas.height;
       const xStart = 0;
       const yStart = floor - (cellHeight * (row + 1));
       ctx.fillRect(
@@ -204,6 +207,15 @@ class GridDisplay extends BaseDisplay {
         yStart,
         canvas.width,
         cellHeight
+      );
+    }
+    if (rowsFilled.length === 2 && this.animationTimer < 5){
+      ctx.drawImage(
+        this.doubleBiscuit,
+        canvas.width / 4,
+        floor - cellHeight*rowsFilled.length,
+        canvas.width / 2,
+        cellHeight*rowsFilled.length
       );
     }
 

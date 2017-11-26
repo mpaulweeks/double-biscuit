@@ -109,14 +109,17 @@ class HeroBrain extends BaseBrain {
     this.soundListener.playSFX(soundCode);
   }
 
-  debug_fillRow(row){
+  debug_fillRow(rows){
     this.tm.drop();
     this.autoDropper = 0;
     this.pieceWasSet = true;
-    for (let col = 0; col < this.grid.width(); col++){
-      const block = new AttackBlock({x: col, y: row});
-      this.grid.setBlock(block);
-    }
+    const self = this;
+    rows.forEach(function (row){
+      for (let col = 0; col < self.grid.width(); col++){
+        const block = new AttackBlock({x: col, y: row});
+        self.grid.setBlock(block);
+      }
+    });
   }
 
   processInput(inputCode){
@@ -144,22 +147,16 @@ class HeroBrain extends BaseBrain {
         break;
       // debug
       case 'Digit1':
-        this.debug_fillRow(0);
+        this.debug_fillRow([0]);
         break;
       case 'Digit2':
-        this.debug_fillRow(0);
-        this.debug_fillRow(1);
+        this.debug_fillRow([0,1]);
         break;
       case 'Digit3':
-        this.debug_fillRow(0);
-        this.debug_fillRow(1);
-        this.debug_fillRow(2);
+        this.debug_fillRow([0,1,2]);
         break;
       case 'Digit4':
-        this.debug_fillRow(0);
-        this.debug_fillRow(1);
-        this.debug_fillRow(2);
-        this.debug_fillRow(3);
+        this.debug_fillRow([0,1,2,3]);
         break;
       case 'KeyQ':
         this.onEvent({type: 'Attack', value: 1});
