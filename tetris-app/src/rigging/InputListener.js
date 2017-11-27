@@ -40,10 +40,10 @@ class _InputListener extends _BaseInputListener {
     const self = this;
     document.addEventListener('keydown', event => {
       // console.log(event);
-      self.broadcast('KeyDown', {code: KeyToInput[event.code]});
+      self.broadcast('KeyDown', KeyToInput[event.code]);
     });
     document.addEventListener('keyup', event => {
-      self.broadcast('KeyUp', {code: KeyToInput[event.code]});
+      self.broadcast('KeyUp', KeyToInput[event.code]);
     });
   }
 }
@@ -57,10 +57,10 @@ class TouchListener extends _BaseInputListener {
     const self = this;
     this.canvas.addEventListener("touchend", touchEvent => {
       const event = self.convertTouchToKeyPress(touchEvent);
-      self.broadcast('Touch', {code: KeyToInput[event.code]});
+      self.broadcast('Touch', KeyToInput[event.code]);
     });
     $swap.addEventListener("touchend", touchEvent => {
-      self.broadcast('Touch', {code: Inputs.Swap});
+      self.broadcast('Touch', Inputs.Swap);
     });
   }
   convertTouchToKeyPress(touchEvent){
@@ -83,43 +83,47 @@ class TouchListener extends _BaseInputListener {
     if (isCenter && false){
       // do center action
     } else {
-      var slope = height/width;
-      var f = function(x){
+      const slope = height/width;
+      const f = function(x){
         return -1*slope*x + height;
       }
-      var g = function(x){
+      const g = function(x){
         return slope*x;
       }
-      var possible = {
-        ArrowUp: true,
-        Space: true,
-        ArrowLeft: true,
-        ArrowRight: true
+      const possible = {
+        Up: true,
+        Down: true,
+        Left: true,
+        Right: true
+      };
+      const moves = {
+        Up: Inputs.Rotate,
+        Down: Inputs.ArrowDown,
+        Left: Inputs.ArrowLeft,
+        Right: Inputs.ArrowRight,
       };
       if(f(touchX) > touchY){
-        possible.Space = false;
-        possible.ArrowRight = false;
+        possible.Down = false;
+        possible.Right = false;
       } else {
-        possible.ArrowUp = false;
-        possible.ArrowLeft = false;
+        possible.Up = false;
+        possible.Left = false;
       }
       if(g(touchX) > touchY){
-        possible.Space = false;
-        possible.ArrowLeft = false;
+        possible.Down = false;
+        possible.Left = false;
       } else {
-        possible.ArrowUp = false;
-        possible.ArrowRight = false;
+        possible.Up = false;
+        possible.Right = false;
       }
-      // brain.latestPossible = possible;
       for(var dir in possible){
         if(possible[dir]){
-          return {code: dir};
+          return moves[dir];
         }
       }
     }
   }
 }
-
 
 export {
   InputListener,

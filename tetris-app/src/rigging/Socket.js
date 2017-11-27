@@ -1,9 +1,11 @@
 
 class _SocketManager {
   constructor(){
-    this._conn = null;
+    this.conn = null;
     this.eventListeners = [];
     this.new();
+    this.failedMessages = [];
+    this.retryFunc = setInterval(() => this.retryFailed(), 1000);
   }
 
   register(eventListener, callback){
@@ -11,13 +13,6 @@ class _SocketManager {
       caller: eventListener,
       callback: callback,
     });
-  }
-
-  conn(){
-    if (!this._conn){
-      this.new();
-    }
-    return this._conn;
   }
 
   host(){
@@ -29,12 +24,13 @@ class _SocketManager {
 
   new(){
     const self = this;
-    self._conn = new WebSocket(`ws://${self.host()}/ws`);
-    self.conn().onclose = function (evt) {
-      self._conn = null;
+    const newConn = new WebSocket(`ws://${self.host()}/ws`);
+    newConn.onclose = function (evt) {
       console.log('conn closed');
+      console.log(evt);
+      self.new();
     };
-    self.conn().onmessage = function (evt) {
+    newConn.onmessage = function (evt) {
       const messages = evt.data.split('\n');
       messages.forEach(function (message){
         self.eventListeners.forEach(el => {
@@ -42,11 +38,32 @@ class _SocketManager {
         });
       });
     };
+    self.conn = newConn;
   }
 
   send(data){
     const message = JSON.stringify(data);
-    this.conn().send(message);
+    this.trySend(message);
+  }
+
+  trySend(message){
+    if (this.conn && this.conn.readyState === 1){
+      try {
+        this.conn.send(message);
+      } catch (e) {
+        console.log(e);
+        this.failedMessages.push(message);
+      }
+    } else {
+      console.log('conn not ready');
+      this.failedMessages.push(message);
+    }
+  }
+
+  retryFailed(){
+    const oldFailed = this.failedMessages.splice();
+    this.failedMessages = [];
+    oldFailed.forEach(msg => this.trySend(msg));
   }
 }
 

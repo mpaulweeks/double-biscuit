@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { BGM } from '../Constants';
 import EventListener from '../rigging/EventListener';
+import SocketManager from '../rigging/Socket';
 import { InputListener, TouchListener } from '../rigging/InputListener';
 import HeroBrain from '../logic/HeroBrain';
 import EnemyBrain from '../logic/EnemyBrain';
@@ -81,7 +82,10 @@ class Game extends Component {
     this.displays.forEach(d => d.startDrawLoop());
 
     // debugging
-    window.admin = this;
+    window.admin = {
+      ...this,
+      SocketManager,
+    };
   }
 
   render() {

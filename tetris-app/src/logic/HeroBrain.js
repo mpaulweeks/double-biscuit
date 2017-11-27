@@ -49,8 +49,7 @@ class HeroBrain extends BaseBrain {
     return this.tm.current();
   }
 
-  onInput(eventType, event){
-    const code = event.code;
+  onInput(eventType, code){
     switch (eventType){
       case 'Touch':
         this.inputTouched[code] = true;
