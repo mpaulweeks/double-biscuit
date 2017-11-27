@@ -1,3 +1,4 @@
+import Logger from '../Logging';
 import { Inputs } from '../Constants';
 
 class _BaseInputListener {
@@ -39,7 +40,7 @@ class _InputListener extends _BaseInputListener {
 
     const self = this;
     document.addEventListener('keydown', event => {
-      // console.log(event);
+      Logger.info(event);
       self.broadcast('KeyDown', KeyToInput[event.code]);
     });
     document.addEventListener('keyup', event => {

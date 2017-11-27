@@ -1,3 +1,4 @@
+import Logger from '../Logging';
 
 class _SocketManager {
   constructor(){
@@ -24,21 +25,25 @@ class _SocketManager {
 
   new(){
     const self = this;
-    const newConn = new WebSocket(`ws://${self.host()}/ws`);
-    newConn.onclose = function (evt) {
-      console.log('conn closed');
-      console.log(evt);
-      self.new();
-    };
-    newConn.onmessage = function (evt) {
-      const messages = evt.data.split('\n');
-      messages.forEach(function (message){
-        self.eventListeners.forEach(el => {
-          el.callback(message);
+    try {
+      const newConn = new WebSocket(`ws://${self.host()}/ws`);
+      newConn.onclose = function (evt) {
+        Logger.info('[Socket] conn closed');
+        Logger.info(evt);
+        self.new();
+      };
+      newConn.onmessage = function (evt) {
+        const messages = evt.data.split('\n');
+        messages.forEach(function (message){
+          self.eventListeners.forEach(el => {
+            el.callback(message);
+          });
         });
-      });
-    };
-    self.conn = newConn;
+      };
+      self.conn = newConn;
+    } catch (err) {
+      Logger.info(err);
+    }
   }
 
   send(data){
@@ -50,18 +55,19 @@ class _SocketManager {
     if (this.conn && this.conn.readyState === 1){
       try {
         this.conn.send(message);
-      } catch (e) {
-        console.log(e);
+      } catch (err) {
+        Logger.info('[Socket] trySend failed');
+        Logger.info(err);
         this.failedMessages.push(message);
       }
     } else {
-      console.log('conn not ready');
+      Logger.info('[Socket] trySend delayed, conn not ready');
       this.failedMessages.push(message);
     }
   }
 
   retryFailed(){
-    const oldFailed = this.failedMessages.splice();
+    const oldFailed = this.failedMessages.slice();
     this.failedMessages = [];
     oldFailed.forEach(msg => this.trySend(msg));
   }

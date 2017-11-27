@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import Logger from '../Logging';
 import { BGM } from '../Constants';
 import EventListener from '../rigging/EventListener';
 import SocketManager from '../rigging/Socket';
@@ -33,7 +34,7 @@ class Game extends Component {
       }
     });
     if (!found && empty > 0){
-      console.log('setting enemy brain', event.origin, event);
+      Logger.info('setting enemy brain', event.origin, event);
       let bi = 0;
       while(this.brains[bi].id !== null){
         bi += 1;
