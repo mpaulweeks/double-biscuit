@@ -1,3 +1,4 @@
+import { Inputs } from '../Constants';
 
 class _BaseInputListener {
   constructor(){
@@ -16,6 +17,22 @@ class _BaseInputListener {
   }
 }
 
+const KeyToInput = {
+  'ArrowUp': Inputs.Rotate,
+  'ArrowLeft': Inputs.MoveLeft,
+  'ArrowRight': Inputs.MoveRight,
+  'ArrowDown': Inputs.MoveDown,
+  'Space': Inputs.Drop,
+  'KeyS': Inputs.Swap,
+  'Digit1': Inputs.Debug.Clear1,
+  'Digit2': Inputs.Debug.Clear2,
+  'Digit3': Inputs.Debug.Clear3,
+  'Digit4': Inputs.Debug.Clear4,
+  'KeyQ': Inputs.Debug.Attack1,
+  'KeyW': Inputs.Debug.Attack2,
+  'KeyE': Inputs.Debug.Attack3,
+};
+
 class _InputListener extends _BaseInputListener {
   constructor(){
     super();
@@ -23,10 +40,10 @@ class _InputListener extends _BaseInputListener {
     const self = this;
     document.addEventListener('keydown', event => {
       // console.log(event);
-      self.broadcast('KeyDown', event);
+      self.broadcast('KeyDown', {code: KeyToInput[event.code]});
     });
     document.addEventListener('keyup', event => {
-      self.broadcast('KeyUp', event);
+      self.broadcast('KeyUp', {code: KeyToInput[event.code]});
     });
   }
 }
@@ -39,14 +56,14 @@ class TouchListener extends _BaseInputListener {
 
     const self = this;
     this.canvas.addEventListener("touchend", touchEvent => {
-      const event = self.convertTouchToButton(touchEvent);
-      self.broadcast('Touch', event);
+      const event = self.convertTouchToKeyPress(touchEvent);
+      self.broadcast('Touch', {code: KeyToInput[event.code]});
     });
     $swap.addEventListener("touchend", touchEvent => {
-      self.broadcast('Touch', {'code': 'KeyS'});
+      self.broadcast('Touch', {code: Inputs.Swap});
     });
   }
-  convertTouchToButton(touchEvent){
+  convertTouchToKeyPress(touchEvent){
     touchEvent.preventDefault();
     if(touchEvent.changedTouches){
       touchEvent = touchEvent.changedTouches[0];

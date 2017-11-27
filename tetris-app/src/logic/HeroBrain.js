@@ -1,4 +1,4 @@
-import { SFX } from '../Constants';
+import { Inputs, Events, SFX } from '../Constants';
 
 import BaseBrain from './BaseBrain';
 import TetrominoManager from './TetrominoManager';
@@ -8,17 +8,17 @@ import { AttackBlock } from './Block';
 const KEY_REPEAT = function(inputCode){
   const arrowRepeat = 10;
   switch (inputCode){
-    case 'ArrowUp':
+    case Inputs.Rotate:
       return arrowRepeat * 2;
-    case 'ArrowLeft':
+    case Inputs.MoveLeft:
       return arrowRepeat;
-    case 'ArrowRight':
+    case Inputs.MoveRight:
       return arrowRepeat;
-    case 'ArrowDown':
+    case Inputs.MoveDown:
       return arrowRepeat / 2;
-    case 'Space':
+    case Inputs.Drop:
       return -1;
-    case 'KeyS':
+    case Inputs.Swap:
       return -1;
     default:
       return -1;
@@ -70,7 +70,7 @@ class HeroBrain extends BaseBrain {
   }
 
   onEvent(event){
-    if (event.origin !== this.id && event.type === 'Attack'){
+    if (event.origin !== this.id && event.type === Events.Attack){
       this.pendingAttacks.push(event.value);
     }
   }
@@ -81,7 +81,7 @@ class HeroBrain extends BaseBrain {
       this.eventListener.sendUpstream({
         pattern: 'broadcast',
         origin: this.id,
-        type: 'Attack',
+        type: Events.Attack,
         value: attackSize,
       });
     }
@@ -125,47 +125,47 @@ class HeroBrain extends BaseBrain {
   processInput(inputCode){
     const { tm } = this;
     switch (inputCode){
-      case 'ArrowUp':
+      case Inputs.Rotate:
         tm.rotate();
         break;
-      case 'ArrowLeft':
+      case Inputs.MoveLeft:
         tm.shiftLeft();
         break;
-      case 'ArrowRight':
+      case Inputs.MoveRight:
         tm.shiftRight();
         break;
-      case 'ArrowDown':
+      case Inputs.MoveDown:
         tm.shiftDown();
         break;
-      case 'Space':
+      case Inputs.Drop:
         tm.drop();
         this.autoDropper = 0;
         this.pieceWasSet = true;
         break;
-      case 'KeyS':
+      case Inputs.Swap:
         tm.doSwap();
         break;
       // debug
-      case 'Digit1':
+      case Inputs.Debug.Clear1:
         this.debug_fillRow([0]);
         break;
-      case 'Digit2':
+      case Inputs.Debug.Clear2:
         this.debug_fillRow([0,1]);
         break;
-      case 'Digit3':
+      case Inputs.Debug.Clear3:
         this.debug_fillRow([0,1,2]);
         break;
-      case 'Digit4':
+      case Inputs.Debug.Clear4:
         this.debug_fillRow([0,1,2,3]);
         break;
-      case 'KeyQ':
-        this.onEvent({type: 'Attack', value: 1});
+      case Inputs.Debug.Attack1:
+        this.onEvent({type: Events.Attack, value: 1});
         break;
-      case 'KeyW':
-        this.onEvent({type: 'Attack', value: 2});
+      case Inputs.Debug.Attack2:
+        this.onEvent({type: Events.Attack, value: 2});
         break;
-      case 'KeyE':
-        this.onEvent({type: 'Attack', value: 3});
+      case Inputs.Debug.Attack3:
+        this.onEvent({type: Events.Attack, value: 3});
         break;
       default:
         break;

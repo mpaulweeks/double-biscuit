@@ -58,11 +58,36 @@ const Cookies = {
   MuteSFX: 'mute_sfx',
 };
 
+const Events = {
+  Attack: 'attack',
+  Grid: 'grid',
+};
+
+const Inputs = {
+  MoveLeft: 'move_left',
+  MoveRight: 'move_right',
+  MoveDown: 'move_down',
+  Drop: 'move_drop',
+  Rotate: 'rotate',
+  Swap: 'swap',
+  Debug: {
+    Attack1: 'debug_attack_1',
+    Attack2: 'debug_attack_2',
+    Attack3: 'debug_attack_3',
+    Clear1: 'debug_clear_1',
+    Clear2: 'debug_clear_2',
+    Clear3: 'debug_clear_3',
+    Clear4: 'debug_clear_4',
+  },
+};
+
 export {
   TetroById,
   TetroByType,
   BGM,
   SFX,
+  Inputs,
   Errors,
+  Events,
   Cookies,
 }
