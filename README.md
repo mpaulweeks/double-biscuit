@@ -50,3 +50,18 @@ netstat -tulpn
 - Add purge() to InputListener
 - Use CSS to rotate next/swap on mobile
 - Fix bug with extra space on side of grid
+
+## 2017-11-28 todo
+- name singletons as such, to stand out
+- splash screen
+  - displays some tetros, drawn by Display
+  - option for solo play
+  - option for group play
+- game screen
+  - button to quit back to lobby
+  - dynamically make enemy screens?
+- matchmaking screen
+  - input for name
+  - search for game, join game with code, or create game (with private option)
+  - if more than one person searching, select 1 as host
+  - host has option to start once >1 player
