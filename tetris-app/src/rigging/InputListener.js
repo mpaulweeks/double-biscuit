@@ -57,8 +57,8 @@ class TouchListener extends _BaseInputListener {
 
     const self = this;
     this.canvas.addEventListener("touchend", touchEvent => {
-      const event = self.convertTouchToKeyPress(touchEvent);
-      self.broadcast('Touch', KeyToInput[event.code]);
+      const eventCode = self.convertTouchToKeyPress(touchEvent);
+      self.broadcast('Touch', eventCode);
     });
     $swap.addEventListener("touchend", touchEvent => {
       self.broadcast('Touch', Inputs.Swap);
@@ -99,9 +99,9 @@ class TouchListener extends _BaseInputListener {
       };
       const moves = {
         Up: Inputs.Rotate,
-        Down: Inputs.ArrowDown,
-        Left: Inputs.ArrowLeft,
-        Right: Inputs.ArrowRight,
+        Down: Inputs.Drop,
+        Left: Inputs.MoveLeft,
+        Right: Inputs.MoveRight,
       };
       if(f(touchX) > touchY){
         possible.Down = false;
