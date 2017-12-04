@@ -9,6 +9,7 @@ import HeroBrain from '../logic/HeroBrain';
 import EnemyBrain from '../logic/EnemyBrain';
 
 import { GridDisplay, TetroDisplay, EnemyDisplay } from './Display';
+import { SectionTitle, IncomingAttack, TetroCanvas, BigTetroCanvas } from './Component';
 import Jukebox from './Jukebox';
 import './Game.css';
 
@@ -53,18 +54,18 @@ class Game extends Component {
     const primaryBrain = new HeroBrain(
       eventListener,
       InputListener,
-      new TouchListener(this.refs.GridCanvas, this.refs.SwapCanvas),
+      new TouchListener(this.refs.GridCanvas, this.SwapCanvas),
       Jukebox
     );
     this.brains = [
       primaryBrain,
     ]
     this.displays = [
-      new GridDisplay(this.refs.GridCanvas, primaryBrain, this.refs.IncomingAttack),
+      new GridDisplay(this.refs.GridCanvas, primaryBrain, this.IncomingAttack),
     ];
 
     const getSwapFunc = brain => brain.tm.getSwap();
-    this.displays.push(new TetroDisplay(this.refs.SwapCanvas, primaryBrain, getSwapFunc));
+    this.displays.push(new TetroDisplay(this.SwapCanvas, primaryBrain, getSwapFunc));
 
     this.upcomingRefs.forEach((ref, index) => {
       const getTetroFunc = brain => brain.tm.upcoming()[index];
@@ -98,25 +99,26 @@ class Game extends Component {
       <div className="AllGames">
         <div className="PrimaryInfo">
           <div className="FlexTop">
-            <div className="UpcomingTitle">
+            <SectionTitle>
               Next
-            </div>
+            </SectionTitle>
             {upcoming.map((value, i) => (
               <div key={`upcoming-${i}`} >
-                <canvas ref={c => {this.upcomingRefs[value] = c;}} className={`TetroCanvas TetroCanvas-${i}`}></canvas>
+                {i === 0 && <BigTetroCanvas innerRef={comp => this.upcomingRefs[value] = comp}></BigTetroCanvas>}
+                {i > 0 && <TetroCanvas innerRef={comp => this.upcomingRefs[value] = comp}></TetroCanvas>}
               </div>
             ))}
           </div>
           <div className="FlexBottom">
-            <div ref="IncomingAttack" className="IncomingAttackTitle">
+            <IncomingAttack innerRef={comp => {this.IncomingAttack = comp}}>
               Incoming<br/>attacks!
-            </div>
+            </IncomingAttack>
             <br/>
-            <div className="SwapTitle">
+            <SectionTitle>
               Swap
-            </div>
+            </SectionTitle>
             <div>
-              <canvas ref='SwapCanvas' className="TetroCanvas TetroCanvas-0"></canvas>
+              <BigTetroCanvas innerRef={comp => this.SwapCanvas = comp}></BigTetroCanvas>
             </div>
           </div>
         </div>
@@ -124,9 +126,9 @@ class Game extends Component {
           <canvas ref='GridCanvas' className="GridCanvas"></canvas>
         </div>
         <div className="EnemyContainer">
-          <div className="EnemyTitle">
+          <SectionTitle>
             Enemies
-          </div>
+          </SectionTitle>
           <div className="EnemyGames">
             {enemies.map((value, i) => (
               <div key={`enemy-${i}`} className="EnemyCanvasWrapper">

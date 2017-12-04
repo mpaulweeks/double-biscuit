@@ -5,7 +5,8 @@
   "homepage": ".",
   "dependencies": {
     "react": "^16.1.0",
-    "react-dom": "^16.1.0"
+    "react-dom": "^16.1.0",
+    "styled-components": "^2.2.4"
   },
   "devDependencies": {
     "react-scripts": "1.0.17"
@@ -13,7 +14,6 @@
   "scripts": {
     "todo": "ack todo src/",
     "deploy": "./bash/deploy.sh",
-
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

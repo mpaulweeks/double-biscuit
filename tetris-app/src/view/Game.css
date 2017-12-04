@@ -49,28 +49,6 @@ div {
   display: flex;
   flex-direction: column;
 }
-.UpcomingTitle,
-.SwapTitle,
-.IncomingAttackTitle,
-.EnemyTitle {
-  font-size: 20pt;
-}
-.IncomingAttackTitle {
-  color: red;
-}
-.TetroCanvas {
-  /* 5x3 */
-  width: 75px;
-  height: 45px;
-  border-color: white;
-  border-width: 3px;
-  border-style: solid;
-}
-.TetroCanvas-0 {
-  /* full width 30px */
-  width: 150px;
-  height: 90px;
-}
 
 .PrimaryCanvasContainer {
   display: flex;
@@ -114,22 +92,6 @@ div {
   .SoundBar,
   .EnemyContainer {
     display: none;
-  }
-  .UpcomingTitle,
-  .SwapTitle,
-  .IncomingAttackTitle,
-  .EnemyTitle {
-    font-size: 16pt;
-  }
-  .TetroCanvas {
-    width: 50px;
-    height: 30px;
-
-    /*transform: rotate(90deg);*/
-  }
-  .TetroCanvas-0 {
-    width: 75px;
-    height: 45px;
   }
   .GridCanvas {
     width: 200px;
