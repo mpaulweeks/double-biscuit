@@ -65,3 +65,8 @@ netstat -tulpn
   - search for game, join game with code, or create game (with private option)
   - if more than one person searching, select 1 as host
   - host has option to start once >1 player
+
+## 2018-01-19 todo
+  - Tom Brier Sonic 3 Gumball for bgm
+  - Record my own sound effects
+  - About page (like EDH calc) that links to YouTube
