@@ -29,8 +29,7 @@ class EventListener {
       event: event,
     })
   }
-  receiveSocket(message){
-    const data = JSON.parse(message);
+  receiveSocket(data){
     this.checkForNewUsers(data);
     this.broadcast(data.event);
   }
