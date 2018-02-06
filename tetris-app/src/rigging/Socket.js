@@ -26,7 +26,7 @@ class _SocketManager {
   }
 
   onUpdate(update){
-    const message = JSON.parse(update.message);
+    const message = JSON.parse(update);
     this.eventListeners.forEach(el => {
       el.callback(message);
     });
