@@ -6,9 +6,3 @@ test:
 
 deploy:
 	cd tetris-app && yarn deploy
-
-websocket:
-	cd go/src/double-biscuit/ws && make run
-
-websocket-bg:
-	nohup make websocket > /dev/null &
