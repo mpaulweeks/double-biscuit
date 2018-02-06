@@ -11,11 +11,11 @@ class _SocketManager {
       'socket-lobby.mpaulweeks.com'
     );
     this.SL = new window.SocketLobby(host, 'tetris');
-    this.SL.connect(
-      'main',
-      () => {},
-      updates => this.onUpdates(updates),
-    )
+    this.SL.connect({
+      lobby: 'main',
+      onLobbyRefresh: () => {},
+      onUpdate: update => this.onUpdate(update),
+    });
   }
 
   register(eventListener, callback){
@@ -25,13 +25,10 @@ class _SocketManager {
     });
   }
 
-  onUpdates(updates){
-    const self = this;
-    updates.forEach(function (data){
-      const message = JSON.parse(data.message);
-      self.eventListeners.forEach(el => {
-        el.callback(message);
-      });
+  onUpdate(update){
+    const message = JSON.parse(update.message);
+    this.eventListeners.forEach(el => {
+      el.callback(message);
     });
   }
   send(data){
