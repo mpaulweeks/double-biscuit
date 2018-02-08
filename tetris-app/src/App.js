@@ -11,13 +11,21 @@ class App extends Component {
       lobby: null,
     };
   }
+  loadNewLobby(newLobby) {
+    this.setState({
+      lobby: newLobby,
+    });
+  }
   render() {
     const { lobby } = this.state;
+    const callbacks = {
+      loadNewLobby: nl => this.loadNewLobby(nl),
+    }
     return (
       <div className="Container">
         <SoundBar />
         { lobby && <Game/> }
-        {!lobby && <Menu lobby={ lobby }/> }
+        {!lobby && <Menu lobby={ lobby } callbacks={ callbacks }/> }
       </div>
     );
   }

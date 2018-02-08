@@ -52,6 +52,10 @@ const ModalInput = styled.input`
   font-size: 16pt;
 `;
 
+const ModalSelect = styled.select`
+  font-size: 16pt;
+`;
+
 const ModalSubmit = styled.div`
   width: 100px;
   height: 30px;
@@ -75,5 +79,6 @@ export {
   ModalLine,
   ModalMessage,
   ModalInput,
+  ModalSelect,
   ModalSubmit,
 };
