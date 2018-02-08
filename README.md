@@ -6,12 +6,6 @@ Online Attack Tetris w/ Websockets
 
 ## Info
 
-[nginx for websockets](https://www.nginx.com/blog/websocket-nginx/)
-
-```
-netstat -tulpn
-```
-
 [Puyo Soundbank](https://puyonexus.com/forum/viewtopic.php?t=211)
 
 ## Plan
