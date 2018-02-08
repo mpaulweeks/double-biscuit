@@ -1,5 +1,3 @@
-import Logger from '../Logging';
-
 
 class _SocketManager {
   constructor(){
