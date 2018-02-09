@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import SoundBar from './SoundBar';
 import SocketManager from './rigging/Socket';
+import Nav from './nav/Nav';
 import LobbyMenu from './lobby/LobbyMenu';
 import Game from './view/Game';
 
@@ -34,7 +34,7 @@ class App extends Component {
     }
     return (
       <div className="Container">
-        <SoundBar />
+        <Nav {...childrenProps}/>
         { lobby && <Game {...childrenProps}/> }
         {!lobby && <LobbyMenu {...childrenProps}/> }
       </div>

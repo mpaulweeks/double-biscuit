@@ -10,7 +10,7 @@ import {
   ModalSubmit,
 } from '../Modal';
 
-class Menu extends Component {
+class LobbyMenu extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -71,4 +71,4 @@ class Menu extends Component {
   }
 }
 
-export default Menu;
+export default LobbyMenu;

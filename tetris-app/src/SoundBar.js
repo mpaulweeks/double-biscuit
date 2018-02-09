@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 
 import { Cookies } from './Constants';
 import CookieJar from './Cookie';
-
 import Jukebox from './view/Jukebox';
+
+const SoundContainer = styled.div`
+  display: flex;
+`;
 
 class SoundBar extends Component {
   constructor(props){
@@ -32,8 +36,8 @@ class SoundBar extends Component {
     CookieJar.set(Cookies.MuteBGM, bgmMuted);
     CookieJar.set(Cookies.MuteSFX, sfxMuted);
     return (
-      <div className="SoundBar">
-        <div className="SoundOption">
+      <SoundContainer>
+        <div>
           {bgmMuted &&
             <button onClick={() => this.toggleBGM()}>
               Play BGM
@@ -45,7 +49,7 @@ class SoundBar extends Component {
             </button>
           }
         </div>
-        <div className="SoundOption">
+        <div>
           {sfxMuted &&
             <button onClick={() => this.toggleSFX()}>
               Play SFX
@@ -57,7 +61,7 @@ class SoundBar extends Component {
             </button>
           }
         </div>
-      </div>
+      </SoundContainer>
     );
   }
 }
