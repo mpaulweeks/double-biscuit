@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import SocketManager from '../rigging/Socket';
 import {
   ScreenCover,
   ModalWindow,
@@ -13,10 +14,16 @@ class Menu extends Component {
   constructor(props){
     super(props);
     this.state = {
-      lobbies: [
-        {lobby: 'test', count: '7'},
-      ],
+      lobbies: [],
     };
+  }
+  componentDidMount() {
+    const self = this;
+    SocketManager.SL.fetchLobbies().then(lobbies => {
+      self.setState({
+        lobbies: lobbies,
+      });
+    })
   }
   loadNewLobby(newLobby) {
     if (newLobby) {
@@ -50,12 +57,15 @@ class Menu extends Component {
             or join an existing lobby
           </ModalLine>
           <ModalLine>
-            <ModalSelect onChange={() => this.onSelect()} innerRef={e => this.lobbySelect = e}>
-              <option value="">Click to view existing lobbies</option>
-              {lobbies.map((lobby, index) => (
-                <option key="lobbySelect-{index}" value={lobby.lobby}>{lobby.lobby} ({lobby.count})</option>
-              ))}
-            </ModalSelect>
+            {lobbies.length === 0 && "loading lobbies..."}
+            {lobbies.length > 0 && (
+              <ModalSelect onChange={() => this.onSelect()} innerRef={e => this.lobbySelect = e}>
+                <option value="">Click to view existing lobbies</option>
+                {lobbies.map((lobby, index) => (
+                  <option key="lobbySelect-{index}" value={lobby.lobby}>{lobby.lobby} ({lobby.count})</option>
+                ))}
+              </ModalSelect>
+            )}
           </ModalLine>
         </ModalWindow>
       </div>

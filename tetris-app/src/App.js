@@ -16,16 +16,25 @@ class App extends Component {
       lobby: newLobby,
     });
   }
+  resetLobby() {
+    this.setState({
+      lobby: null,
+    });
+  }
   render() {
     const { lobby } = this.state;
-    const callbacks = {
-      loadNewLobby: nl => this.loadNewLobby(nl),
+    const childrenProps = {
+      lobby,
+      callbacks: {
+        loadNewLobby: nl => this.loadNewLobby(nl),
+        resetLobby: () => this.resetLobby(),
+      },
     }
     return (
       <div className="Container">
         <SoundBar />
-        { lobby && <Game/> }
-        {!lobby && <Menu lobby={ lobby } callbacks={ callbacks }/> }
+        { lobby && <Game {...childrenProps}/> }
+        {!lobby && <Menu {...childrenProps}/> }
       </div>
     );
   }
