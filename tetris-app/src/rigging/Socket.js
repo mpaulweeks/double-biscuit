@@ -17,6 +17,9 @@ class _SocketManager {
       onUpdate: update => this.onUpdate(update),
     });
   }
+  disconnect(){
+    this.SL.disconnect();
+  }
 
   register(eventListener, callback){
     this.eventListeners.push({

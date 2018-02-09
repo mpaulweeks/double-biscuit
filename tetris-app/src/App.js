@@ -19,6 +19,7 @@ class App extends Component {
     });
   }
   resetLobby() {
+    SocketManager.disconnect();
     this.setState({
       lobby: null,
     });

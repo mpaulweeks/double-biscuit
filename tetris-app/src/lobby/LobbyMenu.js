@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import SocketManager from '../rigging/Socket';
 import {
-  ScreenCover,
   ModalWindow,
   ModalLine,
   ModalSelect,
@@ -42,7 +41,6 @@ class LobbyMenu extends Component {
     const { lobbies } = this.state;
     return (
       <div>
-        <ScreenCover></ScreenCover>
         <ModalWindow>
           <ModalLine>
             Type in your own lobby name
