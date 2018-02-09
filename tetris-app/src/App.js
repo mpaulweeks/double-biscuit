@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import SoundBar from './SoundBar';
 import SocketManager from './rigging/Socket';
-import Menu from './menu/Menu';
+import LobbyMenu from './lobby/LobbyMenu';
 import Game from './view/Game';
 
 class App extends Component {
@@ -36,7 +36,7 @@ class App extends Component {
       <div className="Container">
         <SoundBar />
         { lobby && <Game {...childrenProps}/> }
-        {!lobby && <Menu {...childrenProps}/> }
+        {!lobby && <LobbyMenu {...childrenProps}/> }
       </div>
     );
   }
