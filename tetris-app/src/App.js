@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import SoundBar from './SoundBar';
+import SocketManager from './rigging/Socket';
 import Menu from './menu/Menu';
 import Game from './view/Game';
 
@@ -12,6 +13,7 @@ class App extends Component {
     };
   }
   loadNewLobby(newLobby) {
+    SocketManager.connect(newLobby);
     this.setState({
       lobby: newLobby,
     });

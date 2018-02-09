@@ -14,7 +14,7 @@ class Menu extends Component {
   constructor(props){
     super(props);
     this.state = {
-      lobbies: [],
+      lobbies: null,
     };
   }
   componentDidMount() {
@@ -54,13 +54,11 @@ class Menu extends Component {
             </ModalSubmit>
           </ModalLine>
           <ModalLine>
-            or join an existing lobby
-          </ModalLine>
-          <ModalLine>
-            {lobbies.length === 0 && "loading lobbies..."}
-            {lobbies.length > 0 && (
+            {lobbies === null && "loading lobbies..."}
+            {lobbies !== null && lobbies.length === 0 && "there are currently no lobbies"}
+            {lobbies !== null && lobbies.length > 0 && (
               <ModalSelect onChange={() => this.onSelect()} innerRef={e => this.lobbySelect = e}>
-                <option value="">Click to view existing lobbies</option>
+                <option value="">choose an existing lobby</option>
                 {lobbies.map((lobby, index) => (
                   <option key="lobbySelect-{index}" value={lobby.lobby}>{lobby.lobby} ({lobby.count})</option>
                 ))}

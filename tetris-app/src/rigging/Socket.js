@@ -9,8 +9,10 @@ class _SocketManager {
       'socket-lobby.mpaulweeks.com'
     );
     this.SL = new window.SocketLobby(host, 'tetris');
+  }
+  connect(lobbyName){
     this.SL.connect({
-      lobby: 'main',
+      lobby: lobbyName,
       onLobbyRefresh: () => {},
       onUpdate: update => this.onUpdate(update),
     });
