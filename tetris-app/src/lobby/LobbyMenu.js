@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 
 import SocketManager from '../rigging/Socket';
 import {
-  ModalWindow,
-  ModalLine,
-  ModalSelect,
-  ModalInput,
-  ModalSubmit,
-} from '../Modal';
+  LobbyWindow,
+  LobbyLine,
+  LobbyMessage,
+  LobbySelect,
+  LobbyInput,
+  LobbyJoin,
+} from './LobbyComponent';
 
 class LobbyMenu extends Component {
   constructor(props){
@@ -40,31 +41,33 @@ class LobbyMenu extends Component {
   render() {
     const { lobbies } = this.state;
     return (
-      <div>
-        <ModalWindow>
-          <ModalLine>
+      <LobbyWindow>
+        <LobbyLine>
+          <LobbyMessage>
             Type in your own lobby name
-          </ModalLine>
-          <ModalLine>
-            <ModalInput innerRef={e => this.lobbyInput = e}/>
-            <ModalSubmit onClick={() => this.onSubmit()}>
-              join
-            </ModalSubmit>
-          </ModalLine>
-          <ModalLine>
-            {lobbies === null && "loading lobbies..."}
-            {lobbies !== null && lobbies.length === 0 && "there are currently no lobbies"}
-            {lobbies !== null && lobbies.length > 0 && (
-              <ModalSelect onChange={() => this.onSelect()} innerRef={e => this.lobbySelect = e}>
-                <option value="">choose an existing lobby</option>
-                {lobbies.map((lobby, index) => (
-                  <option key="lobbySelect-{index}" value={lobby.lobby}>{lobby.lobby} ({lobby.count})</option>
-                ))}
-              </ModalSelect>
-            )}
-          </ModalLine>
-        </ModalWindow>
-      </div>
+          </LobbyMessage>
+        </LobbyLine>
+        <LobbyLine>
+          <LobbyInput innerRef={e => this.lobbyInput = e}/>
+          <LobbyJoin onClick={() => this.onSubmit()}>JOIN</LobbyJoin>
+        </LobbyLine>
+        <LobbyLine>
+          {lobbies === null && (
+            <LobbyMessage>loading lobbies...</LobbyMessage>
+          )}
+          {lobbies !== null && lobbies.length === 0 && (
+            <LobbyMessage>there are currently no existing lobbies to join</LobbyMessage>
+          )}
+          {lobbies !== null && lobbies.length > 0 && (
+            <LobbySelect onChange={() => this.onSelect()} innerRef={e => this.lobbySelect = e}>
+              <option value="">choose an existing lobby</option>
+              {lobbies.map((lobby, index) => (
+                <option key="lobbySelect-{index}" value={lobby.lobby}>{lobby.lobby} ({lobby.count})</option>
+              ))}
+            </LobbySelect>
+          )}
+        </LobbyLine>
+      </LobbyWindow>
     );
   }
 }

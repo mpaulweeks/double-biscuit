@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 
 import SocketManager from './rigging/Socket';
 import Nav from './nav/Nav';
 import LobbyMenu from './lobby/LobbyMenu';
 import Game from './view/Game';
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 class App extends Component {
   constructor(props){
@@ -34,11 +40,11 @@ class App extends Component {
       },
     }
     return (
-      <div className="Container">
+      <Container>
         <Nav {...childrenProps}/>
         { lobby && <Game {...childrenProps}/> }
         {!lobby && <LobbyMenu {...childrenProps}/> }
-      </div>
+      </Container>
     );
   }
 }
