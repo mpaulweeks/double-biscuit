@@ -9,7 +9,15 @@ import HeroBrain from '../logic/HeroBrain';
 import EnemyBrain from '../logic/EnemyBrain';
 
 import { GridDisplay, TetroDisplay, EnemyDisplay } from './Display';
-import { SectionTitle, IncomingAttack, TetroCanvas, BigTetroCanvas } from './Component';
+import {
+  AllGames,
+  FlexTop,
+  FlexBottom,
+  SectionTitle,
+  IncomingAttack,
+  TetroCanvas,
+  BigTetroCanvas,
+} from './Component';
 import Jukebox from './Jukebox';
 import './Game.css';
 
@@ -96,9 +104,9 @@ class Game extends Component {
     var upcoming = [0,1,2,3];
     var enemies = [0,1,2,3];
     return (
-      <div className="AllGames">
+      <AllGames>
         <div className="PrimaryInfo">
-          <div className="FlexTop">
+          <FlexTop>
             <SectionTitle>
               Next
             </SectionTitle>
@@ -108,8 +116,8 @@ class Game extends Component {
                 {i > 0 && <TetroCanvas innerRef={comp => this.upcomingRefs[value] = comp}></TetroCanvas>}
               </div>
             ))}
-          </div>
-          <div className="FlexBottom">
+          </FlexTop>
+          <FlexBottom>
             <IncomingAttack innerRef={comp => {this.IncomingAttack = comp}}>
               Incoming<br/>attacks!
             </IncomingAttack>
@@ -120,7 +128,7 @@ class Game extends Component {
             <div>
               <BigTetroCanvas innerRef={comp => this.SwapCanvas = comp}></BigTetroCanvas>
             </div>
-          </div>
+          </FlexBottom>
         </div>
         <div className="PrimaryCanvasContainer">
           <canvas ref='GridCanvas' className="GridCanvas"></canvas>
@@ -137,7 +145,7 @@ class Game extends Component {
             ))}
           </div>
         </div>
-      </div>
+      </AllGames>
     );
   }
 }

@@ -19,21 +19,6 @@ div {
   visibility: hidden;
 }
 
-.FlexTop {
-  flex: 1;
-}
-.FlexBottom {
-  flex: initial;
-}
-
-.AllGames {
-  width: 100%;
-  height: calc(100% - 50px);
-
-  display: flex;
-  justify-content: space-around;
-}
-
 .PrimaryInfo {
   height: 92%;
   padding-top: 2%;

@@ -1,5 +1,21 @@
 import styled from 'styled-components';
 
+const AllGames = styled.div`
+  width: 100%;
+  height: calc(100% - 50px);
+
+  display: flex;
+  justify-content: space-around;
+`;
+
+const FlexTop = styled.div`
+  flex: 1;
+`;
+
+const FlexBottom = styled.div`
+  flex: initial;
+`;
+
 const SectionTitle = styled.div`
   font-size: 20pt;
   @media (max-width: 1000px) {
@@ -35,6 +51,9 @@ const BigTetroCanvas = styled(TetroCanvas)`
 `;
 
 export {
+  AllGames,
+  FlexTop,
+  FlexBottom,
   SectionTitle,
   IncomingAttack,
   TetroCanvas,
