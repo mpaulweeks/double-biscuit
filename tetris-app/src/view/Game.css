@@ -19,52 +19,6 @@ div {
   visibility: hidden;
 }
 
-.PrimaryInfo {
-  height: 92%;
-  padding-top: 2%;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-}
-
-.PrimaryCanvasContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.GridCanvas {
-  width: 300px;
-  height: 660px;
-  border-color: white;
-  border-width: 9px;
-  border-style: double;
-}
-
-.EnemyContainer {
-  text-align: center;
-}
-.EnemyGames {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-
-  width: 357px;
-}
-.EnemyCanvasWrapper {
-  width: 50%;
-  box-sizing: border-box;
-}
-.EnemyCanvas {
-  width: 135px;
-  height: 297px;
-  margin: 10px;
-  border-color: white;
-  border-width: 3px;
-  border-style: solid;
-}
-
-
 @media (max-width: 1000px) {
   .SoundBar,
   .EnemyContainer {

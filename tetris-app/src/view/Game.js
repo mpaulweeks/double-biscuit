@@ -13,6 +13,13 @@ import {
   AllGames,
   FlexTop,
   FlexBottom,
+  PrimaryInfo,
+  PrimaryCanvasContainer,
+  GridCanvas,
+  EnemyContainer,
+  EnemyGames,
+  EnemyCanvasWrapper,
+  EnemyCanvas,
   SectionTitle,
   IncomingAttack,
   TetroCanvas,
@@ -62,14 +69,14 @@ class Game extends Component {
     const primaryBrain = new HeroBrain(
       eventListener,
       InputListener,
-      new TouchListener(this.refs.GridCanvas, this.SwapCanvas),
+      new TouchListener(this.GridCanvas, this.SwapCanvas),
       Jukebox
     );
     this.brains = [
       primaryBrain,
     ]
     this.displays = [
-      new GridDisplay(this.refs.GridCanvas, primaryBrain, this.IncomingAttack),
+      new GridDisplay(this.GridCanvas, primaryBrain, this.IncomingAttack),
     ];
 
     const getSwapFunc = brain => brain.tm.getSwap();
@@ -105,7 +112,7 @@ class Game extends Component {
     var enemies = [0,1,2,3];
     return (
       <AllGames>
-        <div className="PrimaryInfo">
+        <PrimaryInfo>
           <FlexTop>
             <SectionTitle>
               Next
@@ -129,22 +136,22 @@ class Game extends Component {
               <BigTetroCanvas innerRef={comp => this.SwapCanvas = comp}></BigTetroCanvas>
             </div>
           </FlexBottom>
-        </div>
-        <div className="PrimaryCanvasContainer">
-          <canvas ref='GridCanvas' className="GridCanvas"></canvas>
-        </div>
-        <div className="EnemyContainer">
+        </PrimaryInfo>
+        <PrimaryCanvasContainer>
+          <GridCanvas innerRef={comp => this.GridCanvas = comp}></GridCanvas>
+        </PrimaryCanvasContainer>
+        <EnemyContainer>
           <SectionTitle>
             Enemies
           </SectionTitle>
-          <div className="EnemyGames">
+          <EnemyGames>
             {enemies.map((value, i) => (
-              <div key={`enemy-${i}`} className="EnemyCanvasWrapper">
-                <canvas ref={c => {this.enemyRefs[value] = c;}} className="EnemyCanvas"></canvas>
-              </div>
+              <EnemyCanvasWrapper key={`enemy-${i}`}>
+                <EnemyCanvas innerRef={c => this.enemyRefs[value] = c}></EnemyCanvas>
+              </EnemyCanvasWrapper>
             ))}
-          </div>
-        </div>
+          </EnemyGames>
+        </EnemyContainer>
       </AllGames>
     );
   }
