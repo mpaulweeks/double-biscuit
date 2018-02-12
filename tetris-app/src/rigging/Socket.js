@@ -2,13 +2,7 @@
 class _SocketManager {
   constructor(){
     this.eventListeners = [];
-
-    const host = (
-      document.location.host.indexOf('localhost') >= 0 ?
-      'localhost:5110' :
-      'socket-lobby.mpaulweeks.com'
-    );
-    this.SL = new window.SocketLobby(host, 'tetris');
+    this.SL = new window.SocketLobby('tetris');
   }
   connect(lobbyName){
     this.SL.connect({
