@@ -28,7 +28,7 @@ const PrimaryCanvasContainer = styled.div`
   align-items: center;
   justify-content: center;
 `;
-const GridCanvas = styled.div`
+const GridCanvas = styled.canvas`
   width: 300px;
   height: 660px;
   border-color: white;
@@ -51,7 +51,7 @@ const EnemyCanvasWrapper = styled.div`
   width: 50%;
   box-sizing: border-box;
 `;
-const EnemyCanvas = styled.div`
+const EnemyCanvas = styled.canvas`
   width: 135px;
   height: 297px;
   margin: 10px;
