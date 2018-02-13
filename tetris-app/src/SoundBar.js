@@ -13,6 +13,24 @@ const SoundContainer = styled.div`
   }
 `;
 
+const SoundButton = styled.div`
+  cursor: pointer;
+  font-size: 12px;
+  padding: 10px;
+
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 5px;
+
+  color: black;
+  background-color: white;
+  &:hover {
+    color: white;
+    background-color: black;
+  }
+`;
+
 class SoundBar extends Component {
   constructor(props){
     super(props);
@@ -41,30 +59,12 @@ class SoundBar extends Component {
     CookieJar.set(Cookies.MuteSFX, sfxMuted);
     return (
       <SoundContainer>
-        <div>
-          {bgmMuted &&
-            <button onClick={() => this.toggleBGM()}>
-              Play BGM
-            </button>
-          }
-          {!bgmMuted &&
-            <button onClick={() => this.toggleBGM()}>
-              Mute BGM
-            </button>
-          }
-        </div>
-        <div>
-          {sfxMuted &&
-            <button onClick={() => this.toggleSFX()}>
-              Play SFX
-            </button>
-          }
-          {!sfxMuted &&
-            <button onClick={() => this.toggleSFX()}>
-              Mute SFX
-            </button>
-          }
-        </div>
+        <SoundButton onClick={() => this.toggleBGM()}>
+          {bgmMuted ? 'Play BGM' : 'Mute BGM'}
+        </SoundButton>
+        <SoundButton onClick={() => this.toggleSFX()}>
+          {sfxMuted ? 'Play SFX' : 'Mute SFX'}
+        </SoundButton>
       </SoundContainer>
     );
   }
