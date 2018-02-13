@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import Logger from '../Logging';
-import { BGM } from '../Constants';
 import EventListener from '../rigging/EventListener';
 import SocketManager from '../rigging/Socket';
 import { InputListener, TouchListener } from '../rigging/InputListener';
@@ -81,7 +80,6 @@ class Game extends Component {
     this.started = true;
 
     const eventListener = new EventListener(d => this.checkForNewUsers(d));
-    Jukebox.playBGM(BGM.Gumball);
 
     const primaryBrain = new HeroBrain(
       eventListener,

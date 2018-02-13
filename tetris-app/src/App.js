@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import SocketManager from './rigging/Socket';
+import { BGM } from './Constants';
+import Jukebox from './view/Jukebox';
+
 import Nav from './nav/Nav';
 import LobbyMenu from './lobby/LobbyMenu';
 import Game from './view/Game';
@@ -14,6 +17,7 @@ const Container = styled.div`
 class App extends Component {
   constructor(props){
     super(props);
+    Jukebox.playBGM(BGM.Gumball);
     this.state = {
       name: null,
       lobby: null,
