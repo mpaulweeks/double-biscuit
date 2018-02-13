@@ -26,6 +26,22 @@ const NavChild = styled.div`
   justify-content: center;
 `;
 
+const AppName = styled.div`
+  font-weight: bold;
+`;
+
+const LobbyDisplay = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;
+
+const LobbyName = styled.div`
+  padding-left: 2px;
+  cursor: pointer;
+  text-decoration: underline;
+`;
+
 class Nav extends Component {
   onLobbyMenu() {
     this.props.callbacks.resetLobby();
@@ -35,13 +51,19 @@ class Nav extends Component {
     return (
       <Navbar>
         <NavChild>
-          Double Biscuit
+          <AppName>
+            Double Biscuit
+          </AppName>
         </NavChild>
         <NavChild>
-          {lobby ? lobby : 'Menu'}
-        </NavChild>
-        <NavChild>
-          <button onClick={() => this.onLobbyMenu()}>change lobby</button>
+          <LobbyDisplay>
+            Lobby:
+            {lobby ? (
+              <LobbyName onClick = {() => this.onLobbyMenu() }>
+                {lobby}
+              </LobbyName>
+            ) : 'n/a'}
+          </LobbyDisplay>
         </NavChild>
         <NavChild>
           <SoundBar />
