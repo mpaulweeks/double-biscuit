@@ -6,6 +6,7 @@ const AllGames = styled.div`
 
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
 `;
 
 const FlexTop = styled.div`
@@ -38,29 +39,31 @@ const GridCanvas = styled.canvas`
 
 const EnemyContainer = styled.div`
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 const EnemyGames = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-
-  width: 357px;
 `;
 const EnemyCanvasWrapper = styled.div`
-  width: 50%;
   box-sizing: border-box;
 `;
 const EnemyCanvas = styled.canvas`
-  width: 135px;
-  height: 297px;
+  width: 250px;
+  height: 550px;
   margin: 10px;
   border-color: white;
-  border-width: 3px;
+  border-width: 6px;
   border-style: solid;
 `;
 
 const SectionTitle = styled.div`
+  padding: 10px;
+  padding-top: 20px;
   font-size: 20pt;
   @media (max-width: 1000px) {
     font-size: 16pt;

@@ -7,6 +7,10 @@ import Jukebox from './view/Jukebox';
 
 const SoundContainer = styled.div`
   display: flex;
+
+  @media (max-width: 400px) {
+    display: none;
+  }
 `;
 
 class SoundBar extends Component {

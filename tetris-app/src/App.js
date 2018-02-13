@@ -18,6 +18,10 @@ class App extends Component {
       lobby: null,
     };
   }
+  componentDidMount() {
+    // todo while testing
+    this.loadNewLobby('main');
+  }
   loadNewLobby(newLobby) {
     SocketManager.connect(newLobby);
     this.setState({

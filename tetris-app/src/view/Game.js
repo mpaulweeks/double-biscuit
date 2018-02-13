@@ -109,7 +109,7 @@ class Game extends Component {
     // variable refs https://github.com/facebook/react/issues/1899#issuecomment-234485054
 
     var upcoming = [0,1,2,3];
-    var enemies = [0,1,2,3];
+    var enemies = [0,1,2];
     return (
       <AllGames>
         <PrimaryInfo>
@@ -125,7 +125,7 @@ class Game extends Component {
             ))}
           </FlexTop>
           <FlexBottom>
-            <IncomingAttack innerRef={comp => {this.IncomingAttack = comp}}>
+            <IncomingAttack innerRef={c => this.IncomingAttack = c}>
               Incoming<br/>attacks!
             </IncomingAttack>
             <br/>
@@ -133,12 +133,12 @@ class Game extends Component {
               Swap
             </SectionTitle>
             <div>
-              <BigTetroCanvas innerRef={comp => this.SwapCanvas = comp}></BigTetroCanvas>
+              <BigTetroCanvas innerRef={c => this.SwapCanvas = c}></BigTetroCanvas>
             </div>
           </FlexBottom>
         </PrimaryInfo>
         <PrimaryCanvasContainer>
-          <GridCanvas innerRef={comp => this.GridCanvas = comp}></GridCanvas>
+          <GridCanvas innerRef={c => this.GridCanvas = c}></GridCanvas>
         </PrimaryCanvasContainer>
         <EnemyContainer>
           <SectionTitle>
