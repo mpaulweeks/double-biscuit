@@ -4,14 +4,19 @@ const LobbyWindow = styled.div`;
   height: auto;
   max-width: 300px;
   margin: 0 auto;
-  padding: 50px;
+  padding: 20px;
   text-align: center;
 `;
 
+const LobbyBlock = styled.div`
+  padding-bottom: 30px;
+`;
+
 const LobbyLine = styled.div`
-  padding: 10px;
+  padding: 5px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   & * {
     margin: 0px auto;
   }
@@ -25,6 +30,7 @@ const LobbyMessage = styled.div`
 const LobbyInput = styled.input`
   font-size: 16pt;
   width: 200px;
+  border-color: ${props => props.isError ? 'red' : 'none'};
 `;
 
 const LobbySelect = styled.select`
@@ -49,6 +55,7 @@ const LobbyJoin = styled.div`
 
 export {
   LobbyWindow,
+  LobbyBlock,
   LobbyLine,
   LobbyMessage,
   LobbyInput,

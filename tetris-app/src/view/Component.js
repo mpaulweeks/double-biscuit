@@ -59,6 +59,8 @@ const EnemyGames = styled.div`
 const EnemyCanvasWrapper = styled.div`
   box-sizing: border-box;
 `;
+const EnemyName = styled.div`
+`;
 const EnemyCanvas = styled.canvas`
   width: 250px;
   height: 550px;
@@ -121,6 +123,7 @@ export {
   EnemyContainer,
   EnemyGames,
   EnemyCanvasWrapper,
+  EnemyName,
   EnemyCanvas,
   SectionTitle,
   IncomingAttack,

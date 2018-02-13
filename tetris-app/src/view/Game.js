@@ -19,6 +19,7 @@ import {
   EnemyContainer,
   EnemyGames,
   EnemyCanvasWrapper,
+  EnemyName,
   EnemyCanvas,
   SectionTitle,
   IncomingAttack,
@@ -34,8 +35,10 @@ class Game extends Component {
     super(props);
     this.upcomingRefs = [];
     this.enemyRefs = [];
+    this.enemyBrains = [null, null, null];
     this.started = false;
     this.state = {
+      enemyNames: [null, null, null],
       incomingAttack: false,
     };
   }
@@ -44,9 +47,9 @@ class Game extends Component {
     const { event } = socketData;
     let found = false;
     let empty = 0;
-    this.brains.forEach(b => {
+    this.enemyBrains.forEach((b, i) => {
       if (b.id === event.origin){
-        found = true;
+        found = b;
       }
       if (b.id === null){
         empty += 1;
@@ -55,10 +58,20 @@ class Game extends Component {
     if (!found && empty > 0){
       Logger.info('setting enemy brain', event.origin, event);
       let bi = 0;
-      while(this.brains[bi].id !== null){
+      while(this.enemyBrains[bi].id !== null){
         bi += 1;
       }
-      this.brains[bi].id = event.origin;
+      found = this.enemyBrains[bi];
+      found.id = event.origin;
+      found.index = bi;
+    }
+    if (event.name) {
+      found.name = event.name;
+      const { enemyNames } = this.state;
+      enemyNames[found.index] = found.name;
+      this.setState({
+        enemyNames,
+      });
     }
   }
 
@@ -73,11 +86,10 @@ class Game extends Component {
       eventListener,
       InputListener,
       new TouchListener(this.GridCanvas, this.SwapCanvas),
-      Jukebox
+      Jukebox,
+      this.props.name
     );
-    this.brains = [
-      primaryBrain,
-    ]
+    this.primaryBrain = primaryBrain;
     this.displays = [
       new GridDisplay(this.GridCanvas, primaryBrain, nv => this.updateIncomingAttack(nv)),
     ];
@@ -89,9 +101,9 @@ class Game extends Component {
       const getTetroFunc = brain => brain.tm.upcoming()[index];
       this.displays.push(new TetroDisplay(ref, primaryBrain, getTetroFunc));
     });
-    this.enemyRefs.forEach((ref) => {
+    this.enemyRefs.forEach((ref, i) => {
       const eb = new EnemyBrain(eventListener);
-      this.brains.push(eb);
+      this.enemyBrains[i] = eb;
       this.displays.push(new EnemyDisplay(ref, eb));
     });
   }
@@ -119,9 +131,8 @@ class Game extends Component {
 
   render() {
     // variable refs https://github.com/facebook/react/issues/1899#issuecomment-234485054
-
     var upcoming = [0,1,2,3];
-    var enemies = [0,1,2];
+    const { enemyNames } = this.state;
     return (
       <AllGames>
         <PrimaryInfo>
@@ -158,9 +169,10 @@ class Game extends Component {
             Enemies
           </SectionTitle>
           <EnemyGames>
-            {enemies.map((value, i) => (
+            {enemyNames.map((eName, i) => (
               <EnemyCanvasWrapper key={`enemy-${i}`}>
-                <EnemyCanvas innerRef={c => this.enemyRefs[value] = c}></EnemyCanvas>
+                <EnemyName>{eName || '(empty)'}</EnemyName>
+                <EnemyCanvas innerRef={c => this.enemyRefs[i] = c}></EnemyCanvas>
               </EnemyCanvasWrapper>
             ))}
           </EnemyGames>

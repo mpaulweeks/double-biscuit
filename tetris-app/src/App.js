@@ -15,16 +15,18 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
+      name: null,
       lobby: null,
     };
   }
   componentDidMount() {
     // todo while testing
-    this.loadNewLobby('main');
+    // this.loadNewLobby('bob', 'main');
   }
-  loadNewLobby(newLobby) {
+  loadNewLobby(newName, newLobby) {
     SocketManager.connect(newLobby);
     this.setState({
+      name: newName,
       lobby: newLobby,
     });
   }
@@ -35,11 +37,12 @@ class App extends Component {
     });
   }
   render() {
-    const { lobby } = this.state;
+    const { name, lobby } = this.state;
     const childrenProps = {
+      name,
       lobby,
       callbacks: {
-        loadNewLobby: nl => this.loadNewLobby(nl),
+        loadNewLobby: (name, lobby) => this.loadNewLobby(name, lobby),
         resetLobby: () => this.resetLobby(),
       },
     }

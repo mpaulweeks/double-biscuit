@@ -99,6 +99,7 @@ class HeroBrain extends BaseBrain {
     this.eventListener.sendUpstream({
       pattern: 'broadcast',
       origin: this.id,
+      name: this.name,
       type: 'Grid',
       value: data,
     });

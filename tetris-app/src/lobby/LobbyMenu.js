@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import SocketManager from '../rigging/Socket';
 import {
   LobbyWindow,
+  LobbyBlock,
   LobbyLine,
   LobbyMessage,
   LobbySelect,
@@ -56,8 +57,16 @@ class LobbyMenu extends Component {
     this.cancelablePromise.cancel();
   }
   loadNewLobby(newLobby) {
+    const newName = this.nameInput.value;
+    if (!newName) {
+      this.setState({
+        nameError: true,
+      });
+      return;
+    }
+
     if (newLobby) {
-      this.props.callbacks.loadNewLobby(newLobby);
+      this.props.callbacks.loadNewLobby(newName, newLobby);
     }
   }
   onSelect() {
@@ -69,34 +78,50 @@ class LobbyMenu extends Component {
     this.loadNewLobby(newLobby);
   }
   render() {
-    const { lobbies } = this.state;
+    const { lobbies, nameError } = this.state;
     return (
       <LobbyWindow>
-        <LobbyLine>
-          <LobbyMessage>
-            Type in your own lobby name
-          </LobbyMessage>
-        </LobbyLine>
-        <LobbyLine>
-          <LobbyInput innerRef={e => this.lobbyInput = e}/>
-          <LobbyJoin onClick={() => this.onSubmit()}>join</LobbyJoin>
-        </LobbyLine>
-        <LobbyLine>
-          {lobbies === null && (
-            <LobbyMessage>loading lobbies...</LobbyMessage>
-          )}
-          {lobbies !== null && lobbies.length === 0 && (
-            <LobbyMessage>there are currently no existing lobbies to join</LobbyMessage>
-          )}
-          {lobbies !== null && lobbies.length > 0 && (
-            <LobbySelect onChange={() => this.onSelect()} innerRef={e => this.lobbySelect = e}>
-              <option value="">choose an existing lobby</option>
-              {lobbies.map((lobby, index) => (
-                <option key="lobbySelect-{index}" value={lobby.lobby}>{lobby.lobby} ({lobby.count})</option>
-              ))}
-            </LobbySelect>
-          )}
-        </LobbyLine>
+        <LobbyBlock>
+          <LobbyLine>
+            <LobbyMessage>
+              Type in your name
+            </LobbyMessage>
+          </LobbyLine>
+          <LobbyLine>
+            <div>
+              <LobbyInput innerRef={e => this.nameInput = e} isError={nameError}/>
+            </div>
+          </LobbyLine>
+        </LobbyBlock>
+        <LobbyBlock>
+          <LobbyLine>
+            <LobbyMessage>
+              Create a new lobby
+            </LobbyMessage>
+          </LobbyLine>
+          <LobbyLine>
+            <div>
+              <LobbyInput innerRef={e => this.lobbyInput = e} placeholder="type a lobby name"/>
+            </div>
+            <LobbyJoin onClick={() => this.onSubmit()}>join</LobbyJoin>
+          </LobbyLine>
+          <LobbyLine>
+            {lobbies === null && (
+              <LobbyMessage>loading lobbies...</LobbyMessage>
+            )}
+            {lobbies !== null && lobbies.length === 0 && (
+              <LobbyMessage>there are currently no existing lobbies to join</LobbyMessage>
+            )}
+            {lobbies !== null && lobbies.length > 0 && (
+              <LobbySelect onChange={() => this.onSelect()} innerRef={e => this.lobbySelect = e}>
+                <option value="">choose an existing lobby</option>
+                {lobbies.map((lobby, index) => (
+                  <option key="lobbySelect-{index}" value={lobby.lobby}>{lobby.lobby} ({lobby.count})</option>
+                ))}
+              </LobbySelect>
+            )}
+          </LobbyLine>
+        </LobbyBlock>
       </LobbyWindow>
     );
   }
