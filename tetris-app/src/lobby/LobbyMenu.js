@@ -46,7 +46,11 @@ class LobbyMenu extends Component {
     this.cancelablePromise
       .promise
       .then(onSuccess)
-      .catch((reason) => console.log('isCanceled', reason.isCanceled));
+      .catch((reason) => {
+        if (!reason.isCanceled){
+          alert('there was an error connecting to the lobby server, please try again later');
+        }
+      });
   }
   componentWillUnmount() {
     this.cancelablePromise.cancel();
