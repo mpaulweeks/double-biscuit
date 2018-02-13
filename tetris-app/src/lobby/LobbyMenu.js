@@ -10,6 +10,25 @@ import {
   LobbyJoin,
 } from './LobbyComponent';
 
+// https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html
+const makeCancelable = (promise) => {
+  let hasCanceled_ = false;
+
+  const wrappedPromise = new Promise((resolve, reject) => {
+    promise.then(
+      val => hasCanceled_ ? reject({isCanceled: true}) : resolve(val),
+      error => hasCanceled_ ? reject({isCanceled: true}) : reject(error)
+    );
+  });
+
+  return {
+    promise: wrappedPromise,
+    cancel() {
+      hasCanceled_ = true;
+    },
+  };
+};
+
 class LobbyMenu extends Component {
   constructor(props){
     super(props);
@@ -18,13 +37,19 @@ class LobbyMenu extends Component {
     };
   }
   componentDidMount() {
-    const self = this;
-    SocketManager.SL.fetchLobbies().then(lobbies => {
-      // todo how to check if no longer rendered?
-      self.setState({
+    const onSuccess = lobbies => {
+      this.setState({
         lobbies: lobbies,
       });
-    })
+    };
+    this.cancelablePromise = makeCancelable(SocketManager.SL.fetchLobbies());
+    this.cancelablePromise
+      .promise
+      .then(onSuccess)
+      .catch((reason) => console.log('isCanceled', reason.isCanceled));
+  }
+  componentWillUnmount() {
+    this.cancelablePromise.cancel();
   }
   loadNewLobby(newLobby) {
     if (newLobby) {
@@ -50,7 +75,7 @@ class LobbyMenu extends Component {
         </LobbyLine>
         <LobbyLine>
           <LobbyInput innerRef={e => this.lobbyInput = e}/>
-          <LobbyJoin onClick={() => this.onSubmit()}>JOIN</LobbyJoin>
+          <LobbyJoin onClick={() => this.onSubmit()}>join</LobbyJoin>
         </LobbyLine>
         <LobbyLine>
           {lobbies === null && (

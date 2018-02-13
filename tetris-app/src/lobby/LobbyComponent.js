@@ -39,11 +39,11 @@ const LobbyJoin = styled.div`
   text-align: center;
 
   border-radius: 15px;
-  border: 2px solid black;
+  border: 2px solid white;
   &:hover {
     cursor: pointer;
-    color: white;
-    background-color: black;
+    color: black;
+    background-color: white;
   }
 `;
 

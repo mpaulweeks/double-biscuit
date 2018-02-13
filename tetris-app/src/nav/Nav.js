@@ -36,8 +36,11 @@ const LobbyDisplay = styled.div`
   justify-content: center;
 `;
 
+const LobbyLabel = styled.div`
+  padding-right: 5px;
+`;
+
 const LobbyName = styled.div`
-  padding-left: 2px;
   cursor: pointer;
   text-decoration: underline;
 `;
@@ -57,7 +60,9 @@ class Nav extends Component {
         </NavChild>
         <NavChild>
           <LobbyDisplay>
-            Lobby:
+            <LobbyLabel>
+              Lobby:
+            </LobbyLabel>
             {lobby ? (
               <LobbyName onClick = {() => this.onLobbyMenu() }>
                 {lobby}
