@@ -35,6 +35,13 @@ const GridCanvas = styled.canvas`
   border-color: white;
   border-width: 9px;
   border-style: double;
+
+  @media (max-width: 1000px) {
+    width: 200px;
+    height: 440px;
+    border-style: solid;
+    border-width: 5px;
+  }
 `;
 
 const EnemyContainer = styled.div`
@@ -59,6 +66,13 @@ const EnemyCanvas = styled.canvas`
   border-color: white;
   border-width: 6px;
   border-style: solid;
+
+  @media (max-width: 400px) {
+    width: 100px;
+    height: 220px;
+    margin: 1px;
+    border-width: 2px;
+  }
 `;
 
 const SectionTitle = styled.div`

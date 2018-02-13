@@ -143,16 +143,16 @@ class EnemyDisplay extends BaseDisplay {
 }
 
 class GridDisplay extends BaseDisplay {
-  constructor($canvas, brain, $incomingAttack){
+  constructor($canvas, brain, incomingAttackCallback){
     super($canvas, brain);
-    this.incomingAttack = $incomingAttack;
+    this.incomingAttackCallback = incomingAttackCallback;
 
     this.doubleBiscuit = new Image();
     this.doubleBiscuit.src = 'double_biscuit_trans.png';
   }
 
   draw(){
-    const { canvas, ctx, brain, incomingAttack } = this;
+    const { canvas, ctx, brain, incomingAttackCallback } = this;
     const blocksWide = brain.grid.width();
     const { cellHeight } = this.cellDimensions(blocksWide);
 
@@ -221,9 +221,9 @@ class GridDisplay extends BaseDisplay {
 
     // updating attack message
     if (brain.getTotalPendingAttacks() > 0){
-      incomingAttack.classList.remove('hidden');
+      incomingAttackCallback(true);
     } else {
-      incomingAttack.classList.add('hidden');
+      incomingAttackCallback(false);
     }
   }
 }

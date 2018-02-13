@@ -20,6 +20,7 @@ class LobbyMenu extends Component {
   componentDidMount() {
     const self = this;
     SocketManager.SL.fetchLobbies().then(lobbies => {
+      // todo how to check if no longer rendered?
       self.setState({
         lobbies: lobbies,
       });

@@ -35,6 +35,9 @@ class Game extends Component {
     this.upcomingRefs = [];
     this.enemyRefs = [];
     this.started = false;
+    this.state = {
+      incomingAttack: false,
+    };
   }
 
   checkForNewUsers(socketData){
@@ -76,7 +79,7 @@ class Game extends Component {
       primaryBrain,
     ]
     this.displays = [
-      new GridDisplay(this.GridCanvas, primaryBrain, this.IncomingAttack),
+      new GridDisplay(this.GridCanvas, primaryBrain, nv => this.updateIncomingAttack(nv)),
     ];
 
     const getSwapFunc = brain => brain.tm.getSwap();
@@ -105,6 +108,15 @@ class Game extends Component {
     };
   }
 
+  updateIncomingAttack(newValue) {
+    if (newValue !== this.state.incomingAttack){
+      // todo check if this is redundant, if render is smart enough
+      this.setState({
+        incomingAttack: newValue,
+      });
+    }
+  }
+
   render() {
     // variable refs https://github.com/facebook/react/issues/1899#issuecomment-234485054
 
@@ -125,10 +137,11 @@ class Game extends Component {
             ))}
           </FlexTop>
           <FlexBottom>
-            <IncomingAttack innerRef={c => this.IncomingAttack = c}>
-              Incoming<br/>attacks!
-            </IncomingAttack>
-            <br/>
+            {this.state.incomingAttack && (
+              <IncomingAttack>
+                Incoming<br/>attacks!
+              </IncomingAttack>
+            )}
             <SectionTitle>
               Swap
             </SectionTitle>
