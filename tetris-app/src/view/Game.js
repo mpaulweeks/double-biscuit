@@ -9,7 +9,22 @@ import HeroBrain from '../logic/HeroBrain';
 import EnemyBrain from '../logic/EnemyBrain';
 
 import { GridDisplay, TetroDisplay, EnemyDisplay } from './Display';
-import { SectionTitle, IncomingAttack, TetroCanvas, BigTetroCanvas } from './Component';
+import {
+  AllGames,
+  FlexTop,
+  FlexBottom,
+  PrimaryInfo,
+  PrimaryCanvasContainer,
+  GridCanvas,
+  EnemyContainer,
+  EnemyGames,
+  EnemyCanvasWrapper,
+  EnemyCanvas,
+  SectionTitle,
+  IncomingAttack,
+  TetroCanvas,
+  BigTetroCanvas,
+} from './Component';
 import Jukebox from './Jukebox';
 import './Game.css';
 
@@ -20,6 +35,9 @@ class Game extends Component {
     this.upcomingRefs = [];
     this.enemyRefs = [];
     this.started = false;
+    this.state = {
+      incomingAttack: false,
+    };
   }
 
   checkForNewUsers(socketData){
@@ -54,14 +72,14 @@ class Game extends Component {
     const primaryBrain = new HeroBrain(
       eventListener,
       InputListener,
-      new TouchListener(this.refs.GridCanvas, this.SwapCanvas),
+      new TouchListener(this.GridCanvas, this.SwapCanvas),
       Jukebox
     );
     this.brains = [
       primaryBrain,
     ]
     this.displays = [
-      new GridDisplay(this.refs.GridCanvas, primaryBrain, this.IncomingAttack),
+      new GridDisplay(this.GridCanvas, primaryBrain, nv => this.updateIncomingAttack(nv)),
     ];
 
     const getSwapFunc = brain => brain.tm.getSwap();
@@ -90,15 +108,24 @@ class Game extends Component {
     };
   }
 
+  updateIncomingAttack(newValue) {
+    if (newValue !== this.state.incomingAttack){
+      // todo check if this is redundant, if render is smart enough
+      this.setState({
+        incomingAttack: newValue,
+      });
+    }
+  }
+
   render() {
     // variable refs https://github.com/facebook/react/issues/1899#issuecomment-234485054
 
     var upcoming = [0,1,2,3];
-    var enemies = [0,1,2,3];
+    var enemies = [0,1,2];
     return (
-      <div className="AllGames">
-        <div className="PrimaryInfo">
-          <div className="FlexTop">
+      <AllGames>
+        <PrimaryInfo>
+          <FlexTop>
             <SectionTitle>
               Next
             </SectionTitle>
@@ -108,36 +135,37 @@ class Game extends Component {
                 {i > 0 && <TetroCanvas innerRef={comp => this.upcomingRefs[value] = comp}></TetroCanvas>}
               </div>
             ))}
-          </div>
-          <div className="FlexBottom">
-            <IncomingAttack innerRef={comp => {this.IncomingAttack = comp}}>
-              Incoming<br/>attacks!
-            </IncomingAttack>
-            <br/>
+          </FlexTop>
+          <FlexBottom>
+            {this.state.incomingAttack && (
+              <IncomingAttack>
+                Incoming<br/>attacks!
+              </IncomingAttack>
+            )}
             <SectionTitle>
               Swap
             </SectionTitle>
             <div>
-              <BigTetroCanvas innerRef={comp => this.SwapCanvas = comp}></BigTetroCanvas>
+              <BigTetroCanvas innerRef={c => this.SwapCanvas = c}></BigTetroCanvas>
             </div>
-          </div>
-        </div>
-        <div className="PrimaryCanvasContainer">
-          <canvas ref='GridCanvas' className="GridCanvas"></canvas>
-        </div>
-        <div className="EnemyContainer">
+          </FlexBottom>
+        </PrimaryInfo>
+        <PrimaryCanvasContainer>
+          <GridCanvas innerRef={c => this.GridCanvas = c}></GridCanvas>
+        </PrimaryCanvasContainer>
+        <EnemyContainer>
           <SectionTitle>
             Enemies
           </SectionTitle>
-          <div className="EnemyGames">
+          <EnemyGames>
             {enemies.map((value, i) => (
-              <div key={`enemy-${i}`} className="EnemyCanvasWrapper">
-                <canvas ref={c => {this.enemyRefs[value] = c;}} className="EnemyCanvas"></canvas>
-              </div>
+              <EnemyCanvasWrapper key={`enemy-${i}`}>
+                <EnemyCanvas innerRef={c => this.enemyRefs[value] = c}></EnemyCanvas>
+              </EnemyCanvasWrapper>
             ))}
-          </div>
-        </div>
-      </div>
+          </EnemyGames>
+        </EnemyContainer>
+      </AllGames>
     );
   }
 }
