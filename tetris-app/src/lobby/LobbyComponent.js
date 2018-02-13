@@ -33,8 +33,14 @@ const LobbyInput = styled.input`
   border-color: ${props => props.isError ? 'red' : 'none'};
 `;
 
-const LobbySelect = styled.select`
+const LobbyName = styled.div`
   font-size: 16pt;
+  height: 30px;
+  line-height: 30px;
+  width: 200px;
+  border-color: white;
+  border-width: 2px;
+  border-style: solid;
 `;
 
 const LobbyJoin = styled.div`
@@ -45,7 +51,9 @@ const LobbyJoin = styled.div`
   text-align: center;
 
   border-radius: 15px;
-  border: 2px solid white;
+  border-color: white;
+  border-width: 2px;
+  border-style: solid;
   &:hover {
     cursor: pointer;
     color: black;
@@ -59,6 +67,6 @@ export {
   LobbyLine,
   LobbyMessage,
   LobbyInput,
-  LobbySelect,
+  LobbyName,
   LobbyJoin,
 };

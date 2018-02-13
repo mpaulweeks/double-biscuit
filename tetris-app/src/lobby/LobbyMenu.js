@@ -6,7 +6,7 @@ import {
   LobbyBlock,
   LobbyLine,
   LobbyMessage,
-  LobbySelect,
+  LobbyName,
   LobbyInput,
   LobbyJoin,
 } from './LobbyComponent';
@@ -69,10 +69,6 @@ class LobbyMenu extends Component {
       this.props.callbacks.loadNewLobby(newName, newLobby);
     }
   }
-  onSelect() {
-    const newLobby = this.lobbySelect.value;
-    this.loadNewLobby(newLobby);
-  }
   onSubmit() {
     const newLobby = this.lobbyInput.value;
     this.loadNewLobby(newLobby);
@@ -113,14 +109,17 @@ class LobbyMenu extends Component {
               <LobbyMessage>there are currently no existing lobbies to join</LobbyMessage>
             )}
             {lobbies !== null && lobbies.length > 0 && (
-              <LobbySelect onChange={() => this.onSelect()} innerRef={e => this.lobbySelect = e}>
-                <option value="">choose an existing lobby</option>
-                {lobbies.map((lobby, index) => (
-                  <option key="lobbySelect-{index}" value={lobby.lobby}>{lobby.lobby} ({lobby.count})</option>
-                ))}
-              </LobbySelect>
+              <LobbyMessage>or choose an existing lobby</LobbyMessage>
             )}
           </LobbyLine>
+          {lobbies !== null && lobbies.length > 0 && (
+            lobbies.map((lobby, index) => (
+              <LobbyLine key="lobbyLine-{index}">
+                <LobbyName>{lobby.lobby} ({lobby.count})</LobbyName>
+                <LobbyJoin onClick={() => this.loadNewLobby(lobby.lobby)}>join</LobbyJoin>
+              </LobbyLine>
+            ))
+          )}
         </LobbyBlock>
       </LobbyWindow>
     );
