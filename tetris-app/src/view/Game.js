@@ -65,7 +65,8 @@ class Game extends Component {
       found.id = event.origin;
       found.index = bi;
     }
-    if (event.name) {
+    if (found && event.name) {
+      // todo when is found still false?
       found.name = event.name;
       const { enemyNames } = this.state;
       enemyNames[found.index] = found.name;
