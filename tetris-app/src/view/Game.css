@@ -14,3 +14,6 @@ body,
 div {
   margin: 0px 0px;
 }
+canvas {
+  box-sizing: border-box;
+}

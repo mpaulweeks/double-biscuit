@@ -135,7 +135,7 @@ class EnemyDisplay extends BaseDisplay {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.strokeStyle = "white";
+    ctx.strokeStyle = "black";
     for (let gridBlock of brain.grid){
       this.drawBlock(blocksWide, gridBlock, gridBlock.meta().color, 2, true);
     }
