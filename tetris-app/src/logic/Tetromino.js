@@ -36,6 +36,7 @@ class Tetromino {
   }
 
   rotate(){
+    // http://tetris.wikia.com/wiki/SRS
     const origin = this.origin();
     this.blocks.forEach(b => {
       b.rotateAround(origin);
@@ -72,6 +73,15 @@ class Line extends Tetromino {
       {x: 1, y: 0},
       {x: 2, y: 0},
     ]);
+  }
+  rotate(){
+    const origin = this.origin().clone();
+    // todo fix rotating for line
+    // origin.col + 0.5;
+    // origin.row + 0.5;
+    this.blocks.forEach(b => {
+      b.rotateAround(origin);
+    });
   }
 }
 
