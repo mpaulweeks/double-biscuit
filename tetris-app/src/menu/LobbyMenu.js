@@ -86,7 +86,11 @@ class LobbyMenu extends Component {
           </LobbyLine>
           <LobbyLine>
             <div>
-              <LobbyInput innerRef={e => this.nameInput = e} isError={nameError} value={name}/>
+              <LobbyInput
+                innerRef={e => this.nameInput = e}
+                isError={nameError}
+                defaultValue={name || ''}
+              />
             </div>
           </LobbyLine>
         </LobbyBlock>
