@@ -43,6 +43,7 @@ class HeroBrain extends BaseBrain {
     this.pendingAttacks = [];
 
     this.tick();
+    this.sendUpdate();
   }
 
   current(){

@@ -63,15 +63,18 @@ class Game extends Component {
       found = this.enemyBrains[bi];
       found.id = event.origin;
       found.index = bi;
+      this.primaryBrain.sendUpdate();
     }
     if (found && event.name) {
       // todo when is found still false?
-      found.name = event.name;
-      const { enemyNames } = this.state;
-      enemyNames[found.index] = found.name;
-      this.setState({
-        enemyNames,
-      });
+      if (found.name !== event.name){
+        found.name = event.name;
+        const { enemyNames } = this.state;
+        enemyNames[found.index] = found.name;
+        this.setState({
+          enemyNames,
+        });
+      }
     }
   }
 

@@ -115,8 +115,8 @@ class LobbyMenu extends Component {
           {lobbies !== null && lobbies.length > 0 && (
             lobbies.map((lobby, index) => (
               <LobbyLine key="lobbyLine-{index}">
-                <LobbyName>{lobby.lobby} ({lobby.count})</LobbyName>
-                <LobbyJoin onClick={() => this.loadNewLobby(lobby.lobby)}>join</LobbyJoin>
+                <LobbyName>{lobby.name} ({lobby.population})</LobbyName>
+                <LobbyJoin onClick={() => this.loadNewLobby(lobby.name)}>join</LobbyJoin>
               </LobbyLine>
             ))
           )}
