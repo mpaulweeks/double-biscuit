@@ -8,13 +8,13 @@ const dummyListener = function(){
 }
 
 class EnemyBrain extends BaseBrain {
-  constructor(eventListener){
-    super(eventListener, dummyListener(), dummyListener(), dummyListener());
+  constructor(){
+    super(dummyListener(), dummyListener(), dummyListener(), dummyListener());
     this.grid = new Grid();
     this.id = null;
   }
 
-  onEvent(event){
+  receiveEvent(event){
     if (event.origin === this.id && event.type === 'Grid'){
       const gs = event.value;
       this.grid = Grid.deserialize(gs);

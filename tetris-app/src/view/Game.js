@@ -36,14 +36,24 @@ class Game extends Component {
     this.enemyRefs = [];
     this.enemyBrains = [null, null, null];
     this.started = false;
+    this.eventListener = new EventListener(e => this.receiveEvent(e));
     this.state = {
       enemyNames: [null, null, null],
       incomingAttack: false,
     };
   }
-
-  checkForNewUsers(socketData){
-    const { event } = socketData;
+  brains(){
+    return this.enemyBrains.concat(this.primaryBrain);
+  }
+  receiveEvent(event){
+    this.checkForNewUsers(event);
+    this.brains().forEach(b => {
+      if (b && event.pattern === 'broadcast'){
+        b.receiveEvent(event);
+      }
+    })
+  }
+  checkForNewUsers(event){
     let found = false;
     let empty = 0;
     this.enemyBrains.forEach((b, i) => {
@@ -82,10 +92,8 @@ class Game extends Component {
     if (this.started){ return; }
     this.started = true;
 
-    const eventListener = new EventListener(d => this.checkForNewUsers(d));
-
     const primaryBrain = new HeroBrain(
-      eventListener,
+      this.eventListener,
       InputListener,
       new TouchListener(this.GridCanvas, this.SwapCanvas),
       Jukebox,
@@ -104,7 +112,7 @@ class Game extends Component {
       this.displays.push(new TetroDisplay(ref, primaryBrain, getTetroFunc));
     });
     this.enemyRefs.forEach((ref, i) => {
-      const eb = new EnemyBrain(eventListener);
+      const eb = new EnemyBrain();
       this.enemyBrains[i] = eb;
       this.displays.push(new EnemyDisplay(ref, eb));
     });
