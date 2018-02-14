@@ -28,7 +28,21 @@ class App extends Component {
   }
   componentDidMount() {
     // todo while testing
-    // this.loadNewLobby('bob', 'main');
+    if (window.location.hostname === 'localhost'){
+      const search = window.location.search.substring(1) || '';
+      const paramsByName = search.split('&').reduce((lookup, elm) => {
+        if (elm.includes('=')){
+          const parts = elm.split('=');
+          lookup[parts[0]] = parts[1];
+        }
+        return lookup;
+      }, {});
+      const name = paramsByName['name'];
+      const lobby = paramsByName['lobby'];
+      if (name && lobby) {
+        this.loadNewLobby(name, lobby);
+      }
+    }
   }
   onLobbyRefresh() {
     const { lobby } = this.state;
