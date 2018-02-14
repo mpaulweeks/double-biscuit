@@ -3,6 +3,7 @@ import { Events } from '../Constants';
 
 class MockListener {
   register(){}
+  sendUpstream(){}
 }
 const mockListener = new MockListener();
 
