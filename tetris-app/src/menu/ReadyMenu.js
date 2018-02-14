@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import SocketManager from '../rigging/Socket';
 import EventListener from '../rigging/EventListener';
 import { Events } from '../Constants';
 import {
@@ -9,7 +8,6 @@ import {
   LobbyLine,
   LobbyMessage,
   LobbyName,
-  LobbyInput,
   LobbyJoin,
 } from './LobbyComponent';
 
