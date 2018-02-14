@@ -14,6 +14,7 @@ class Tetromino {
     this.blocks = blocks;
     this.spawn = blocks.map(b => b.clone());
     this.shifted = null;
+    this.rotation = 0;
   }
 
   origin(){
@@ -41,6 +42,7 @@ class Tetromino {
     this.blocks.forEach(b => {
       b.rotateAround(origin);
     });
+    this.rotation = (this.rotation + 1) % 4;
   }
 
   clone(){
@@ -75,13 +77,17 @@ class Line extends Tetromino {
     ]);
   }
   rotate(){
-    const origin = this.origin().clone();
-    // todo fix rotating for line
-    // origin.col + 0.5;
-    // origin.row + 0.5;
-    this.blocks.forEach(b => {
-      b.rotateAround(origin);
-    });
+    super.rotate();
+    if (this.rotation === 2){
+      this.blocks.forEach(b => {
+        b.shift(1, -1);
+      });
+    }
+    if (this.rotation === 0){
+      this.blocks.forEach(b => {
+        b.shift(-1, 1);
+      });
+    }
   }
 }
 
