@@ -1,13 +1,14 @@
 // file must have no dependencies
 
 const Attack = {id: 0, type: 'Attack', color: 'grey'};
-const Line = {id: 1, type: 'Line', color: 'pink'};
+// http://tetris.wikia.com/wiki/Tetris_Guideline
+const Line = {id: 1, type: 'Line', color: 'cyan'};
 const Square = {id: 2, type: 'Square', color: 'yellow'};
-const Cross = {id: 3, type: 'Cross', color: 'red'};
-const KnightOne = {id: 4, type: 'KnightOne', color: 'purple'};
-const KnightTwo = {id: 5, type: 'KnightTwo', color: 'orange'};
+const Cross = {id: 3, type: 'Cross', color: 'purple'};
+const KnightOne = {id: 4, type: 'KnightOne', color: 'orange'};
+const KnightTwo = {id: 5, type: 'KnightTwo', color: 'blue'};
 const ZedOne = {id: 6, type: 'ZedOne', color: 'green'};
-const ZedTwo = {id: 7, type: 'ZedTwo', color: 'blue'};
+const ZedTwo = {id: 7, type: 'ZedTwo', color: 'red'};
 
 const _Tetros = [
   Attack,
