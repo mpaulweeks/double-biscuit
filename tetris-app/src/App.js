@@ -6,7 +6,8 @@ import { BGM } from './Constants';
 import Jukebox from './view/Jukebox';
 
 import Nav from './nav/Nav';
-import LobbyMenu from './lobby/LobbyMenu';
+import LobbyMenu from './menu/LobbyMenu';
+import ReadyMenu from './menu/ReadyMenu';
 import Game from './view/Game';
 
 const Container = styled.div`
@@ -21,6 +22,7 @@ class App extends Component {
     this.state = {
       name: null,
       lobby: null,
+      ready: false,
     };
   }
   componentDidMount() {
@@ -32,28 +34,37 @@ class App extends Component {
     this.setState({
       name: newName,
       lobby: newLobby,
+      ready: false,
     });
   }
   resetLobby() {
     SocketManager.disconnect();
     this.setState({
       lobby: null,
+      ready: false,
+    });
+  }
+  ready() {
+    this.setState({
+      ready: true,
     });
   }
   render() {
-    const { name, lobby } = this.state;
+    const { name, lobby, ready } = this.state;
     const childrenProps = {
       name,
       lobby,
       callbacks: {
         loadNewLobby: (name, lobby) => this.loadNewLobby(name, lobby),
         resetLobby: () => this.resetLobby(),
+        ready: () => this.ready(),
       },
     }
     return (
       <Container>
         <Nav {...childrenProps}/>
-        { lobby && <Game {...childrenProps}/> }
+        { lobby &&  ready && <Game {...childrenProps}/> }
+        { lobby && !ready && <ReadyMenu {...childrenProps}/> }
         {!lobby && <LobbyMenu {...childrenProps}/> }
       </Container>
     );
