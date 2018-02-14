@@ -1,20 +1,11 @@
 import { Errors } from '../Constants';
 
-import TetroShapes from './Tetromino';
-
-const ctors = [
-  () => new TetroShapes.Line(),
-  () => new TetroShapes.Square(),
-  () => new TetroShapes.Cross(),
-  () => new TetroShapes.KnightOne(),
-  () => new TetroShapes.KnightTwo(),
-  () => new TetroShapes.ZedOne(),
-  () => new TetroShapes.ZedTwo(),
-]
+import TetrominoBag from './TetrominoBag';
 
 class TetrominoManager {
   constructor(grid){
     this.grid = grid;
+    this.bag = new TetrominoBag();
     this.queue = [];
     this.shiftDown();
     this.swapTetro = null;
@@ -23,11 +14,7 @@ class TetrominoManager {
 
   newRandomTetro(){
     const { grid } = this;
-
-    // todo add weight to self-correct?
-    const rand = Math.floor(Math.random()*ctors.length);
-
-    const tet = ctors[rand]();
+    const tet = this.bag.next();
 
     // as first shift, this is imprinted on block.shifted
     tet.shift({dx: grid.width()/2 - 1, dy: grid.height()});
