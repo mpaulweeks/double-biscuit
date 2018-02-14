@@ -74,6 +74,7 @@ class LobbyMenu extends Component {
     this.loadNewLobby(newLobby);
   }
   render() {
+    const { name } = this.props;
     const { lobbies, nameError } = this.state;
     return (
       <LobbyWindow>
@@ -85,7 +86,7 @@ class LobbyMenu extends Component {
           </LobbyLine>
           <LobbyLine>
             <div>
-              <LobbyInput innerRef={e => this.nameInput = e} isError={nameError}/>
+              <LobbyInput innerRef={e => this.nameInput = e} isError={nameError} value={name}/>
             </div>
           </LobbyLine>
         </LobbyBlock>
