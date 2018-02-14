@@ -180,8 +180,7 @@ class HeroBrain extends BaseBrain {
     if (this.pieceWasSet){
       const numRowsCleared = grid.removeRows(grid.checkRows());
       if (numRowsCleared === 0){
-        // todo these should be constants
-        // these should go out earlier, might need to re-do tick strategy entirely
+        // todo these should go out earlier, might need to re-do tick strategy entirely
         this.sendSound(SFX.PieceSet);
       } else {
         this.sendSound(SFX.Clear1);

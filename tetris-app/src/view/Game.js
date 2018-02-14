@@ -76,7 +76,6 @@ class Game extends Component {
       this.primaryBrain.sendUpdate();
     }
     if (found && event.name) {
-      // todo when is found still false?
       if (found.name !== event.name){
         found.name = event.name;
         const { enemyNames } = this.state;
@@ -132,7 +131,6 @@ class Game extends Component {
 
   updateIncomingAttack(newValue) {
     if (newValue !== this.state.incomingAttack){
-      // todo check if this is redundant, if render is smart enough
       this.setState({
         incomingAttack: newValue,
       });

@@ -34,7 +34,6 @@ class App extends Component {
     const { lobby } = this.state;
     console.log('on lobby refresh:', lobby);
     if (lobby) {
-      // todo move into ReadyMenu like LobbyMenu?
       const self = this;
       SocketManager.SL.fetchLobbyUsers(lobby).then(lobbyData => {
         console.log('fetched lobby:', lobbyData);
