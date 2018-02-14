@@ -58,15 +58,31 @@ class TetrominoManager {
     }
   }
   rotate(){
-    const next = this.current().clone();
+    let next = this.current().clone();
     next.rotate();
     const error = this.checkCollisionError(next);
-    if (error === null){
-      this._updateCurrent(next);
-    } else {
-      // todo shift up/left/right until it works
+    let safe = error === null;
+
+    if (!safe) {
+      // try shifting
+      const dxs = [-1, 1, -2, 2];
+      for (var i = 0; !safe && i < dxs.length; i++){
+        const shifted = next.clone();
+        shifted.shift({ dx: dxs[i], dy: 0 });
+        const shiftedError = this.checkCollisionError(shifted);
+        if (shiftedError === null) {
+          next = shifted;
+          safe = true;
+        }
+      }
     }
-    return error;
+
+    if (safe){
+      this._updateCurrent(next);
+      return null;
+    } else {
+      return error;
+    }
   }
   tryShift(delta){
     const next = this.current().clone();
