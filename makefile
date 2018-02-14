@@ -6,3 +6,6 @@ test:
 
 deploy:
 	cd tetris-app && yarn deploy
+
+todo:
+	git grep "todo" "tetris-app/src/"
