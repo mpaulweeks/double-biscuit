@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
 import SocketManager from '../rigging/Socket';
+import EventListener from '../rigging/EventListener';
+import { Events } from '../Constants';
 import {
   LobbyWindow,
   LobbyBlock,
@@ -14,73 +16,49 @@ import {
 class ReadyMenu extends Component {
   constructor(props){
     super(props);
-    this.state = {
-      enemies: [],
-    };
-    this.eventListener = new EventListener(() => {});
-    this.eventListener.register(
-      this,
-      e => this.onReceive(e)
-    );
+    this.eventListener = new EventListener(e => this.receiveEvent(e));
   }
-  onReceive(event) {
-    console.log(event);
+  receiveEvent(event) {
+    console.log('ready event:', event);
+    if (event.type === Events.Lobby.Ready){
+      this.props.callbacks.ready();
+    }
   }
   onReady() {
-    // send socket event with ready message
+    this.eventListener.sendEvent({
+      pattern: 'broadcast',
+      type: Events.Lobby.Ready,
+    });
     this.props.callbacks.ready();
   }
   render() {
-    const { lobbies, nameError } = this.state;
+    const { lobbyUsers } = this.props;
     return (
       <LobbyWindow>
         <LobbyBlock>
           <LobbyLine>
-            <LobbyMessage>
-              Type in your name
-            </LobbyMessage>
-          </LobbyLine>
-          <LobbyLine>
-            <div>
-              <LobbyInput innerRef={e => this.nameInput = e} isError={nameError}/>
-            </div>
+            {lobbyUsers.length < 2 ? (
+              <LobbyMessage>
+                Waiting for more players to start the game...
+              </LobbyMessage>
+            ) : (
+              <LobbyJoin onClick={() => this.onReady()}>start</LobbyJoin>
+            )}
           </LobbyLine>
         </LobbyBlock>
         <LobbyBlock>
           <LobbyLine>
-            <LobbyMessage>
-              Create a new lobby
-            </LobbyMessage>
+            Users waiting in lobby:
           </LobbyLine>
-          <LobbyLine>
-            <div>
-              <LobbyInput innerRef={e => this.lobbyInput = e} placeholder="type a lobby name"/>
-            </div>
-            <LobbyJoin onClick={() => this.onSubmit()}>join</LobbyJoin>
-          </LobbyLine>
-          <LobbyLine>
-            {lobbies === null && (
-              <LobbyMessage>loading lobbies...</LobbyMessage>
-            )}
-            {lobbies !== null && lobbies.length === 0 && (
-              <LobbyMessage>there are currently no existing lobbies to join</LobbyMessage>
-            )}
-            {lobbies !== null && lobbies.length > 0 && (
-              <LobbyMessage>or choose an existing lobby</LobbyMessage>
-            )}
-          </LobbyLine>
-          {lobbies !== null && lobbies.length > 0 && (
-            lobbies.map((lobby, index) => (
-              <LobbyLine key="lobbyLine-{index}">
-                <LobbyName>{lobby.name} ({lobby.population})</LobbyName>
-                <LobbyJoin onClick={() => this.loadNewLobby(lobby.name)}>join</LobbyJoin>
-              </LobbyLine>
-            ))
-          )}
+          {lobbyUsers.map((user, index) => (
+            <LobbyLine key={`enemyName-${index}`}>
+              <LobbyName>{user.name}</LobbyName>
+            </LobbyLine>
+          ))}
         </LobbyBlock>
       </LobbyWindow>
     );
   }
 }
 
-export default LobbyMenu;
+export default ReadyMenu;

@@ -62,6 +62,10 @@ const Cookies = {
 const Events = {
   Attack: 'attack',
   Grid: 'grid',
+  Lobby: {
+    Waiting: 'lobby-waiting',
+    Ready: 'lobby-ready',
+  },
 };
 
 const Inputs = {

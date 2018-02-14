@@ -4,10 +4,10 @@ class _SocketManager {
     this.eventListeners = [];
     this.SL = new window.SocketLobby('tetris');
   }
-  connect(lobbyName){
+  connect(lobbyName, onLobbyRefresh){
     this.SL.connect({
       lobby: lobbyName,
-      onLobbyRefresh: () => {},
+      onLobbyRefresh: onLobbyRefresh,
       onUpdate: update => this.onUpdate(update),
     });
   }
@@ -28,9 +28,13 @@ class _SocketManager {
       el.callback(message);
     });
   }
-  send(data){
+  sendUpdate(data){
     const message = JSON.stringify(data);
     this.SL.sendUpdate(message);
+  }
+  sendInfo(data){
+    const message = JSON.stringify(data);
+    this.SL.sendInfo(message);
   }
 }
 

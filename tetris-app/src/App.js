@@ -22,6 +22,7 @@ class App extends Component {
     this.state = {
       name: null,
       lobby: null,
+      lobbyUsers: [],
       ready: false,
     };
   }
@@ -29,8 +30,26 @@ class App extends Component {
     // todo while testing
     // this.loadNewLobby('bob', 'main');
   }
+  onLobbyRefresh() {
+    const { lobby } = this.state;
+    console.log('on lobby refresh:', lobby);
+    if (lobby) {
+      const self = this;
+      SocketManager.SL.fetchLobbyUsers(lobby).then(lobbyData => {
+        console.log('fetched lobby:', lobbyData);
+        if (!lobbyData){
+          return;
+        }
+        const lobbyUsers = lobbyData.map(ld => JSON.parse(ld.data));
+        self.setState({
+          lobbyUsers: lobbyUsers,
+        });
+      });
+    }
+  }
   loadNewLobby(newName, newLobby) {
-    SocketManager.connect(newLobby);
+    SocketManager.connect(newLobby, () => this.onLobbyRefresh());
+    SocketManager.sendInfo({name: newName});
     this.setState({
       name: newName,
       lobby: newLobby,
@@ -50,10 +69,11 @@ class App extends Component {
     });
   }
   render() {
-    const { name, lobby, ready } = this.state;
+    const { name, lobby, lobbyUsers, ready } = this.state;
     const childrenProps = {
       name,
       lobby,
+      lobbyUsers,
       callbacks: {
         loadNewLobby: (name, lobby) => this.loadNewLobby(name, lobby),
         resetLobby: () => this.resetLobby(),

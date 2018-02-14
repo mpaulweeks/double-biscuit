@@ -6,7 +6,7 @@ class EventListener {
     SocketManager.register(this, m => this.receiveSocket(m));
   }
   sendEvent(event){
-    SocketManager.send({
+    SocketManager.sendUpdate({
       event: event,
     })
   }
