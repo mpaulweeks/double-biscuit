@@ -40,7 +40,7 @@ class ReadyMenu extends Component {
                 Waiting for more players to start the game...
               </LobbyMessage>
             ) : (
-              <LobbyJoin onClick={() => this.onReady()}>start</LobbyJoin>
+              <LobbyJoin onClick={() => this.onReady()}>start game</LobbyJoin>
             )}
           </LobbyLine>
         </LobbyBlock>
