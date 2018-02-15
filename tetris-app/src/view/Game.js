@@ -43,7 +43,7 @@ class Game extends Component {
     };
   }
   brains(){
-    return this.enemyBrains.concat(this.primaryBrain);
+    return this.enemyBrains.concat(this.heroBrain);
   }
   receiveEvent(event){
     this.checkForNewUsers(event);
@@ -73,7 +73,7 @@ class Game extends Component {
       found = this.enemyBrains[bi];
       found.id = event.origin;
       found.index = bi;
-      this.primaryBrain.sendUpdate();
+      this.heroBrain.sendUpdate();
     }
     if (found && event.name) {
       if (found.name !== event.name){
@@ -91,24 +91,24 @@ class Game extends Component {
     if (this.started){ return; }
     this.started = true;
 
-    const primaryBrain = new HeroBrain(
+    const heroBrain = new HeroBrain(
       this.eventListener,
       InputListener,
       new TouchListener(this.GridCanvas, this.SwapCanvas),
       Jukebox,
       this.props.name
     );
-    this.primaryBrain = primaryBrain;
+    this.heroBrain = heroBrain;
     this.displays = [
-      new GridDisplay(this.GridCanvas, primaryBrain, nv => this.updateIncomingAttack(nv)),
+      new GridDisplay(this.GridCanvas, heroBrain, nv => this.updateIncomingAttack(nv)),
     ];
 
     const getSwapFunc = brain => brain.tm.getSwap();
-    this.displays.push(new TetroDisplay(this.SwapCanvas, primaryBrain, getSwapFunc));
+    this.displays.push(new TetroDisplay(this.SwapCanvas, heroBrain, getSwapFunc));
 
     this.upcomingRefs.forEach((ref, index) => {
       const getTetroFunc = brain => brain.tm.upcoming()[index];
-      this.displays.push(new TetroDisplay(ref, primaryBrain, getTetroFunc));
+      this.displays.push(new TetroDisplay(ref, heroBrain, getTetroFunc));
     });
     this.enemyRefs.forEach((ref, i) => {
       const eb = new EnemyBrain();
