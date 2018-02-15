@@ -44,7 +44,8 @@ const LobbyName = styled.div`
 `;
 
 const LobbyJoin = styled.div`
-  width: 50px;
+  padding-left: 10px;
+  padding-right: 10px;
   height: 30px;
   line-height: 30px;
 

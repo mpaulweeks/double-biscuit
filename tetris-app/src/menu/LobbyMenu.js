@@ -38,6 +38,9 @@ class LobbyMenu extends Component {
     };
   }
   componentDidMount() {
+    this.refreshLobbyList();
+  }
+  refreshLobbyList() {
     const onSuccess = lobbies => {
       this.setState({
         lobbies: lobbies,
@@ -52,6 +55,9 @@ class LobbyMenu extends Component {
           alert('there was an error connecting to the lobby server, please try again later');
         }
       });
+    this.setState({
+      lobbies: null,
+    });
   }
   componentWillUnmount() {
     this.cancelablePromise.cancel();
@@ -111,7 +117,7 @@ class LobbyMenu extends Component {
               <LobbyMessage>loading lobbies...</LobbyMessage>
             )}
             {lobbies !== null && lobbies.length === 0 && (
-              <LobbyMessage>there are currently no existing lobbies to join</LobbyMessage>
+              <LobbyMessage>there are no lobbies to join</LobbyMessage>
             )}
             {lobbies !== null && lobbies.length > 0 && (
               <LobbyMessage>or choose an existing lobby</LobbyMessage>
@@ -124,6 +130,11 @@ class LobbyMenu extends Component {
                 <LobbyJoin onClick={() => this.loadNewLobby(lobby.name)}>join</LobbyJoin>
               </LobbyLine>
             ))
+          )}
+          {lobbies !== null && (
+            <LobbyLine>
+              <LobbyJoin onClick={() => this.refreshLobbyList()}>refresh lobby list</LobbyJoin>
+            </LobbyLine>
           )}
         </LobbyBlock>
       </LobbyWindow>
