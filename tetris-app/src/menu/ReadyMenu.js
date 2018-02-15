@@ -25,7 +25,6 @@ class ReadyMenu extends Component {
   onReady() {
     // mark lobby state as ready, which should delist it from lobby list
     this.eventListener.sendEvent({
-      pattern: 'broadcast',
       type: Events.Lobby.Ready,
     });
     this.props.callbacks.ready();

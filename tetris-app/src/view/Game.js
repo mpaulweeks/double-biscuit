@@ -48,7 +48,7 @@ class Game extends Component {
   receiveEvent(event){
     this.checkForNewUsers(event);
     this.brains().forEach(b => {
-      if (b && event.pattern === 'broadcast'){
+      if (b){
         b.receiveEvent(event);
       }
     })

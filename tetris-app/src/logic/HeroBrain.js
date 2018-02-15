@@ -79,7 +79,6 @@ class HeroBrain extends BaseBrain {
     const attackSize = rowsCleared - 1;
     if (attackSize > 0){
       this.eventListener.sendEvent({
-        pattern: 'broadcast',
         origin: this.id,
         type: Events.Attack,
         value: attackSize,
@@ -98,7 +97,6 @@ class HeroBrain extends BaseBrain {
   sendUpdate(){
     const data = this.grid.serialize();
     this.eventListener.sendEvent({
-      pattern: 'broadcast',
       origin: this.id,
       name: this.name,
       type: 'Grid',
