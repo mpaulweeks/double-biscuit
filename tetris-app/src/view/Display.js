@@ -31,12 +31,16 @@ class BaseDisplay{
   }
 
   tryDrawDead(){
-    // todo more obvious, maybe stripes/empty box + text?
     const { canvas, ctx, brain } = this;
     if (brain.dead){
       const deadStyle = "rgba(0,0,0,0.5)";
       ctx.fillStyle = deadStyle;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+      const fontSize = canvas.height/5;
+      ctx.font = `bold ${fontSize}px Impact`;
+      ctx.fillStyle = "white";
+      ctx.fillText("GAME", 10, canvas.height/2 - fontSize*1/4, canvas.width - 20);
+      ctx.fillText("OVER", 10, canvas.height/2 + fontSize*3/4, canvas.width - 20);
     }
   }
 
