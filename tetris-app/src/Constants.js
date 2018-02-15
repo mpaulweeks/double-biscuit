@@ -62,10 +62,10 @@ const Cookies = {
 
 const Events = {
   Attack: 'attack',
-  Grid: 'grid',
+  GridUpdate: 'grid_update',
   Lobby: {
-    Waiting: 'lobby-waiting',
-    Ready: 'lobby-ready',
+    Waiting: 'lobby_waiting',
+    Ready: 'lobby_ready',
   },
 };
 

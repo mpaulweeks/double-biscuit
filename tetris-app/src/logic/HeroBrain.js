@@ -99,7 +99,7 @@ class HeroBrain extends BaseBrain {
     this.eventListener.sendEvent({
       origin: this.id,
       name: this.name,
-      type: 'Grid',
+      type: Events.GridUpdate,
       value: data,
     });
   }

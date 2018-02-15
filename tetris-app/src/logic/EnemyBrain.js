@@ -1,3 +1,5 @@
+import { Events } from '../Constants';
+
 import BaseBrain from './BaseBrain';
 import Grid from './Grid';
 
@@ -15,7 +17,7 @@ class EnemyBrain extends BaseBrain {
   }
 
   receiveEvent(event){
-    if (event.origin === this.id && event.type === 'Grid'){
+    if (event.origin === this.id && event.type === Events.GridUpdate){
       const gs = event.value;
       this.grid = Grid.deserialize(gs);
     }
