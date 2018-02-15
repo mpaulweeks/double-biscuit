@@ -65,6 +65,7 @@ class HeroBrain extends BaseBrain {
   onInput(eventType, code){
     if (this.won){
       this.game.triggerReset();
+      this.won = false; // prevent spam
       return;
     }
     switch (eventType){

@@ -62,6 +62,7 @@ const Cookies = {
 
 const Events = {
   Death: 'death',
+  GameReset: 'game_reset',
   Attack: 'attack',
   GridUpdate: 'grid_update',
   Lobby: {

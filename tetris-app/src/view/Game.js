@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Logger from '../Logging';
+import { Events } from '../Constants';
 import EventListener from '../rigging/EventListener';
 import SocketManager from '../rigging/Socket';
 import { InputListener, TouchListener } from '../rigging/InputListener';
@@ -46,6 +47,11 @@ class Game extends Component {
     return this.enemyBrains.concat(this.heroBrain);
   }
   receiveEvent(event){
+    if (event.type === Events.GameReset){
+      this.props.callbacks.resetGame();
+      return;
+    }
+
     this.checkForNewUsers(event);
     this.brains().forEach(b => {
       if (b){
@@ -151,7 +157,10 @@ class Game extends Component {
 
   triggerReset(){
     console.log('triggering reset');
-    // todo setState on parent
+    this.eventListener.sendEvent({
+      type: Events.GameReset,
+    });
+    this.props.callbacks.resetGame();
   }
 
   render() {

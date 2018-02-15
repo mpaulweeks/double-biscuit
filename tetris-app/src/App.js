@@ -45,9 +45,9 @@ class App extends Component {
     }
   }
   onLobbyRefresh() {
-    const { lobby } = this.state;
+    const { lobby, ready } = this.state;
     console.log('on lobby refresh:', lobby);
-    if (lobby) {
+    if (lobby && !ready) {
       const self = this;
       SocketManager.SL.fetchLobbyUsers(lobby).then(lobbyData => {
         console.log('fetched lobby:', lobbyData);
@@ -82,6 +82,10 @@ class App extends Component {
       ready: true,
     });
   }
+  resetGame() {
+    const { name, lobby } = this.state;
+    this.loadNewLobby(name, lobby);
+  }
   render() {
     const { name, lobby, lobbyUsers, ready } = this.state;
     const childrenProps = {
@@ -92,6 +96,7 @@ class App extends Component {
         loadNewLobby: (name, lobby) => this.loadNewLobby(name, lobby),
         resetLobby: () => this.resetLobby(),
         ready: () => this.ready(),
+        resetGame: () => this.resetGame(),
       },
     }
     return (
