@@ -11,6 +11,10 @@ class BaseBrain {
     this.name = name;
   }
 
+  isGameOver(){
+    return this.won || this.dead;
+  }
+
   onInput(eventType, event){}
 }
 

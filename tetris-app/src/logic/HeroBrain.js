@@ -32,6 +32,7 @@ class HeroBrain extends BaseBrain {
   }
 
   restart(){
+    this.won = false;
     this.dead = false;
     this.grid = new Grid();
     this.tm = new TetrominoManager(this.grid);
@@ -45,6 +46,9 @@ class HeroBrain extends BaseBrain {
 
     this.tick();
     this.sendUpdate();
+  }
+  win(){
+    this.won = true;
   }
   die(){
     this.dead = true;
@@ -180,8 +184,8 @@ class HeroBrain extends BaseBrain {
   }
 
   tick(){
-    const { tm, grid, dead } = this;
-    if (!dead){
+    const { tm, grid, won, dead } = this;
+    if (!won && !dead){
       // check at beginning of tick
       if (this.pieceWasSet) {
         const numRowsCleared = grid.removeRows(grid.checkRows());

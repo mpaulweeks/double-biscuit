@@ -51,7 +51,19 @@ class Game extends Component {
       if (b){
         b.receiveEvent(event);
       }
-    })
+    });
+
+    let stillAliveEnemies = 0;
+    this.enemyBrains.forEach(eb => {
+      if (eb.id && !eb.dead) {
+        stillAliveEnemies += 1;
+      }
+    });
+    // check for victory
+    console.log('alive:', stillAliveEnemies);
+    if (!this.heroBrain.dead && stillAliveEnemies === 0){
+      this.heroBrain.win();
+    }
   }
   checkForNewUsers(event){
     let found = false;
