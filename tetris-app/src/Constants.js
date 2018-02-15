@@ -61,6 +61,7 @@ const Cookies = {
 };
 
 const Events = {
+  Death: 'death',
   Attack: 'attack',
   GridUpdate: 'grid_update',
   Lobby: {

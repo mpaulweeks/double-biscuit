@@ -71,8 +71,7 @@ class Game extends Component {
         bi += 1;
       }
       found = this.enemyBrains[bi];
-      found.id = event.origin;
-      found.index = bi;
+      found.setInfo(event.origin, bi);
       this.heroBrain.sendUpdate();
     }
     if (found && event.name) {

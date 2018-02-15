@@ -30,6 +30,16 @@ class BaseDisplay{
     this.animationTimer = 0;
   }
 
+  tryDrawDead(){
+    // todo more obvious, maybe stripes/empty box + text?
+    const { canvas, ctx, brain } = this;
+    if (brain.dead){
+      const deadStyle = "rgba(0,0,0,0.5)";
+      ctx.fillStyle = deadStyle;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
   ensureCanvasSettings(){
     const $canvas = this.canvas;
 
@@ -139,6 +149,8 @@ class EnemyDisplay extends BaseDisplay {
     for (let gridBlock of brain.grid){
       this.drawBlock(blocksWide, gridBlock, gridBlock.meta().color, 2, true);
     }
+
+    this.tryDrawDead();
   }
 }
 
@@ -218,6 +230,8 @@ class GridDisplay extends BaseDisplay {
         cellHeight*rowsFilled.length
       );
     }
+
+    this.tryDrawDead();
 
     // updating attack message
     if (brain.getTotalPendingAttacks() > 0){

@@ -32,6 +32,7 @@ class HeroBrain extends BaseBrain {
   }
 
   restart(){
+    this.dead = false;
     this.grid = new Grid();
     this.tm = new TetrominoManager(this.grid);
 
@@ -44,6 +45,13 @@ class HeroBrain extends BaseBrain {
 
     this.tick();
     this.sendUpdate();
+  }
+  die(){
+    this.dead = true;
+    this.eventListener.sendEvent({
+      origin: this.id,
+      type: Events.Death,
+    });
   }
 
   current(){
@@ -172,56 +180,57 @@ class HeroBrain extends BaseBrain {
   }
 
   tick(){
-    const { tm, grid } = this;
-
-    // check at beginning of tick
-    if (this.pieceWasSet){
-      const numRowsCleared = grid.removeRows(grid.checkRows());
-      if (numRowsCleared === 0){
-        // todo these should go out earlier, might need to re-do tick strategy entirely
-        this.sendSound(SFX.PieceSet);
-      } else {
-        this.sendSound(SFX.Clear1);
-      }
-      this.sendAttack(numRowsCleared);
-      this.processAttacks();
-      this.sendUpdate();
-
-      tm.popCurrent();
-      const error = tm.shiftDown();
-      if (error){
-        this.restart();
+    const { tm, grid, dead } = this;
+    if (!dead){
+      // check at beginning of tick
+      if (this.pieceWasSet) {
+        const numRowsCleared = grid.removeRows(grid.checkRows());
+        if (numRowsCleared === 0) {
+          // todo these should go out earlier, might need to re-do tick strategy entirely
+          this.sendSound(SFX.PieceSet);
+        }
+        else {
+          this.sendSound(SFX.Clear1);
+        }
+        this.sendAttack(numRowsCleared);
+        this.processAttacks();
         this.sendUpdate();
-      }
-    }
 
-    // process input / game changes
-    this.pieceWasSet = false;
-    for (let inputCode in this.inputTouched){
-      const isInputTouched = this.inputTouched[inputCode];
-      if (isInputTouched){
-        this.processInput(inputCode);
-        this.inputTouched[inputCode] = false;
-      }
-    }
-    for (let inputCode in this.inputPressed){
-      const isInputPressed = this.inputPressed[inputCode];
-      if (isInputPressed){
-        if (this.inputBuffer[inputCode] === 0){
-          this.processInput(inputCode);
-          this.inputBuffer[inputCode] = KEY_REPEAT(inputCode);
-        } else {
-          this.inputBuffer[inputCode] -= 1;
+        tm.popCurrent();
+        const error = tm.shiftDown();
+        if (error) {
+          this.die();
         }
       }
-    }
 
-    this.autoDropper += 1;
-    if (this.autoDropper > 60){
-      this.pieceWasSet = this.pieceWasSet || tm.shiftDown();
-      this.autoDropper = 0;
-    }
+      // process input / game changes
+      this.pieceWasSet = false;
+      for (let inputCode in this.inputTouched) {
+        const isInputTouched = this.inputTouched[inputCode];
+        if (isInputTouched) {
+          this.processInput(inputCode);
+          this.inputTouched[inputCode] = false;
+        }
+      }
+      for (let inputCode in this.inputPressed) {
+        const isInputPressed = this.inputPressed[inputCode];
+        if (isInputPressed) {
+          if (this.inputBuffer[inputCode] === 0) {
+            this.processInput(inputCode);
+            this.inputBuffer[inputCode] = KEY_REPEAT(inputCode);
+          }
+          else {
+            this.inputBuffer[inputCode] -= 1;
+          }
+        }
+      }
 
+      this.autoDropper += 1;
+      if (this.autoDropper > 60) {
+        this.pieceWasSet = this.pieceWasSet || tm.shiftDown();
+        this.autoDropper = 0;
+      }
+    }
     return {
       pieceWasSet: this.pieceWasSet,
     };
