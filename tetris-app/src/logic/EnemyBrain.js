@@ -11,7 +11,7 @@ const dummyListener = function(){
 
 class EnemyBrain extends BaseBrain {
   constructor(){
-    super(dummyListener(), dummyListener(), dummyListener(), dummyListener());
+    super({}, dummyListener(), dummyListener(), dummyListener(), dummyListener());
     this.grid = new Grid();
     this.id = null;
   }

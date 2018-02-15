@@ -1,6 +1,7 @@
 
 class BaseBrain {
-  constructor(eventListener, inputListener, touchListener, soundListener, name){
+  constructor(game, eventListener, inputListener, touchListener, soundListener, name){
+    this.game = game;
     this.id = `${new Date().getTime()}-${Math.floor(Math.random()*1000)}`;
 
     inputListener.register(this, (et, e) => this.onInput(et, e));

@@ -103,6 +103,7 @@ class Game extends Component {
     this.started = true;
 
     const heroBrain = new HeroBrain(
+      this,
       this.eventListener,
       InputListener,
       new TouchListener(this.GridCanvas, this.SwapCanvas),
@@ -146,6 +147,11 @@ class Game extends Component {
         incomingAttack: newValue,
       });
     }
+  }
+
+  triggerReset(){
+    console.log('triggering reset');
+    // todo setState on parent
   }
 
   render() {

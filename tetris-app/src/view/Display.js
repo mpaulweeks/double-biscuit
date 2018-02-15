@@ -44,9 +44,14 @@ class BaseDisplay{
       if (brain.dead){
         text = ['GAME', 'OVER'];
       }
-
       ctx.fillText(text[0], 10, canvas.height/2 - fontSize*1/4, canvas.width - 20);
       ctx.fillText(text[1], 10, canvas.height/2 + fontSize*3/4, canvas.width - 20);
+
+      if (brain.won){
+        ctx.font = `normal ${fontSize/3}px Impact`;
+        ctx.fillText('click anywhere', canvas.width*1/8, canvas.height/2 + fontSize*5/4, canvas.width*3/4);
+        ctx.fillText('to restart', canvas.width*1/4, canvas.height/2 + fontSize*6/4, canvas.width/2);
+      }
     }
   }
 

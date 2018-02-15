@@ -8,7 +8,7 @@ class MockListener {
 const mockListener = new MockListener();
 
 it('HeroBrain.getTotalPendingAttacks', () => {
-  const b = new HeroBrain(mockListener, mockListener, mockListener, mockListener);
+  const b = new HeroBrain({}, mockListener, mockListener, mockListener, mockListener);
   expect(b.getTotalPendingAttacks()).toEqual(0);
 
   b.receiveEvent({type: Events.Attack, value: 2});

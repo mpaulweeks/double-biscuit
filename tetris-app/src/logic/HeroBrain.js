@@ -63,6 +63,10 @@ class HeroBrain extends BaseBrain {
   }
 
   onInput(eventType, code){
+    if (this.won){
+      this.game.triggerReset();
+      return;
+    }
     switch (eventType){
       case 'Touch':
         this.inputTouched[code] = true;
