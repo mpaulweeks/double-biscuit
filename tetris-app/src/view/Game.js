@@ -59,16 +59,16 @@ class Game extends Component {
       }
     });
 
-    let stillAliveEnemies = 0;
-    this.enemyBrains.forEach(eb => {
-      if (eb.id && !eb.dead) {
-        stillAliveEnemies += 1;
+    let stillAliveBrains = 0;
+    let lastAliveBrain = null;
+    this.brains().forEach(b => {
+      if (b.id && !b.dead) {
+        stillAliveBrains += 1;
+        lastAliveBrain = b;
       }
     });
-    // check for victory
-    console.log('alive:', stillAliveEnemies);
-    if (!this.heroBrain.dead && stillAliveEnemies === 0){
-      this.heroBrain.win();
+    if (stillAliveBrains === 1){
+      lastAliveBrain.win();
     }
   }
   checkForNewUsers(event){

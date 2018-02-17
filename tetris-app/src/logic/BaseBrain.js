@@ -12,6 +12,9 @@ class BaseBrain {
     this.name = name;
   }
 
+  win(){
+    this.won = true;
+  }
   isGameOver(){
     return this.won || this.dead;
   }

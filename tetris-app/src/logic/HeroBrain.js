@@ -47,9 +47,6 @@ class HeroBrain extends BaseBrain {
     this.tick();
     this.sendUpdate();
   }
-  win(){
-    this.won = true;
-  }
   die(){
     this.dead = true;
     this.eventListener.sendEvent({
